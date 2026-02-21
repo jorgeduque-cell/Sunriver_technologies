@@ -1,0 +1,249 @@
+import { useEffect, useRef, lazy, Suspense } from 'react';
+import { gsap } from 'gsap';
+import { ArrowRight, Play, Sparkles } from 'lucide-react';
+
+const Hero3D = lazy(() => import('../components/Hero3D'));
+
+const Hero = () => {
+  const heroRef = useRef<HTMLDivElement>(null);
+  const titleRef = useRef<HTMLHeadingElement>(null);
+  const subtitleRef = useRef<HTMLHeadingElement>(null);
+  const bodyRef = useRef<HTMLParagraphElement>(null);
+  const ctaRef = useRef<HTMLDivElement>(null);
+  const emblemRef = useRef<HTMLDivElement>(null);
+  const particlesRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      // Timeline for entrance animations
+      const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
+
+      // Background gradient animation
+      tl.fromTo(
+        '.hero-bg',
+        { opacity: 0, scale: 1.2 },
+        { opacity: 1, scale: 1, duration: 1.2 }
+      );
+
+      // Title animation with clip-path
+      tl.fromTo(
+        titleRef.current,
+        { opacity: 0, y: 40, clipPath: 'inset(100% 0 0 0)' },
+        { opacity: 1, y: 0, clipPath: 'inset(0% 0 0 0)', duration: 0.8 },
+        '-=0.7'
+      );
+
+      // Subtitle animation
+      tl.fromTo(
+        subtitleRef.current,
+        { opacity: 0, y: 30 },
+        { opacity: 1, y: 0, duration: 0.6 },
+        '-=0.4'
+      );
+
+      // Body text animation
+      tl.fromTo(
+        bodyRef.current,
+        { opacity: 0, y: 20 },
+        { opacity: 1, y: 0, duration: 0.5 },
+        '-=0.3'
+      );
+
+      // CTA buttons animation
+      tl.fromTo(
+        ctaRef.current?.children || [],
+        { opacity: 0, scale: 0.9, y: 15 },
+        { opacity: 1, scale: 1, y: 0, duration: 0.4, stagger: 0.1 },
+        '-=0.2'
+      );
+
+      // Emblem animation
+      tl.fromTo(
+        emblemRef.current,
+        { opacity: 0, rotateY: 90 },
+        { opacity: 1, rotateY: 0, duration: 1 },
+        '-=0.8'
+      );
+
+      // Floating particles
+      gsap.to('.particle', {
+        y: '-=30',
+        duration: 'random(3, 5)',
+        repeat: -1,
+        yoyo: true,
+        ease: 'sine.inOut',
+        stagger: {
+          each: 0.5,
+          from: 'random',
+        },
+      });
+
+      // Scroll-based parallax
+      gsap.to(titleRef.current, {
+        scrollTrigger: {
+          trigger: heroRef.current,
+          start: 'top top',
+          end: 'bottom top',
+          scrub: 1,
+        },
+        y: -80,
+        opacity: 0.3,
+      });
+
+      gsap.to(emblemRef.current, {
+        scrollTrigger: {
+          trigger: heroRef.current,
+          start: 'top top',
+          end: 'bottom top',
+          scrub: 1,
+        },
+        scale: 0.8,
+      });
+    }, heroRef);
+
+    return () => ctx.revert();
+  }, []);
+
+  const scrollToSection = (href: string) => {
+    const element = document.querySelector(href);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
+  return (
+    <section
+      ref={heroRef}
+      className="relative min-h-screen flex items-center overflow-hidden bg-gradient-to-br from-white via-sunriver-orange/5 to-sunriver-blue/10"
+    >
+      {/* Animated Background */}
+      <div className="hero-bg absolute inset-0 opacity-0">
+        <div className="absolute inset-0 bg-gradient-to-br from-sunriver-orange/10 via-transparent to-sunriver-blue/10" />
+        <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-sunriver-blue/5 to-transparent" />
+      </div>
+
+      {/* Floating Particles */}
+      <div ref={particlesRef} className="absolute inset-0 pointer-events-none overflow-hidden">
+        {[...Array(15)].map((_, i) => (
+          <div
+            key={i}
+            className="particle absolute w-2 h-2 rounded-full"
+            style={{
+              left: `${Math.random() * 100}%`,
+              top: `${Math.random() * 100}%`,
+              background: i % 2 === 0 ? 'rgba(245, 166, 35, 0.3)' : 'rgba(30, 58, 95, 0.2)',
+              animationDelay: `${Math.random() * 5}s`,
+            }}
+          />
+        ))}
+      </div>
+
+      {/* Content Container */}
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-32">
+        <div className="grid lg:grid-cols-2 gap-12 items-center">
+          {/* Left Content */}
+          <div className="space-y-8">
+            {/* Badge */}
+            <div className="inline-flex items-center gap-2 px-4 py-2 bg-sunriver-orange/10 rounded-full border border-sunriver-orange/20">
+              <Sparkles className="w-4 h-4 text-sunriver-orange" />
+              <span className="text-sm font-medium text-sunriver-orange">
+                Desarrollo Web con Propósito
+              </span>
+            </div>
+
+            {/* Main Title */}
+            <h1
+              ref={titleRef}
+              className="text-5xl sm:text-6xl lg:text-7xl font-extrabold text-sunriver-blue leading-tight opacity-0"
+            >
+              Tu negocio merece{' '}
+              <span className="text-gradient">brillar</span>
+            </h1>
+
+            {/* Subtitle */}
+            <h2
+              ref={subtitleRef}
+              className="text-3xl sm:text-4xl lg:text-5xl font-bold text-sunriver-blue/80 opacity-0"
+            >
+              Y nosotros lo hacemos posible
+            </h2>
+
+            {/* Body Text */}
+            <p
+              ref={bodyRef}
+              className="text-lg text-gray-600 max-w-xl leading-relaxed opacity-0"
+            >
+              Creamos páginas web ultra profesionales a precios accesibles, impulsadas por
+              <strong className="text-sunriver-blue"> Inteligencia Artificial</strong> que trabaja por ti 24/7.
+              No solo construimos sitios — creamos máquinas de crecimiento para tu negocio.
+            </p>
+
+            {/* CTA Buttons */}
+            <div ref={ctaRef} className="flex flex-wrap gap-4">
+              <button
+                onClick={() => scrollToSection('#contacto')}
+                className="group px-8 py-4 bg-gradient-to-r from-sunriver-orange to-sunriver-orange/90 text-white font-semibold rounded-full transition-all duration-300 hover:shadow-glow hover:scale-105 hover:-translate-y-1 flex items-center gap-2"
+              >
+                Quiero mi página web
+                <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
+              </button>
+              <button
+                onClick={() => scrollToSection('#servicios')}
+                className="group px-8 py-4 bg-white text-sunriver-blue font-semibold rounded-full border-2 border-sunriver-blue/20 transition-all duration-300 hover:border-sunriver-orange hover:text-sunriver-orange flex items-center gap-2"
+              >
+                <Play className="w-5 h-5" />
+                Conoce nuestros servicios
+              </button>
+            </div>
+
+            {/* Trust Indicators */}
+            <div className="flex items-center gap-6 pt-4">
+              <div className="flex -space-x-3">
+                {[...Array(4)].map((_, i) => (
+                  <div
+                    key={i}
+                    className="w-10 h-10 rounded-full bg-gradient-to-br from-sunriver-orange to-sunriver-blue border-2 border-white flex items-center justify-center text-white text-xs font-bold"
+                  >
+                    {String.fromCharCode(65 + i)}
+                  </div>
+                ))}
+              </div>
+              <div>
+                <p className="text-sm font-semibold text-sunriver-blue">+50 negocios transformados</p>
+                <p className="text-xs text-gray-500">Páginas web que generan resultados reales</p>
+              </div>
+            </div>
+          </div>
+
+          {/* Right Content - 3D Solar System */}
+          <div className="relative flex items-center justify-center lg:justify-end h-[500px]">
+            <div
+              ref={emblemRef}
+              className="relative w-full h-full opacity-0"
+              style={{ perspective: '1000px', transformStyle: 'preserve-3d' }}
+            >
+              <Suspense fallback={
+                <div className="w-64 h-64 rounded-full bg-gradient-to-br from-sunriver-orange/20 to-sunriver-blue/20 animate-pulse blur-xl mx-auto" />
+              }>
+                <Hero3D />
+              </Suspense>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Bottom Wave */}
+      <div className="absolute bottom-0 left-0 right-0">
+        <svg viewBox="0 0 1440 120" className="w-full h-auto" preserveAspectRatio="none">
+          <path
+            d="M0,60 C360,120 720,0 1080,60 C1260,90 1380,80 1440,60 L1440,120 L0,120 Z"
+            fill="white"
+            fillOpacity="0.5"
+          />
+        </svg>
+      </div>
+    </section>
+  );
+};
+
+export default Hero;
