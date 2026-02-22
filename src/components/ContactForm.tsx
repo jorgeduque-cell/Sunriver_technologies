@@ -29,39 +29,32 @@ const ContactForm = () => {
     const onSubmit = async (data: FormData) => {
         setIsSubmitting(true);
 
-        const webhookUrl = import.meta.env.VITE_N8N_WEBHOOK_URL;
-
         try {
-            if (!webhookUrl) {
-                // Demo mode fallback
-                await new Promise((resolve) => setTimeout(resolve, 1500));
-                // Demo mode - no webhook configured
-                toast.success('Mensaje enviado (Modo Demo)', {
-                    description: 'Configura VITE_N8N_WEBHOOK_URL en .env para producción.',
-                });
-            } else {
-                // Real Webhook Submission
-                const response = await fetch(webhookUrl, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        ...data,
-                        source: 'sunriver.solutions',
-                        timestamp: new Date().toISOString()
-                    }),
-                });
+            // Use internal API proxy to avoid CORS issues
+            const response = await fetch('/api/contact', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    ...data,
+                    source: 'sunriver.solutions',
+                    timestamp: new Date().toISOString()
+                }),
+            });
 
-                if (!response.ok) throw new Error('Error en el envío');
+            const result = await response.json();
 
-                toast.success('¡Mensaje recibido!', {
-                    description: 'Nuestro equipo de IA ya está procesando tu solicitud.',
-                });
+            if (!response.ok) {
+                throw new Error(result.message || 'Error en el envío');
             }
+
+            toast.success('¡Mensaje recibido!', {
+                description: result.message || 'Nuestro equipo de IA ya está procesando tu solicitud.',
+            });
             reset();
         } catch (error) {
             console.error('Submission error:', error);
             toast.error('Error al enviar', {
-                description: 'Hubo un problema. Por favor contáctanos por WhatsApp.',
+                description: error instanceof Error ? error.message : 'Hubo un problema. Por favor contáctanos por WhatsApp.',
             });
         } finally {
             setIsSubmitting(false);
