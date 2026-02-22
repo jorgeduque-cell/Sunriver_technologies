@@ -1,4 +1,4 @@
-import { Sun, Waves, Linkedin, Instagram, Mail, Phone, Github } from 'lucide-react';
+import { Linkedin, Instagram, Mail, Phone, Github } from 'lucide-react';
 import logo from '../assets/logo.png';
 
 const footerLinks = {

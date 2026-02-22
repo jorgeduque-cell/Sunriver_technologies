@@ -1,94 +1,168 @@
+// SunRiver ChatBot API - n8n Webhook Integration
+// Proxies requests to n8n workflow while keeping webhook URL secure
+
+// Simple in-memory rate limiter
+const rateLimitMap = new Map();
+const RATE_LIMIT_WINDOW_MS = 60 * 1000; // 1 minute
+const RATE_LIMIT_MAX_REQUESTS = 10; // 10 requests per minute per IP
+
+function checkRateLimit(ip) {
+    const now = Date.now();
+    
+    for (const [key, data] of rateLimitMap.entries()) {
+        if (data.resetTime < now) {
+            rateLimitMap.delete(key);
+        }
+    }
+    
+    const clientData = rateLimitMap.get(ip);
+    
+    if (!clientData || clientData.resetTime < now) {
+        rateLimitMap.set(ip, {
+            count: 1,
+            resetTime: now + RATE_LIMIT_WINDOW_MS
+        });
+        return { allowed: true, remaining: RATE_LIMIT_MAX_REQUESTS - 1 };
+    }
+    
+    if (clientData.count >= RATE_LIMIT_MAX_REQUESTS) {
+        return { allowed: false, remaining: 0 };
+    }
+    
+    clientData.count++;
+    return { allowed: true, remaining: RATE_LIMIT_MAX_REQUESTS - clientData.count };
+}
+
+function sanitizeInput(input) {
+    if (typeof input !== 'string') return '';
+    return input
+        .trim()
+        .slice(0, 500)
+        .replace(/[<>]/g, '')
+        .replace(/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]/g, '');
+}
+
+function getClientIp(req) {
+    return req.headers['x-forwarded-for']?.split(',')[0]?.trim() || 
+           req.headers['x-real-ip'] || 
+           'unknown';
+}
+
 export default async function handler(req, res) {
-    // Only allow POST
+    const clientIp = getClientIp(req);
+    const rateLimit = checkRateLimit(clientIp);
+    
+    res.setHeader('X-RateLimit-Limit', RATE_LIMIT_MAX_REQUESTS);
+    res.setHeader('X-RateLimit-Remaining', Math.max(0, rateLimit.remaining));
+    
+    if (!rateLimit.allowed) {
+        return res.status(429).json({
+            error: 'Rate limit exceeded',
+            response: '⏳ Estamos recibiendo muchas consultas. Por favor intenta de nuevo en unos minutos o escríbenos por WhatsApp al +57 312 4183002 📱'
+        });
+    }
+
+    if (req.method === 'OPTIONS') {
+        res.setHeader('Access-Control-Allow-Origin', '*');
+        res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
+        res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+        return res.status(204).end();
+    }
+    
     if (req.method !== 'POST') {
         return res.status(405).json({ error: 'Method not allowed' });
     }
 
-    const apiKey = process.env.GEMINI_API_KEY;
-    if (!apiKey) {
-        return res.status(500).json({ error: 'API key not configured' });
+    // Get n8n webhook URL from environment
+    const n8nWebhookUrl = process.env.N8N_CHATBOT_WEBHOOK;
+    
+    if (!n8nWebhookUrl) {
+        console.error('N8N_CHATBOT_WEBHOOK not configured');
+        return res.status(500).json({ 
+            response: '⚙️ ChatBot en mantenimiento. Por favor contáctanos por WhatsApp al +57 312 4183002 🔧'
+        });
     }
 
     try {
-        const { messages, userMessage } = req.body;
+        const { messages, userMessage } = req.body || {};
 
-        if (!userMessage) {
-            return res.status(400).json({ error: 'Missing userMessage' });
+        if (!userMessage || typeof userMessage !== 'string') {
+            return res.status(400).json({ 
+                response: 'Por favor escribe un mensaje válido ✍️'
+            });
         }
 
-        const SYSTEM_PROMPT = `Eres el asistente virtual de SunRiver Solution, una firma tecnológica colombiana especializada en Desarrollo Web con Propósito impulsado por Inteligencia Artificial.
+        const sanitizedMessage = sanitizeInput(userMessage);
+        
+        if (sanitizedMessage.length < 1) {
+            return res.status(400).json({ 
+                response: 'Por favor escribe un mensaje más completo 📝'
+            });
+        }
 
-SOBRE SUNRIVER SOLUTION:
-- Creamos páginas web ultra profesionales a precios accesibles para PyMEs y emprendedores.
-- Cada página web incluye automatizaciones inteligentes: chatbots con IA, formularios conectados a CRMs, auto-respuestas, agendamiento automático.
-- Ofrecemos servicios de automatización empresarial con IA (leads, ventas, operaciones).
-- Usamos el framework SOHI (Sunriver Operational Health Index) para medir la madurez digital.
-- Contacto: jorge_duque@sunriver.cloud | WhatsApp: +57 312 4183002
-- Sede: Colombia
+        // Prepare payload for n8n
+        const payload = {
+            message: sanitizedMessage,
+            conversationHistory: messages || [],
+            timestamp: new Date().toISOString(),
+            source: 'website-chatbot',
+            ip: clientIp,
+            userAgent: req.headers['user-agent'] || 'unknown'
+        };
 
-TU ROL:
-- Sé cálido, profesional y entusiasta
-- Responde en español
-- Sé breve y directo (máximo 3-4 oraciones por respuesta)
-- Si preguntan precios, di que ofrecemos planes desde precios muy accesibles y que agenden una llamada gratuita
-- Siempre invita a agendar una auditoría gratuita de 30 minutos
-- Si no sabes algo específico, invita a contactar directamente al equipo`;
+        // Call n8n webhook with timeout
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 15000); // 15 second timeout
 
-        // Build conversation history
-        const conversationHistory = (messages || []).map((m) => ({
-            role: m.role === 'assistant' ? 'model' : 'user',
-            parts: [{ text: m.content }],
-        }));
-
-        conversationHistory.push({
-            role: 'user',
-            parts: [{ text: userMessage }],
+        const response = await fetch(n8nWebhookUrl, {
+            method: 'POST',
+            headers: { 
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(payload),
+            signal: controller.signal
         });
 
-        // Try models in order of preference
-        const models = ['gemini-2.0-flash-lite', 'gemini-2.0-flash', 'gemini-1.5-flash'];
-        let aiResponse = null;
+        clearTimeout(timeoutId);
 
-        for (const model of models) {
-            try {
-                const response = await fetch(
-                    `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`,
-                    {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({
-                            system_instruction: { parts: [{ text: SYSTEM_PROMPT }] },
-                            contents: conversationHistory,
-                            generationConfig: { temperature: 0.7, maxOutputTokens: 300 },
-                        }),
-                    }
-                );
-
-                if (!response.ok) {
-                    const errorData = await response.json().catch(() => ({}));
-                    const errorMsg = errorData?.error?.message || '';
-                    if (errorMsg.includes('429') || errorMsg.includes('quota') || errorMsg.includes('RESOURCE_EXHAUSTED') || response.status === 429) {
-                        continue; // Try next model
-                    }
-                    throw new Error(errorMsg || `HTTP ${response.status}`);
-                }
-
-                const data = await response.json();
-                aiResponse = data?.candidates?.[0]?.content?.parts?.[0]?.text;
-                if (aiResponse) break;
-            } catch (err) {
-                if (err.message?.includes('429') || err.message?.includes('quota')) continue;
-                throw err;
-            }
+        if (!response.ok) {
+            console.error('n8n webhook error:', response.status);
+            throw new Error(`n8n responded with ${response.status}`);
         }
+
+        const data = await response.json();
+        
+        // n8n can return either { response: "..." } or { message: "..." } or plain text
+        let botResponse = '';
+        
+        if (typeof data === 'string') {
+            botResponse = data;
+        } else if (data.response) {
+            botResponse = data.response;
+        } else if (data.message) {
+            botResponse = data.message;
+        } else if (data.output) {
+            botResponse = data.output;
+        } else {
+            botResponse = JSON.stringify(data);
+        }
+
+        // Sanitize response
+        botResponse = botResponse
+            .replace(/[<>]/g, '')
+            .trim()
+            .slice(0, 1000);
 
         return res.status(200).json({
-            response: aiResponse || '¡Estamos experimentando alta demanda! Mientras tanto, puedes escribirnos por WhatsApp al +57 312 4183002 🚀',
+            response: botResponse || '¿En qué más puedo ayudarte? 😊'
         });
+        
     } catch (error) {
-        console.error('Gemini proxy error:', error);
-        return res.status(500).json({
-            response: '¡Nuestro asistente está descansando un momento! 😅 Puedes escribirnos directamente por WhatsApp al +57 312 4183002 💌',
+        console.error('ChatBot error:', error.message);
+        
+        // Fallback response
+        return res.status(200).json({
+            response: '¡Hola! 👋 Estoy teniendo problemas técnicos momentáneamente. Por favor escríbenos por WhatsApp al +57 312 4183002 para una atención más rápida 🚀'
         });
     }
 }

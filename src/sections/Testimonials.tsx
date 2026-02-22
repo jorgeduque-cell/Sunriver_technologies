@@ -9,37 +9,37 @@ gsap.registerPlugin(ScrollTrigger);
 const testimonials = [
   {
     quote: 'Pasamos de 50 a 500 leads mensuales sin contratar más gente. SunRiver transformó completamente nuestra operación de ventas.',
-    author: 'Carlos M.',
+    author: 'John Lopez',
     role: 'CEO',
     company: 'PyP Liquors',
-    avatar: 'CM',
+    avatar: 'JL',
     rating: 5,
     color: 'from-blue-500 to-blue-600',
   },
   {
     quote: 'Nuestros procesos operan solos. Yo solo reviso los dashboards. Es como tener un equipo trabajando 24/7 sin descanso.',
-    author: 'Ana L.',
+    author: 'Doris Lopez',
     role: 'Directora Operativa',
     company: 'JD Trading Oil SAS',
-    avatar: 'AL',
+    avatar: 'DL',
     rating: 5,
     color: 'from-purple-500 to-purple-600',
   },
   {
     quote: 'La inversión se pagó en 3 meses con el tiempo ahorrado. Ahora podemos enfocarnos en estrategia en lugar de tareas repetitivas.',
-    author: 'Roberto K.',
+    author: 'Jorge Medina',
     role: 'Fundador',
     company: 'Venco Oil SAS',
-    avatar: 'RK',
+    avatar: 'JM',
     rating: 5,
     color: 'from-green-500 to-green-600',
   },
   {
     quote: 'El framework SOHI nos ayudó a entender exactamente dónde estábamos y el camino para llegar al siguiente nivel.',
-    author: 'María P.',
+    author: 'Nicolas Suarez',
     role: 'COO',
     company: 'Eventos Deportivos 90+1',
-    avatar: 'MP',
+    avatar: 'NS',
     rating: 5,
     color: 'from-orange-500 to-orange-600',
   },
@@ -201,8 +201,8 @@ const Testimonials = () => {
                   key={index}
                   onClick={() => scrollTo(index)}
                   className={`h-2.5 rounded-full transition-all duration-300 ${index === selectedIndex
-                      ? 'bg-sunriver-orange w-8'
-                      : 'bg-gray-300 w-2.5 hover:bg-gray-400'
+                    ? 'bg-sunriver-orange w-8'
+                    : 'bg-gray-300 w-2.5 hover:bg-gray-400'
                     }`}
                 />
               ))}

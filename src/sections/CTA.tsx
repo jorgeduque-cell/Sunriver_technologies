@@ -1,7 +1,7 @@
 import { useEffect, useRef, lazy, Suspense } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { Calendar, MessageCircle, Sparkles, Send, Mail, Phone, User } from 'lucide-react';
+import { Calendar, MessageCircle, Sparkles, Send, Mail, User } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 // Lazy load ContactForm to save bundle size

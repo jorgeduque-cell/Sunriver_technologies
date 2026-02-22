@@ -1,0 +1,15 @@
+# SunRiver Solution - Robots.txt
+# https://sunriver.solutions/robots.txt
+
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://sunriver.solutions/sitemap.xml
+
+# Crawl rate
+Crawl-delay: 10
+
+# Disallow admin or private areas (add as needed)
+# Disallow: /admin/
+# Disallow: /api/

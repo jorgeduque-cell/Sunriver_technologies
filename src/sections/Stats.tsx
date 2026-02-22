@@ -34,8 +34,8 @@ const stats = [
     icon: Zap,
     value: 15,
     suffix: ' días',
-    label: 'Entrega Promedio',
-    description: 'De la idea a tu página en línea',
+    label: 'Entrega Aproximada',
+    description: 'De la idea a tu web en línea',
     color: 'from-green-500 to-green-400',
   },
 ];
@@ -172,7 +172,7 @@ const Stats = () => {
             onClick={() => document.querySelector('#contacto')?.scrollIntoView({ behavior: 'smooth' })}
             className="inline-flex items-center gap-2 px-8 py-4 bg-white text-sunriver-orange font-semibold rounded-full hover:bg-white/90 transition-colors shadow-lg hover:shadow-xl"
           >
-            Quiero mi página web con propósito
+            Comienza tu transformación digital
           </button>
         </div>
       </div>

@@ -1,4 +1,3 @@
-import { ResponsiveContainer, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar, Tooltip } from 'recharts';
 
 const data = [
     { subject: 'Automatización', A: 20, B: 100, fullMark: 100 },

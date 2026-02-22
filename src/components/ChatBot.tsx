@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
-import { MessageCircle, X, Send, Bot, User, Sparkles } from 'lucide-react';
+import { MessageCircle, X, Send, Bot, User, Sparkles, RefreshCw } from 'lucide-react';
+import { mockChatResponse, resetConversation } from '../mocks/chatMock';
 
 interface Message {
     role: 'user' | 'assistant';
@@ -11,9 +12,17 @@ const ChatBot = () => {
     const [messages, setMessages] = useState<Message[]>([
         {
             role: 'assistant',
-            content: '¡Hola! 👋 Soy el asistente de SunRiver Solution. ¿Quieres saber cómo podemos crear la página web perfecta para tu negocio? Pregúntame lo que quieras.',
+            content: '¡Hola! 👋 Qué gusto saludarte. Soy el asistente de SunRiver Solution.\n\nAntes de contarte lo que hacemos, me gustaría conocerte mejor. ¿Me cuentas qué tipo de negocio tienes?',
         },
     ]);
+
+    const resetChat = () => {
+        resetConversation();
+        setMessages([{
+            role: 'assistant',
+            content: '¡Hola de nuevo! 👋 Empezamos fresco. ¿Me cuentas sobre tu negocio? ¿A qué te dedicas?',
+        }]);
+    };
     const [input, setInput] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -42,25 +51,41 @@ const ChatBot = () => {
         setIsLoading(true);
 
         try {
-            // Send to serverless proxy (API key is server-side only)
-            const response = await fetch('/api/chat', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    messages: messages.filter((m) => m.role === 'user' || m.role === 'assistant'),
-                    userMessage,
-                }),
-            });
+            let botResponse: string;
 
-            const data = await response.json();
+            // En desarrollo local, usar mock (Vite no sirve /api/*)
+            // En producción (Vercel), usar el endpoint real
+            if (import.meta.env.DEV) {
+                const historyForMock = messages.filter((m) => m.role === 'user' || m.role === 'assistant');
+                botResponse = await mockChatResponse(userMessage, historyForMock);
+            } else {
+                // Producción - usa el endpoint de Vercel
+                const response = await fetch('/api/chat', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        messages: messages.filter((m) => m.role === 'user' || m.role === 'assistant'),
+                        userMessage,
+                    }),
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}`);
+                }
+
+                const data = await response.json();
+                botResponse = data.response;
+            }
+
             setMessages((prev) => [
                 ...prev,
                 {
                     role: 'assistant',
-                    content: data.response || '¡Estamos experimentando alta demanda! Puedes escribirnos por WhatsApp al +57 312 4183002 🚀',
+                    content: botResponse || '¡Estamos experimentando alta demanda! Puedes escribirnos por WhatsApp al +57 312 4183002 🚀',
                 },
             ]);
-        } catch {
+        } catch (error) {
+            console.error('Chat error:', error);
             setMessages((prev) => [
                 ...prev,
                 {
@@ -112,9 +137,16 @@ const ChatBot = () => {
                             <Sparkles className="w-5 h-5 text-white" />
                         </div>
                         <div className="flex-1">
-                            <h3 className="text-white font-bold text-sm">SunRiver AI</h3>
-                            <p className="text-white/70 text-xs">Asistente virtual • Siempre disponible</p>
+                            <h3 className="text-white font-bold text-sm">Asistente SunRiver</h3>
+                            <p className="text-white/70 text-xs">Diagnóstico SOHI • Consultoría gratuita</p>
                         </div>
+                        <button 
+                            onClick={resetChat}
+                            className="p-1.5 hover:bg-white/20 rounded-lg transition-colors"
+                            title="Nueva conversación"
+                        >
+                            <RefreshCw className="w-4 h-4 text-white/80" />
+                        </button>
                         <div className="w-2.5 h-2.5 bg-green-400 rounded-full animate-pulse" />
                     </div>
 
@@ -189,7 +221,7 @@ const ChatBot = () => {
                             </button>
                         </div>
                         <p className="text-[10px] text-gray-400 text-center mt-2">
-                            Impulsado por Gemini AI • SunRiver Solution
+                            🎯 Diagnóstico gratuito • Sin compromiso
                         </p>
                     </div>
                 </div>

@@ -78,17 +78,8 @@ const Hero = () => {
         },
       });
 
-      // Scroll-based parallax
-      gsap.to(titleRef.current, {
-        scrollTrigger: {
-          trigger: heroRef.current,
-          start: 'top top',
-          end: 'bottom top',
-          scrub: 1,
-        },
-        y: -80,
-        opacity: 0.3,
-      });
+      // Remove old title parallax as it conflicts with entrance animation.
+      // Parallax is now applied directly to the wrapper div.
 
       gsap.to(emblemRef.current, {
         scrollTrigger: {
@@ -115,6 +106,7 @@ const Hero = () => {
     <section
       ref={heroRef}
       className="relative min-h-screen flex items-center overflow-hidden bg-gradient-to-br from-white via-sunriver-orange/5 to-sunriver-blue/10"
+      aria-label="Hero principal"
     >
       {/* Animated Background */}
       <div className="hero-bg absolute inset-0 opacity-0">
@@ -147,25 +139,28 @@ const Hero = () => {
             <div className="inline-flex items-center gap-2 px-4 py-2 bg-sunriver-orange/10 rounded-full border border-sunriver-orange/20">
               <Sparkles className="w-4 h-4 text-sunriver-orange" />
               <span className="text-sm font-medium text-sunriver-orange">
-                Desarrollo Web con Propósito
+                Transformación Digital con IA
               </span>
             </div>
 
-            {/* Main Title */}
-            <h1
-              ref={titleRef}
-              className="text-5xl sm:text-6xl lg:text-7xl font-extrabold text-sunriver-blue leading-tight opacity-0"
-            >
-              Tu negocio merece{' '}
-              <span className="text-gradient">brillar</span>
-            </h1>
+            {/* Parallax wrapper for the content to fix GSAP conflicts */}
+            <div ref={(el) => { if (el && heroRef.current) gsap.to(el, { scrollTrigger: { trigger: heroRef.current, start: 'top top', end: 'bottom top', scrub: 1 }, y: -80, opacity: 0.3 }); }}>
+              {/* Main Title - H1 */}
+              <h1
+                ref={titleRef}
+                className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-sunriver-blue leading-tight opacity-0"
+              >
+                <span className="block">Tu negocio</span>
+                <span className="block text-gradient">merece brillar</span>
+              </h1>
+            </div>
 
-            {/* Subtitle */}
+            {/* Subtitle - H2 */}
             <h2
               ref={subtitleRef}
-              className="text-3xl sm:text-4xl lg:text-5xl font-bold text-sunriver-blue/80 opacity-0"
+              className="text-2xl sm:text-3xl font-bold text-sunriver-blue/80 opacity-0"
             >
-              Y nosotros lo hacemos posible
+              Websites con Propósito a nivel internacional, formato Low-Cost
             </h2>
 
             {/* Body Text */}
@@ -173,9 +168,10 @@ const Hero = () => {
               ref={bodyRef}
               className="text-lg text-gray-600 max-w-xl leading-relaxed opacity-0"
             >
-              Creamos páginas web ultra profesionales a precios accesibles, impulsadas por
-              <strong className="text-sunriver-blue"> Inteligencia Artificial</strong> que trabaja por ti 24/7.
-              No solo construimos sitios — creamos máquinas de crecimiento para tu negocio.
+              Creamos <strong className="text-sunriver-blue">sitios web ultra profesionales</strong> con alcance global.
+              Soluciones de <strong>alta ingeniería a precios accesibles</strong> (Low-Cost),
+              impulsadas por <strong className="text-sunriver-blue"> Inteligencia Artificial</strong> y automatización que trabaja por ti 24/7.
+              No solo construimos páginas — entregamos máquinas de crecimiento.
             </p>
 
             {/* CTA Buttons */}
@@ -183,36 +179,21 @@ const Hero = () => {
               <button
                 onClick={() => scrollToSection('#contacto')}
                 className="group px-8 py-4 bg-gradient-to-r from-sunriver-orange to-sunriver-orange/90 text-white font-semibold rounded-full transition-all duration-300 hover:shadow-glow hover:scale-105 hover:-translate-y-1 flex items-center gap-2"
+                aria-label="Comenzar proyecto web"
               >
-                Quiero mi página web
+                Inicia tu Proyecto
                 <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
               </button>
               <button
                 onClick={() => scrollToSection('#servicios')}
                 className="group px-8 py-4 bg-white text-sunriver-blue font-semibold rounded-full border-2 border-sunriver-blue/20 transition-all duration-300 hover:border-sunriver-orange hover:text-sunriver-orange flex items-center gap-2"
+                aria-label="Explorar soluciones"
               >
                 <Play className="w-5 h-5" />
-                Conoce nuestros servicios
+                Descubre Nuestra Metodología
               </button>
             </div>
 
-            {/* Trust Indicators */}
-            <div className="flex items-center gap-6 pt-4">
-              <div className="flex -space-x-3">
-                {[...Array(4)].map((_, i) => (
-                  <div
-                    key={i}
-                    className="w-10 h-10 rounded-full bg-gradient-to-br from-sunriver-orange to-sunriver-blue border-2 border-white flex items-center justify-center text-white text-xs font-bold"
-                  >
-                    {String.fromCharCode(65 + i)}
-                  </div>
-                ))}
-              </div>
-              <div>
-                <p className="text-sm font-semibold text-sunriver-blue">+50 negocios transformados</p>
-                <p className="text-xs text-gray-500">Páginas web que generan resultados reales</p>
-              </div>
-            </div>
           </div>
 
           {/* Right Content - 3D Solar System */}
