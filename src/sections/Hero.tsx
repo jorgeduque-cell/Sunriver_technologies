@@ -2,11 +2,21 @@ import { useEffect, useRef, lazy, Suspense } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { gsap } from 'gsap';
 import { ArrowRight, Play, Sparkles } from 'lucide-react';
+import { useDeviceType } from '../hooks/useDeviceType';
+import HeroMobileFallback from '../components/HeroMobileFallback';
 
 const Hero3D = lazy(() => import('../components/Hero3D'));
 
+// Fallback simple mientras carga el 3D
+const Hero3DFallback = () => (
+  <div className="w-full h-full flex items-center justify-center">
+    <div className="w-64 h-64 rounded-full bg-gradient-to-br from-sunriver-orange/20 to-sunriver-blue/20 animate-pulse blur-xl" />
+  </div>
+);
+
 const Hero = () => {
   const navigate = useNavigate();
+  const deviceConfig = useDeviceType();
   const heroRef = useRef<HTMLDivElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
   const subtitleRef = useRef<HTMLHeadingElement>(null);
@@ -67,7 +77,8 @@ const Hero = () => {
         '-=0.8'
       );
 
-      // Floating particles
+      // Floating particles - reducir en móvil
+      const particleCount = deviceConfig.type === 'mobile' ? 5 : 15;
       gsap.to('.particle', {
         y: '-=30',
         duration: 'random(3, 5)',
@@ -80,9 +91,7 @@ const Hero = () => {
         },
       });
 
-      // Remove old title parallax as it conflicts with entrance animation.
-      // Parallax is now applied directly to the wrapper div.
-
+      // Parallax effect on scroll
       gsap.to(emblemRef.current, {
         scrollTrigger: {
           trigger: heroRef.current,
@@ -95,13 +104,34 @@ const Hero = () => {
     }, heroRef);
 
     return () => ctx.revert();
-  }, []);
+  }, [deviceConfig.type]);
 
   const scrollToSection = (href: string) => {
     const element = document.querySelector(href);
     if (element) {
       element.scrollIntoView({ behavior: 'smooth' });
     }
+  };
+
+  // Renderizar contenido visual según el dispositivo
+  const renderVisualContent = () => {
+    // Móvil: Usar fallback CSS elegante
+    if (!deviceConfig.enable3D) {
+      return <HeroMobileFallback />;
+    }
+
+    // Tablet/Desktop: Usar 3D con lazy loading
+    return (
+      <Suspense fallback={<Hero3DFallback />}>
+        <Hero3D config={{
+          sunSegments: deviceConfig.sunSegments,
+          planetSegments: deviceConfig.planetSegments,
+          starCount: deviceConfig.starCount,
+          enableGlow: deviceConfig.enableGlow,
+          antialias: deviceConfig.antialias,
+        }} />
+      </Suspense>
+    );
   };
 
   return (
@@ -116,9 +146,9 @@ const Hero = () => {
         <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-sunriver-blue/5 to-transparent" />
       </div>
 
-      {/* Floating Particles */}
+      {/* Floating Particles - optimizadas por dispositivo */}
       <div ref={particlesRef} className="absolute inset-0 pointer-events-none overflow-hidden">
-        {[...Array(15)].map((_, i) => (
+        {[...Array(deviceConfig.type === 'mobile' ? 5 : 15)].map((_, i) => (
           <div
             key={i}
             className="particle absolute w-2 h-2 rounded-full"
@@ -145,7 +175,7 @@ const Hero = () => {
               </span>
             </div>
 
-            {/* Parallax wrapper for the content to fix GSAP conflicts */}
+            {/* Parallax wrapper for the content */}
             <div ref={(el) => { if (el && heroRef.current) gsap.to(el, { scrollTrigger: { trigger: heroRef.current, start: 'top top', end: 'bottom top', scrub: 1 }, y: -80, opacity: 0.3 }); }}>
               {/* Main Title - H1 */}
               <h1
@@ -198,19 +228,13 @@ const Hero = () => {
 
           </div>
 
-          {/* Right Content - 3D Solar System */}
-          <div className="relative flex items-center justify-center lg:justify-end h-[500px]">
-            <div
-              ref={emblemRef}
-              className="relative w-full h-full opacity-0"
-              style={{ perspective: '1000px', transformStyle: 'preserve-3d' }}
-            >
-              <Suspense fallback={
-                <div className="w-64 h-64 rounded-full bg-gradient-to-br from-sunriver-orange/20 to-sunriver-blue/20 animate-pulse blur-xl mx-auto" />
-              }>
-                <Hero3D />
-              </Suspense>
-            </div>
+          {/* Right Content - Visual adaptativo */}
+          <div 
+            ref={emblemRef}
+            className="relative flex items-center justify-center lg:justify-end h-[400px] sm:h-[500px] opacity-0"
+            style={{ perspective: '1000px', transformStyle: 'preserve-3d' }}
+          >
+            {renderVisualContent()}
           </div>
         </div>
       </div>
