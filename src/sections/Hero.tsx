@@ -1,10 +1,12 @@
 import { useEffect, useRef, lazy, Suspense } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { gsap } from 'gsap';
 import { ArrowRight, Play, Sparkles } from 'lucide-react';
 
 const Hero3D = lazy(() => import('../components/Hero3D'));
 
 const Hero = () => {
+  const navigate = useNavigate();
   const heroRef = useRef<HTMLDivElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
   const subtitleRef = useRef<HTMLHeadingElement>(null);
@@ -185,7 +187,7 @@ const Hero = () => {
                 <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
               </button>
               <button
-                onClick={() => scrollToSection('#servicios')}
+                onClick={() => navigate('/metodologia')}
                 className="group px-8 py-4 bg-white text-sunriver-blue font-semibold rounded-full border-2 border-sunriver-blue/20 transition-all duration-300 hover:border-sunriver-orange hover:text-sunriver-orange flex items-center gap-2"
                 aria-label="Explorar soluciones"
               >
