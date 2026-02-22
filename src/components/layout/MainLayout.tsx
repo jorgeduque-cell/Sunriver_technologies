@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
 import Navbar from '../../sections/Navbar';
 import Footer from '../../sections/Footer';
-import ChatBot from '../ChatBot';
+import ChatBotLazy from '../ChatBotLazy';
 import { Toaster } from 'sonner';
 
 const MainLayout = () => {
@@ -20,7 +20,7 @@ const MainLayout = () => {
                 <Outlet />
             </main>
             <Footer />
-            <ChatBot />
+            <ChatBotLazy />
             <Toaster position="top-right" richColors theme="light" />
         </div>
     );

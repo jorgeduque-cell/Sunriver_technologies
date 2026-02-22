@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Menu, X } from 'lucide-react';
-import logo from '../assets/logo.png';
+import Logo from '../components/Logo';
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -62,7 +62,7 @@ const Navbar = () => {
             onClick={() => { setIsMobileMenuOpen(false); window.scrollTo(0, 0); }}
             className="flex items-center gap-2 group transition-transform duration-300 hover:scale-105"
           >
-            <img src={logo} alt="SunRiver Logo" className="h-12 w-auto object-contain" />
+            <Logo className="h-12 w-auto" alt="SunRiver Logo" />
           </Link>
 
           {/* Desktop Navigation */}

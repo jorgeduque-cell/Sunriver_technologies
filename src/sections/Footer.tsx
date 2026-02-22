@@ -1,5 +1,5 @@
 import { Linkedin, Instagram, Mail, Phone, Github } from 'lucide-react';
-import logo from '../assets/logo.png';
+import Logo from '../components/Logo';
 
 const footerLinks = {
   servicios: [
@@ -38,7 +38,7 @@ const Footer = () => {
           <div className="col-span-2 lg:col-span-2">
             {/* Logo */}
             <a href="#" className="flex items-center gap-2 mb-6 group">
-              <img src={logo} alt="SunRiver Logo" className="h-10 w-auto object-contain brightness-0 invert" />
+              <Logo className="h-10 w-auto" alt="SunRiver Logo" dark />
             </a>
 
             {/* Tagline */}
