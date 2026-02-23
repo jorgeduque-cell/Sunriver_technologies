@@ -22,7 +22,7 @@ const Navbar = () => {
     { label: 'Nosotros', path: '/nosotros' },
     { label: 'Servicios', path: '/servicios' },
     { label: 'Metodología', path: '/metodologia' },
-    { label: 'SOHI', path: '/metodologia', hash: '#sohi' },
+    { label: 'Blog', path: '/blog' },
     { label: 'Contacto', path: '/contacto' },
   ];
 

@@ -9,6 +9,9 @@ import ServicesPage from './pages/Services';
 import MethodologyPage from './pages/Methodology';
 import ContactPage from './pages/Contact';
 import AboutPage from './pages/About';
+import Blog from './pages/Blog';
+import Article from './pages/Article';
+import BlogCategory from './pages/BlogCategory';
 
 import './App.css';
 
@@ -35,6 +38,9 @@ function App() {
           <Route path="/servicios" element={<ServicesPage />} />
           <Route path="/metodologia" element={<MethodologyPage />} />
           <Route path="/contacto" element={<ContactPage />} />
+          <Route path="/blog" element={<Blog />} />
+          <Route path="/blog/:slug" element={<Article />} />
+          <Route path="/blog/categoria/:categoryId" element={<BlogCategory />} />
         </Route>
       </Routes>
     </BrowserRouter>
