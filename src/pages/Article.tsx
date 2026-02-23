@@ -273,9 +273,9 @@ const Article = () => {
             </div>
             
             {/* Sidebar */}
-            <aside className="lg:w-80">
+            <aside className="lg:w-80 space-y-6">
               {/* CTA Servicios */}
-              <div className="bg-gradient-to-br from-sunriver-blue to-sunriver-blue/90 rounded-2xl p-6 text-white mb-8">
+              <div className="bg-gradient-to-br from-sunriver-blue to-sunriver-blue/90 rounded-2xl p-6 text-white">
                 <h3 className="font-bold text-xl mb-3">¿Necesitas implementar esto?</h3>
                 <p className="text-white/80 text-sm mb-4">
                   Te ayudamos a implementar chatbots IA, automatizaciones y optimización de performance.
@@ -288,39 +288,43 @@ const Article = () => {
                 </Link>
               </div>
               
-              {/* Newsletter */}
-              <div className="bg-gray-50 rounded-2xl p-6 mb-8">
-                <h3 className="font-bold text-gray-900 mb-2">Suscríbete</h3>
-                <p className="text-gray-600 text-sm mb-4">
-                  Recibe un artículo técnico semanal sobre IA y desarrollo.
-                </p>
-                <input
-                  type="email"
-                  placeholder="tu@email.com"
-                  className="w-full px-4 py-2 border border-gray-200 rounded-lg mb-3 text-sm"
-                />
-                <button className="w-full py-2 bg-sunriver-blue text-white text-sm font-semibold rounded-lg hover:bg-sunriver-blue/90 transition-colors">
-                  Suscribirme
-                </button>
-              </div>
+              {/* Artículos Relacionados en Sidebar */}
+              {relatedArticles.length > 0 && (
+                <div className="bg-gray-50 rounded-2xl p-6">
+                  <h3 className="font-bold text-gray-900 mb-4">Otros artículos</h3>
+                  <div className="space-y-4">
+                    {relatedArticles.map((relatedArticle) => (
+                      <Link
+                        key={relatedArticle.id}
+                        to={`/blog/${relatedArticle.slug}`}
+                        className="flex gap-3 group"
+                      >
+                        <div className="w-20 h-16 flex-shrink-0 rounded-lg overflow-hidden">
+                          <img
+                            src={relatedArticle.coverImage}
+                            alt={relatedArticle.title}
+                            className="w-full h-full object-cover group-hover:scale-110 transition-transform"
+                            loading="lazy"
+                          />
+                        </div>
+                        <div className="flex-1">
+                          <h4 className="text-sm font-medium text-gray-900 line-clamp-2 group-hover:text-sunriver-orange transition-colors">
+                            {relatedArticle.title}
+                          </h4>
+                          <span className="text-xs text-gray-500 mt-1 block">
+                            {relatedArticle.readTime} min de lectura
+                          </span>
+                        </div>
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              )}
             </aside>
           </div>
         </div>
       </article>
-      
-      {/* Related Articles */}
-      {relatedArticles.length > 0 && (
-        <section className="py-16 bg-gray-50">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 className="text-2xl font-bold text-sunriver-blue mb-8">Artículos Relacionados</h2>
-            <div className="grid md:grid-cols-3 gap-8">
-              {relatedArticles.map((article) => (
-                <ArticleCard key={article.id} article={article} />
-              ))}
-            </div>
-          </div>
-        </section>
-      )}
+
     </>
   );
 };
