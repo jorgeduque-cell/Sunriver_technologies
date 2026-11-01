@@ -11,6 +11,7 @@ const footerLinks = {
   ],
   compania: [
     { label: 'Sobre Nosotros', href: '#' },
+    { label: 'Portafolio', href: '#portafolio' },
     { label: 'Contacto', href: '#contacto' },
   ],
   legal: [

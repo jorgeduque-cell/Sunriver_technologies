@@ -171,7 +171,7 @@ const Hero = () => {
             <div className="inline-flex items-center gap-2 px-4 py-2 bg-sunriver-orange/10 rounded-full border border-sunriver-orange/20">
               <Sparkles className="w-4 h-4 text-sunriver-orange" />
               <span className="text-sm font-medium text-sunriver-orange">
-                Transformación Digital con IA
+                Portafolio Verificable en GitHub
               </span>
             </div>
 
@@ -182,8 +182,8 @@ const Hero = () => {
                 ref={titleRef}
                 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-sunriver-blue leading-tight opacity-0"
               >
-                <span className="block">Tu negocio</span>
-                <span className="block text-gradient">merece brillar</span>
+                <span className="block">Ingeniería de Software</span>
+                <span className="block text-gradient">que Transforma Negocios</span>
               </h1>
             </div>
 
@@ -192,7 +192,7 @@ const Hero = () => {
               ref={subtitleRef}
               className="text-2xl sm:text-3xl font-bold text-sunriver-blue/80 opacity-0"
             >
-              Websites con Propósito a nivel internacional, formato Low-Cost
+              Automatización, IA y Desarrollo a Medida — Respaldado por Código Real
             </h2>
 
             {/* Body Text */}
@@ -200,10 +200,9 @@ const Hero = () => {
               ref={bodyRef}
               className="text-lg text-gray-600 max-w-xl leading-relaxed opacity-0"
             >
-              Creamos <strong className="text-sunriver-blue">sitios web ultra profesionales</strong> con alcance global.
-              Soluciones de <strong>alta ingeniería a precios accesibles</strong> (Low-Cost),
-              impulsadas por <strong className="text-sunriver-blue"> Inteligencia Artificial</strong> y automatización que trabaja por ti 24/7.
-              No solo construimos páginas — entregamos máquinas de crecimiento.
+              Construimos <strong className="text-sunriver-blue">software a medida</strong>, bots de automatización y agentes IA que operan 24/7.
+              Cada proyecto está respaldado por <strong>código abierto en GitHub</strong> — no vendemos humo,
+              entregamos <strong className="text-sunriver-blue">ingeniería de alto nivel</strong> con resultados medibles.
             </p>
 
             {/* CTA Buttons */}

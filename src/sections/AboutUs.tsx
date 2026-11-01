@@ -77,15 +77,15 @@ const AboutUs = () => {
                         <span className="text-sm font-medium text-sunriver-blue">Quiénes Somos</span>
                     </div>
                     <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-6 tracking-tight">
-                        Una firma que cree en el{' '}
+                        Ingeniería de software con{' '}
                         <span className="text-transparent bg-clip-text bg-gradient-to-r from-sunriver-orange to-sunriver-blue">
-                            poder digital
+                            portafolio real
                         </span>
                     </h1>
                     <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-                        No somos una agencia más. Somos la firma tecnológica que convierte tu visión en una{' '}
-                        <span className="font-semibold text-sunriver-orange">página web con propósito</span>,
-                        impulsada por automatización e inteligencia artificial.
+                        No somos una agencia más. Somos ingenieros de software que construyen{' '}
+                        <span className="font-semibold text-sunriver-orange">proyectos reales verificables en GitHub</span>,
+                        impulsados por TypeScript, automatización e inteligencia artificial.
                     </p>
                 </div>
 
@@ -99,11 +99,11 @@ const AboutUs = () => {
                         </div>
                         <h2 className="text-2xl font-bold text-gray-900 mb-4">Nuestra Esencia</h2>
                         <p className="text-gray-600 leading-relaxed text-lg">
-                            <strong className="text-gray-900">SunRiver Solution</strong> nació con un sueño simple pero poderoso:
-                            que cada emprendedor, cada PyME, cada soñador con un negocio pueda tener una{' '}
-                            <span className="text-sunriver-orange font-semibold">presencia web ultra profesional</span>{' '}
-                            sin que su bolsillo sufra. Combinamos diseño de clase mundial con tecnología de automatización
-                            para que tu negocio trabaje mientras tú descansas.
+                            <strong className="text-gray-900">SunRiver Solution</strong> nació con la convicción de que
+                            el software de calidad enterprise no debería ser exclusivo de las grandes corporaciones.
+                            Escribimos <span className="text-sunriver-orange font-semibold">código TypeScript al 98%</span>,{' '}
+                            construimos bots que operan 24/7 en producción, y cada proyecto nuestro es verificable
+                            en GitHub. Somos builders, no vendedores de humo.
                         </p>
                     </div>
 
@@ -114,11 +114,10 @@ const AboutUs = () => {
                         </div>
                         <h2 className="text-2xl font-bold text-gray-900 mb-4">Nuestra Misión</h2>
                         <p className="text-gray-600 leading-relaxed text-lg">
-                            Democratizar el acceso a tecnología web de alto nivel. Creemos que una página web no es un lujo —
-                            es una <span className="text-sunriver-blue font-semibold">herramienta de crecimiento</span>.
-                            Por eso diseñamos sitios que no solo se ven increíbles, sino que trabajan por ti:{' '}
-                            <strong className="text-gray-900">capturan leads, automatizan respuestas y convierten visitantes en clientes</strong>,
-                            las 24 horas del día.
+                            Democratizar la ingeniería de software de alto nivel. No vendemos plantillas —
+                            construimos <span className="text-sunriver-blue font-semibold">software a medida</span> que resuelve problemas reales.
+                            Desde bots de automatización hasta CRMs enterprise, cada línea de código está escrita
+                            con <strong className="text-gray-900">TypeScript estricto, tests automatizados y arquitectura limpia</strong>.
                         </p>
                     </div>
 

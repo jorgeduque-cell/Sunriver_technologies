@@ -8,26 +8,26 @@ gsap.registerPlugin(ScrollTrigger);
 const stats = [
   {
     icon: Workflow,
-    value: 50,
+    value: 4,
     suffix: '+',
-    label: 'Negocios Transformados',
-    description: 'Páginas web que venden',
+    label: 'Proyectos Enterprise',
+    description: 'Código abierto en GitHub',
     color: 'from-sunriver-orange to-orange-400',
   },
   {
     icon: TrendingUp,
-    value: 300,
+    value: 98,
     suffix: '%',
-    label: 'Más Alcance Digital',
-    description: 'Clientes que crecen con nosotros',
+    label: 'TypeScript Puro',
+    description: 'Zero JavaScript suelto',
     color: 'from-blue-500 to-blue-400',
   },
   {
     icon: Clock,
     value: 24,
     suffix: '/7',
-    label: 'IA Trabajando por Ti',
-    description: 'Auto-respuestas, agendamiento y más',
+    label: 'Bots en Producción',
+    description: 'Operando sin intervención',
     color: 'from-purple-500 to-purple-400',
   },
   {
@@ -35,7 +35,7 @@ const stats = [
     value: 15,
     suffix: ' días',
     label: 'Entrega Aproximada',
-    description: 'De la idea a tu web en línea',
+    description: 'De la idea a producción',
     color: 'from-green-500 to-green-400',
   },
 ];
@@ -116,10 +116,10 @@ const Stats = () => {
         {/* Section Header */}
         <div className="text-center mb-16">
           <h2 className="text-4xl sm:text-5xl font-bold text-white mb-4">
-            Resultados que <span className="text-white/80">se sienten</span>
+            Ingeniería <span className="text-white/80">en números</span>
           </h2>
           <p className="text-white/70 text-lg max-w-2xl mx-auto">
-            No prometemos — entregamos. Tu página web con propósito, lista para crecer.
+            Código real, resultados verificables. Cada métrica respaldada por proyectos en GitHub.
           </p>
         </div>
 

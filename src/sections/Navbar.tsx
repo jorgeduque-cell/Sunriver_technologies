@@ -19,6 +19,7 @@ const Navbar = () => {
 
   const navItems = [
     { label: 'Inicio', path: '/' },
+    { label: 'Portafolio', path: '/', hash: '#portafolio' },
     { label: 'Nosotros', path: '/nosotros' },
     { label: 'Servicios', path: '/servicios' },
     { label: 'Metodología', path: '/metodologia' },
@@ -125,7 +126,7 @@ const Navbar = () => {
             ))}
             <Link
               to="/contacto"
-              onClick={handleNavClick}
+              onClick={() => { setIsMobileMenuOpen(false); window.scrollTo(0, 0); }}
               className="block w-full text-center px-4 py-3 bg-gradient-to-r from-sunriver-orange to-sunriver-orange/90 text-white font-semibold rounded-lg mt-2"
             >
               Auditoría Gratis

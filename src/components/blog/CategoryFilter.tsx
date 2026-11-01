@@ -1,6 +1,6 @@
 import { Link, useLocation } from 'react-router-dom';
 import { categories } from '../../data/categories';
-import { Category } from '../../types/blog';
+import type { Category } from '../../types/blog';
 
 interface CategoryFilterProps {
   activeCategory?: Category | 'all';

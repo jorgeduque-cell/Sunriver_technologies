@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { Clock, ArrowRight } from 'lucide-react';
-import { Article } from '../../types/blog';
+import type { Article } from '../../types/blog';
 import { categories } from '../../data/categories';
 
 interface ArticleCardProps {

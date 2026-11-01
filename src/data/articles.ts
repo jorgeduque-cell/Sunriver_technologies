@@ -1,4 +1,4 @@
-import { Article } from '../types/blog';
+import type { Article } from '../types/blog';
 import jorgeAvatar from '../assets/team/jorge-duque.jpg';
 
 export const authors = {
