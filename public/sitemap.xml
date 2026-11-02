@@ -6,15 +6,15 @@
   
   <!-- Homepage - High Priority -->
   <url>
-    <loc>https://sunriver.solutions/</loc>
-    <lastmod>2025-02-21</lastmod>
+    <loc>https://www.sunriverstech.com/</loc>
+    <lastmod>2026-11-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
 
   <!-- Services Page -->
   <url>
-    <loc>https://sunriver.solutions/servicios</loc>
+    <loc>https://www.sunriverstech.com/servicios</loc>
     <lastmod>2025-02-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
@@ -22,7 +22,7 @@
 
   <!-- Methodology Page -->
   <url>
-    <loc>https://sunriver.solutions/metodologia</loc>
+    <loc>https://www.sunriverstech.com/metodologia</loc>
     <lastmod>2025-02-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -30,7 +30,7 @@
 
   <!-- About Page -->
   <url>
-    <loc>https://sunriver.solutions/nosotros</loc>
+    <loc>https://www.sunriverstech.com/nosotros</loc>
     <lastmod>2025-02-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -38,7 +38,7 @@
 
   <!-- Contact Page -->
   <url>
-    <loc>https://sunriver.solutions/contacto</loc>
+    <loc>https://www.sunriverstech.com/contacto</loc>
     <lastmod>2025-02-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>

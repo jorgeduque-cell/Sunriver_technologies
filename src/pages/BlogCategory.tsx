@@ -28,7 +28,7 @@ const BlogCategory = () => {
         title={`${category.name} | Blog SunRiver`}
         description={category.description}
         keywords={`${category.name}, blog, desarrollo web, IA, SunRiver`}
-        canonical={`https://sunriver.solutions/blog/categoria/${category.id}`}
+        canonical={`https://www.sunriverstech.com/blog/categoria/${category.id}`}
       />
       
       {/* Header */}

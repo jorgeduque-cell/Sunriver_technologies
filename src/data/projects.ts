@@ -77,7 +77,7 @@ export const projects: Project[] = [
       'Vite',
     ],
     githubUrl: 'https://github.com/jorgeduque-cell/Sunriver_technologies',
-    liveUrl: 'https://sunriver.solutions',
+    liveUrl: 'https://www.sunriverstech.com',
     category: 'platform',
     color: 'from-sunriver-orange to-amber-500',
     metrics: [

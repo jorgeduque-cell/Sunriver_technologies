@@ -31,7 +31,7 @@ const Article = () => {
     });
   };
   
-  const shareUrl = `https://sunriver.solutions/blog/${article.slug}`;
+  const shareUrl = `https://www.sunriverstech.com/blog/${article.slug}`;
   const shareText = encodeURIComponent(article.title);
   
   // Procesar el contenido markdown-like a HTML
@@ -115,7 +115,7 @@ const Article = () => {
         title={article.meta.title}
         description={article.meta.description}
         keywords={article.meta.keywords.join(', ')}
-        canonical={`https://sunriver.solutions/blog/${article.slug}`}
+        canonical={`https://www.sunriverstech.com/blog/${article.slug}`}
       />
       
       {/* Article Header */}

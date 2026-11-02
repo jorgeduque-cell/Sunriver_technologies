@@ -5,13 +5,22 @@
             "destination": "/api/:path*"
         },
         {
-            "source": "/((?!api|assets|favicon|logo|og-).*)",
-            "destination": "/index.html"
+            "source": "/((?!api/|assets/|fonts/|favicon|apple-touch-icon|og-image|robots.txt|sitemap.xml).+)",
+            "destination": "/spa.html"
         }
     ],
     "headers": [
         {
             "source": "/assets/(.*)",
+            "headers": [
+                {
+                    "key": "Cache-Control",
+                    "value": "public, max-age=31536000, immutable"
+                }
+            ]
+        },
+        {
+            "source": "/fonts/(.*)",
             "headers": [
                 {
                     "key": "Cache-Control",
@@ -44,7 +53,7 @@
                 },
                 {
                     "key": "Content-Security-Policy",
-                    "value": "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; style-src-elem 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https:; font-src 'self' https://fonts.gstatic.com; connect-src 'self' https://generativelanguage.googleapis.com https://*.vercel.app https://n8n.srv1108701.hstgr.cloud https://*.srv1108701.hstgr.cloud; frame-ancestors 'none'; base-uri 'self'; form-action 'self';"
+                    "value": "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; style-src-elem 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https:; font-src 'self' https://fonts.gstatic.com; connect-src 'self' https://generativelanguage.googleapis.com https://*.vercel.app https://n8n.srv1108701.hstgr.cloud https://*.srv1108701.hstgr.cloud; frame-ancestors 'none'; base-uri 'self'; form-action 'self' https://wa.me https://api.whatsapp.com;"
                 },
                 {
                     "key": "Permissions-Policy",
@@ -57,7 +66,7 @@
             "headers": [
                 {
                     "key": "Access-Control-Allow-Origin",
-                    "value": "https://sunriver.solutions"
+                    "value": "https://www.sunriverstech.com"
                 },
                 {
                     "key": "Access-Control-Allow-Methods",
@@ -73,5 +82,7 @@
                 }
             ]
         }
-    ]
+    ],
+    "buildCommand": "npm run build",
+    "outputDirectory": "dist"
 }

@@ -1,10 +1,22 @@
 import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
-import './index.css'
+import { createRoot, hydrateRoot } from 'react-dom/client'
+import { BrowserRouter } from 'react-router-dom'
 import App from './App.tsx'
 
-createRoot(document.getElementById('root')!).render(
+const container = document.getElementById('root')!
+
+const app = (
   <StrictMode>
-    <App />
-  </StrictMode>,
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
+  </StrictMode>
 )
+
+// La home llega prerenderizada en index.html: se hidrata.
+// El resto de rutas llegan con spa.html (raíz vacía): render normal.
+if (container.firstElementChild) {
+  hydrateRoot(container, app)
+} else {
+  createRoot(container).render(app)
+}

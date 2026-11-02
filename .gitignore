@@ -30,3 +30,6 @@ yarn-error.log*
 
 .vercel
 .env*.local
+
+# Build SSR temporal del prerender
+dist-ssr/

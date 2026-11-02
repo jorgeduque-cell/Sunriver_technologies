@@ -9,11 +9,11 @@ const MethodologyPage = () => {
                 title="Metodología SOHI | Desarrollo Web con Propósito y Resultados"
                 description="Conoce nuestra metodología SOHI para crear páginas web económicas que generan resultados. Framework probado para PyMEs y emprendedores en Colombia."
                 keywords="metodología desarrollo web, SOHI framework, desarrollo web con propósito, páginas web efectivas, diseño web resultados Colombia"
-                canonical="https://sunriver.solutions/metodologia"
+                canonical="https://www.sunriverstech.com/metodologia"
                 schema={WebPageSchema(
                     'Metodología SOHI | Desarrollo Web con Propósito',
                     'Conoce nuestra metodología SOHI para crear páginas web económicas que generan resultados.',
-                    'https://sunriver.solutions/metodologia'
+                    'https://www.sunriverstech.com/metodologia'
                 )}
             />
             <div className="pt-20">

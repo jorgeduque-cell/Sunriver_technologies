@@ -18,7 +18,7 @@ export const SEO = ({
   title,
   description,
   keywords,
-  ogImage = 'https://sunriver.solutions/og-image.jpg',
+  ogImage = 'https://www.sunriverstech.com/og-image.jpg',
   canonical,
   noindex = false,
   schema,
@@ -104,9 +104,9 @@ export const LocalBusinessSchema = {
   '@type': 'LocalBusiness',
   name: 'SunRiver Solution',
   description: 'Websites con Propósito impulsados por IA. Transformamos tu presencia digital en una máquina de crecimiento.',
-  url: 'https://sunriver.solutions',
-  logo: 'https://sunriver.solutions/logo.png',
-  image: 'https://sunriver.solutions/og-image.jpg',
+  url: 'https://www.sunriverstech.com',
+  logo: 'https://www.sunriverstech.com/favicon.svg',
+  image: 'https://www.sunriverstech.com/og-image.jpg',
   telephone: '+57-312-4183002',
   email: 'jorge_duque@sunriver.cloud',
   address: {
@@ -168,7 +168,7 @@ export const WebPageSchema = (title: string, description: string, url: string) =
     name: 'SunRiver Solution',
     logo: {
       '@type': 'ImageObject',
-      url: 'https://sunriver.solutions/logo.png',
+      url: 'https://www.sunriverstech.com/favicon.svg',
     },
   },
 });

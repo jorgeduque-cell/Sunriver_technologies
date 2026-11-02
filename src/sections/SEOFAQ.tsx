@@ -13,7 +13,7 @@ const faqs: FAQItem[] = [
   },
   {
     question: "¿Qué hace diferente a SunRiver de otras agencias?",
-    answer: "Integramos IA desde el primer día: chatbots automáticos, respuestas inteligentes, y automatización de leads. No entregamos solo una página web, entregamos un sistema de crecimiento. Más de 50 PyMEs colombianas ya confían en nosotros. Ofrecemos soporte local, entendemos el mercado latinoamericano, y nuestros precios están adaptados a emprendedores."
+    answer: "Integramos IA desde el primer día: chatbots automáticos, respuestas inteligentes, y automatización de leads. No entregamos solo una página web, entregamos un sistema de crecimiento. Ofrecemos soporte local, entendemos el mercado latinoamericano, y nuestros precios están adaptados a emprendedores."
   },
   {
     question: "¿Qué incluye el desarrollo de mi website?",

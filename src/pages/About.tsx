@@ -8,11 +8,11 @@ const AboutPage = () => {
                 title="Nosotros | SunRiver Solution - Equipo de Desarrollo Web"
                 description="Conoce SunRiver Solution. Creamos páginas web económicas y profesionales para PyMEs y emprendedores en Colombia. Tecnología de IA a bajo costo."
                 keywords="quiénes somos SunRiver, desarrollo web Colombia, páginas web económicas, empresa diseño web Cali, desarrollo web PyMEs"
-                canonical="https://sunriver.solutions/nosotros"
+                canonical="https://www.sunriverstech.com/nosotros"
                 schema={WebPageSchema(
                     'Nosotros | SunRiver Solution',
                     'Conoce SunRiver Solution. Creamos páginas web económicas y profesionales para PyMEs y emprendedores en Colombia.',
-                    'https://sunriver.solutions/nosotros'
+                    'https://www.sunriverstech.com/nosotros'
                 )}
             />
             <div className="pt-20">

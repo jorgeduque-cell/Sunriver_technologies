@@ -35,7 +35,7 @@ const Blog = () => {
         title="Blog de IA y Desarrollo Web | SunRiver Solution"
         description="Artículos semanales sobre inteligencia artificial aplicada al desarrollo web, automatización, SEO técnico y transformación digital para PyMEs."
         keywords="blog IA, desarrollo web, automatización, chatbots, Core Web Vitals, n8n, SEO técnico"
-        canonical="https://sunriver.solutions/blog"
+        canonical="https://www.sunriverstech.com/blog"
       />
       
       {/* Hero Section */}
