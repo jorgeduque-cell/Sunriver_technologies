@@ -1,7 +1,7 @@
 import { useRef } from 'react';
 import type { ComponentType, SVGProps } from 'react';
-import { COMING_SOON, MARQUEE_WORDS, SAFEGUARDS, SERVICES, type ServiceIcon } from './content';
-import { AgentIcon, ArrowRight, BotIcon, ReelIcon, ShieldIcon, WebIcon } from './icons';
+import { MARQUEE_WORDS, PLANS, PLAN_INCLUDES, PLAN_TERMS, REEL_TYPES, SAFEGUARDS, SERVICES, type ServiceIcon } from './content';
+import { AgentIcon, BotIcon, ReelIcon, ShieldIcon, WebIcon } from './icons';
 import { useScrollVar } from './motion';
 import { SplitTitle } from './Words';
 
@@ -28,42 +28,6 @@ function Marquee() {
     <div ref={ref} className="sr-marquee" aria-hidden="true">
       <div className="sr-marquee-row sr-marquee-row--a">{row('a')}</div>
       <div className="sr-marquee-row sr-marquee-row--b">{row('b')}</div>
-    </div>
-  );
-}
-
-/** Tarjeta "Próximamente" de la startup, con órbitas 3D que giran con el scroll. */
-function ComingSoon() {
-  const ref = useRef<HTMLDivElement>(null);
-  useScrollVar(ref);
-  return (
-    <div ref={ref} className="sr-soon" data-reveal>
-      <div className="sr-orbit" aria-hidden="true">
-        <span className="sr-orbit-ring" />
-        <span className="sr-orbit-ring" />
-        <span className="sr-orbit-ring" />
-        <span className="sr-orbit-core" />
-      </div>
-      <div className="sr-soon-body">
-        <p className="sr-label sr-label--accent">Próximamente · Nuestra startup</p>
-        <h3 className="sr-soon-title">
-          {/* PLACEHOLDER: nombre de la startup en src/home/content.ts */}
-          <span className={COMING_SOON.name.startsWith('[') ? 'sr-placeholder' : undefined}>
-            {COMING_SOON.name}
-          </span>{' '}
-          <span className="sr-serif sr-accent-text">{COMING_SOON.tagline}</span>
-        </h3>
-        <p className="sr-soon-text">{COMING_SOON.text}</p>
-      </div>
-      <a
-        href={COMING_SOON.whatsappUrl}
-        className="sr-btn sr-btn--ghost sr-soon-cta"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        {COMING_SOON.cta}
-        <ArrowRight className="sr-arrow" size={18} />
-      </a>
     </div>
   );
 }
@@ -109,7 +73,54 @@ export function Services() {
           })}
         </ul>
 
-        <ComingSoon />
+        <div id="planes" className="sr-plans" data-reveal>
+          <div className="sr-plans-head">
+            <p className="sr-label sr-label--accent">Redes que alcanzan · Planes</p>
+            <h3 className="sr-diff-title">
+              <SplitTitle lead="Elige cuánto material" accent="pones tú." accentClass="sr-serif sr-accent-text" />
+            </h3>
+          </div>
+
+          <ul className="sr-plans-grid">
+            {PLANS.map((plan) => (
+              <li key={plan.name}>
+                <article className="sr-plan">
+                  <h4 className="sr-plan-name">{plan.name}</h4>
+                  <p className="sr-price">
+                    <strong>{plan.price}</strong>
+                    <span className="sr-price-suffix">{plan.priceNote}</span>
+                  </p>
+                  <p className="sr-plan-reels">{plan.reels}</p>
+                  <p className="sr-plan-for">{plan.forWho}</p>
+                </article>
+              </li>
+            ))}
+          </ul>
+
+          <p className="sr-plans-line">
+            <strong>Todos incluyen:</strong> {PLAN_INCLUDES.join(', ')}.
+          </p>
+          <p className="sr-plans-note">
+            {PLAN_TERMS.join(' · ')} Los planes con creación se confirman en el diagnóstico gratis.
+          </p>
+
+          <details className="sr-plans-more">
+            <summary>Qué incluye cada tipo de reel</summary>
+            <div className="sr-plans-cols">
+              {REEL_TYPES.map((t) => (
+                <div key={t.title} className="sr-plans-col">
+                  <p className="sr-label">{t.sub}</p>
+                  <h4 className="sr-plans-col-title">{t.title}</h4>
+                  <ul className="sr-dash-list">
+                    {t.items.map((item) => (
+                      <li key={item}>{item}</li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+            </div>
+          </details>
+        </div>
 
         <div className="sr-diff" data-reveal>
           <div className="sr-diff-head">

@@ -121,6 +121,46 @@ export const SunLogo = ({ size = 26, ...rest }: SVGProps<SVGSVGElement> & { size
 );
 
 /**
+ * Marca de SunRiver (sol con rayos sobre una ola con cinta azul), redibujada en vectores.
+ * Se usa en la barra, el favicon y la animación de entrada. `idPrefix` evita ids repetidos.
+ */
+export const LogoMarkShapes = ({ idPrefix = 'srm' }: { idPrefix?: string }) => (
+  <>
+    <defs>
+      <clipPath id={`${idPrefix}-clip`}>
+        <circle cx="200" cy="200" r="192" />
+      </clipPath>
+    </defs>
+    <g clipPath={`url(#${idPrefix}-clip)`}>
+      <rect width="400" height="400" fill="#FF7A1A" />
+      <circle cx="200" cy="168" r="116" fill="#0B0C0F" />
+      <circle cx="200" cy="168" r="104" fill="#FF7A1A" />
+      <g stroke="#0B0C0F" strokeWidth="11">
+        <line x1="200" y1="168" x2="200" y2="-10" />
+        <line x1="200" y1="168" x2="354" y2="79" />
+        <line x1="200" y1="168" x2="354" y2="257" />
+        <line x1="200" y1="168" x2="46" y2="79" />
+        <line x1="200" y1="168" x2="46" y2="257" />
+        <line x1="200" y1="168" x2="410" y2="168" />
+        <line x1="200" y1="168" x2="-10" y2="168" />
+      </g>
+      <circle cx="200" cy="168" r="104" fill="#FF7A1A" />
+      <path d="M-10 238C70 205 150 212 205 245S335 282 410 222L410 410L-10 410Z" fill="#0B0C0F" />
+      <path d="M-10 252C70 219 150 226 205 259S335 296 410 236L410 410L-10 410Z" fill="#FFFFFF" />
+      <path d="M-10 282C70 262 150 262 205 285S335 296 410 246" fill="none" stroke="#0B0C0F" strokeWidth="44" />
+      <path d="M-10 282C70 262 150 262 205 285S335 296 410 246" fill="none" stroke="#4B8BFF" strokeWidth="28" />
+      <path d="M30 330C120 292 215 360 330 300" fill="none" stroke="#0B0C0F" strokeWidth="9" strokeLinecap="round" />
+    </g>
+  </>
+);
+
+export const SunRiverMark = ({ size = 32, ...rest }: SVGProps<SVGSVGElement> & { size?: number }) => (
+  <svg width={size} height={size} viewBox="0 0 400 400" aria-hidden="true" focusable="false" {...rest}>
+    <LogoMarkShapes idPrefix="srm-nav" />
+  </svg>
+);
+
+/**
  * Anillos de «Más allá de lo artificial».
  * PROVISIONAL: si tienes el SVG oficial del logo, reemplaza este componente.
  */

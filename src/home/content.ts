@@ -6,7 +6,7 @@ export const CONTACT = {
   whatsappDisplay: '+57 312 418 3002',
   whatsappUrl: 'https://wa.me/573124183002',
   whatsappE164: '+573124183002',
-  email: 'jorge_duque@sunriver.cloud',
+  email: 'jdriosol97@gmail.com',
   instagramHandle: '@sunriversolution',
   instagramUrl: 'https://www.instagram.com/sunriversolution',
 } as const;
@@ -63,13 +63,13 @@ export const SERVICES: ReadonlyArray<{
   {
     icon: 'reel',
     title: 'Redes que alcanzan',
-    text: 'Manejamos tus redes con reels con guion, edición e IA, pensados para llegar a gente que todavía no te sigue. Medimos cada publicación y ajustamos cada semana.',
+    text: 'Manejamos tus redes con reels con guion, edición e IA, pensados para llegar a gente que todavía no te sigue. Medimos cada publicación y ajustamos cada mes.',
     bullets: [
-      '3 reels a la semana, con guion e investigación verificada',
-      'Historias todos los días en Instagram y Facebook',
-      'Informe semanal de resultados',
+      '8 reels al mes, editados con tu material o creados desde cero',
+      'Calendario mensual que tú apruebas antes de producir',
+      'Informe mensual con vistas, alcance y mensajes recibidos',
     ],
-    pricePrefix: '',
+    pricePrefix: 'Desde',
     price: 'US$500',
     priceSuffix: '/ mes',
   },
@@ -107,21 +107,75 @@ export const SERVICES: ReadonlyArray<{
       'Conectado a WhatsApp y a tus bots',
     ],
     pricePrefix: '',
-    price: 'US$150',
+    price: 'US$250',
   },
 ];
 
 export const SAFEGUARDS = ['Permisos mínimos', 'Aprobación humana', 'Apagado con un botón'] as const;
 
-// PLACEHOLDER: la startup que viene. Reemplazar nombre y descripción.
-export const COMING_SOON = {
-  name: '[NOMBRE DE LA STARTUP]',
-  tagline: 'Un servicio por llegar.',
-  text: '[Qué hace tu startup y para quién, en una o dos frases]',
-  cta: 'Avísame cuando salga',
-  whatsappUrl:
-    'https://wa.me/573124183002?text=Hola,%20quiero%20que%20me%20avisen%20cuando%20salga%20el%20nuevo%20servicio%20de%20SunRiver',
-} as const;
+// Planes de «Redes que alcanzan», según cuánto material pone el cliente.
+export const PLANS = [
+  {
+    name: 'Edición',
+    forWho: 'Negocios que pueden grabar: restaurante, tienda, consultorio.',
+    reels: '8 reels al mes, editados con tu material',
+    price: 'US$500',
+    priceNote: '/ mes',
+  },
+  {
+    name: 'Edición + Creación',
+    forWho: 'Negocios que graban algo, pero quieren destacar.',
+    reels: '8 reels editados + 4 creados desde cero',
+    price: 'US$750–800',
+    priceNote: '/ mes',
+  },
+  {
+    name: 'Creación total',
+    forWho: 'Negocios sin tiempo ni cara para grabar.',
+    reels: '8 reels creados desde cero',
+    price: '~US$1.000',
+    priceNote: '/ mes',
+  },
+] as const;
+
+export const REEL_TYPES = [
+  {
+    title: 'Reel editado',
+    sub: 'Tú grabas con el celular',
+    items: [
+      'Corte de silencios y errores',
+      'Subtítulos animados palabra por palabra',
+      'Música y efectos',
+      'Gancho en el primer segundo',
+      'Portada y publicación',
+    ],
+  },
+  {
+    title: 'Reel creado desde cero',
+    sub: 'Tú no grabas nada',
+    items: [
+      'Investigación y guion',
+      'Voz con IA o la tuya',
+      'Animación o 3D, e imágenes',
+      'Música, portada y caption con hashtags',
+      'Temas: noticias de tu sector, explicaciones de tu servicio, mitos y comparativas',
+    ],
+  },
+] as const;
+
+export const PLAN_INCLUDES = [
+  'calendario mensual que apruebas antes de producir',
+  'guía de grabación',
+  'una ronda de cambios por reel',
+  'publicación en Instagram y Facebook',
+  'informe mensual con los mensajes que llegaron',
+] as const;
+
+export const PLAN_TERMS = [
+  'Mínimo 3 meses: los resultados en redes no se ven en el primer mes.',
+  'Si el material no llega a tiempo, ese reel no se acumula para el mes siguiente.',
+  'Pago por adelantado al inicio de cada mes.',
+] as const;
 
 // Banda que se desplaza con el scroll (decorativa, oculta a lectores de pantalla).
 export const MARQUEE_WORDS = ['Contenido', 'Automatización', 'Agentes de IA', 'Ciberseguridad', 'Web que vende'] as const;

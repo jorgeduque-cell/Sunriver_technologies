@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import type { KeyboardEvent as ReactKeyboardEvent } from 'react';
 import { NAV_LINKS } from './content';
-import { SunLogo } from './icons';
+import { SunRiverMark } from './icons';
 
 export function Nav() {
   const [scrolled, setScrolled] = useState(false);
@@ -82,7 +82,7 @@ export function Nav() {
     >
       <nav className="sr-container sr-nav-inner" aria-label="Principal">
         <a href="#top" className="sr-logo" aria-label="SunRiver, ir al inicio">
-          <SunLogo className="sr-logo-mark" />
+          <SunRiverMark size={34} className="sr-logo-mark" />
           <span>SunRiver</span>
         </a>
 

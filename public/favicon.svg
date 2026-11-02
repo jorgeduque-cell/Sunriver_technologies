@@ -1,10 +1,1 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32">
-  <rect width="32" height="32" rx="8" fill="#0E0F12"/>
-  <g transform="translate(4 4)">
-    <circle cx="12" cy="12" r="3.6" fill="#F5A623"/>
-    <g stroke="#F5A623" stroke-width="1.8" stroke-linecap="round" fill="none">
-      <path d="M12 2v3M12 19v3M2 12h3M19 12h3"/>
-      <path d="M4.93 4.93l2.12 2.12M16.95 16.95l2.12 2.12M19.07 4.93l-2.12 2.12M4.93 19.07l2.12-2.12"/>
-    </g>
-  </g>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400"><defs><clipPath id="c"><circle cx="200" cy="200" r="192"/></clipPath></defs><g clip-path="url(#c)"><rect width="400" height="400" fill="#FF7A1A"/><circle cx="200" cy="168" r="116" fill="#0B0C0F"/><circle cx="200" cy="168" r="104" fill="#FF7A1A"/><g stroke="#0B0C0F" stroke-width="11"><line x1="200" y1="168" x2="200" y2="-10"/><line x1="200" y1="168" x2="354" y2="79"/><line x1="200" y1="168" x2="354" y2="257"/><line x1="200" y1="168" x2="46" y2="79"/><line x1="200" y1="168" x2="46" y2="257"/><line x1="200" y1="168" x2="410" y2="168"/><line x1="200" y1="168" x2="-10" y2="168"/></g><circle cx="200" cy="168" r="104" fill="#FF7A1A"/><path d="M-10 238C70 205 150 212 205 245S335 282 410 222L410 410L-10 410Z" fill="#0B0C0F"/><path d="M-10 252C70 219 150 226 205 259S335 296 410 236L410 410L-10 410Z" fill="#fff"/><path d="M-10 282C70 262 150 262 205 285S335 296 410 246" fill="none" stroke="#0B0C0F" stroke-width="44"/><path d="M-10 282C70 262 150 262 205 285S335 296 410 246" fill="none" stroke="#4B8BFF" stroke-width="28"/><path d="M30 330C120 292 215 360 330 300" fill="none" stroke="#0B0C0F" stroke-width="9" stroke-linecap="round"/></g></svg>

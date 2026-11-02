@@ -99,13 +99,13 @@ const CTA = () => {
             <div className="pt-8 border-t border-white/10 space-y-4">
               <h3 className="text-white font-semibold mb-4">Contacto Directo</h3>
 
-              <a href="mailto:jorge_duque@sunriver.cloud" className="flex items-center gap-3 text-gray-400 hover:text-white transition-colors group">
+              <a href="mailto:jdriosol97@gmail.com" className="flex items-center gap-3 text-gray-400 hover:text-white transition-colors group">
                 <div className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-sunriver-orange/20 transition-colors">
                   <Mail className="w-5 h-5 group-hover:text-sunriver-orange transition-colors" />
                 </div>
                 <div>
                   <p className="text-xs text-gray-500">Email</p>
-                  <p className="font-medium">jorge_duque@sunriver.cloud</p>
+                  <p className="font-medium">jdriosol97@gmail.com</p>
                 </div>
               </a>
 

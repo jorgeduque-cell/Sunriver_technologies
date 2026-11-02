@@ -1,0 +1,324 @@
+/* Efectos de impacto de la home: cortina de entrada, secciones que se abren como ventana,
+   barra de progreso, parallax del hero, brillo que sigue al cursor y marquee con inercia.
+   Todo es opt-in: con prefers-reduced-motion no se muestra nada de esto, y los efectos
+   ligados al scroll usan CSS puro (animation-timeline) solo donde el navegador lo soporta. */
+
+.sr-curtain,
+.sr-progress,
+.sr-glow,
+.sr-ring {
+  display: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  /* ---------- Cortina de entrada ---------- */
+  .sr-curtain {
+    display: block;
+    position: fixed;
+    inset: 0;
+    z-index: 300;
+    pointer-events: none;
+    animation: sr-curtain-hide 0s linear 3.9s forwards;
+  }
+  .sr-curtain-panel {
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 50.5%;
+    background: #08090b;
+    animation-duration: 1s;
+    animation-delay: 2.8s;
+    animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+    animation-fill-mode: both;
+  }
+  .sr-curtain-panel--t { top: 0; animation-name: sr-curtain-up; border-bottom: 1px solid rgba(245, 166, 35, 0.5); }
+  .sr-curtain-panel--b { bottom: 0; animation-name: sr-curtain-down; }
+  /* Escena: río de puntos que corre hacia el sol (ver IntroScene.tsx) */
+  .sr-intro {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: min(92vw, 760px);
+    height: auto;
+    aspect-ratio: 2 / 1;
+    transform: translate(-50%, -62%);
+    overflow: visible;
+    animation: sr-intro-out 0.55s cubic-bezier(0.5, 0, 0.75, 0) 2.55s forwards;
+  }
+  @keyframes sr-intro-out { to { opacity: 0; scale: 1.25; } }
+  .sr-intro-trail {
+    fill: none;
+    stroke: rgba(255, 183, 67, 0.28);
+    stroke-width: 1.5;
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+    animation: sr-intro-trail 1.5s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  }
+  .sr-intro-glow {
+    opacity: 0;
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: sr-intro-glow 1.3s ease-out 1.3s forwards;
+  }
+  .sr-intro-mark {
+    opacity: 0;
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: sr-intro-mark 0.9s cubic-bezier(0.16, 1, 0.3, 1) 1.35s forwards;
+  }
+  @keyframes sr-intro-trail { to { stroke-dashoffset: 0; } }
+  @keyframes sr-intro-glow { from { opacity: 0; scale: 0.4; } 40% { opacity: 1; } to { opacity: 0.7; scale: 1; } }
+  @keyframes sr-intro-mark { from { opacity: 0; scale: 0.55; filter: blur(8px); } to { opacity: 1; scale: 1; filter: blur(0); } }
+
+  .sr-curtain-word {
+    position: absolute;
+    top: calc(50% + min(92vw, 760px) * 0.115);
+    left: 0;
+    right: 0;
+    text-align: center;
+    line-height: 1.05;
+    font-family: 'Inter Tight', system-ui, sans-serif;
+    font-weight: 700;
+    font-size: clamp(36px, 7vw, 76px);
+    letter-spacing: -0.04em;
+    color: #f2efe8;
+    clip-path: inset(0 100% 0 0);
+    animation: sr-curtain-word 0.9s cubic-bezier(0.22, 1, 0.36, 1) 1.9s forwards,
+      sr-curtain-fade 0.35s ease 2.55s forwards;
+  }
+  .sr-curtain-word em {
+    font-family: 'Instrument Serif', Georgia, serif;
+    font-style: italic;
+    font-weight: 400;
+    color: #f5a623;
+  }
+  .sr-curtain-word small {
+    display: block;
+    margin-top: 0.35em;
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-size: 0.17em;
+    font-weight: 500;
+    letter-spacing: 0.5em;
+    text-transform: uppercase;
+    color: #4b8bff;
+  }
+  @keyframes sr-curtain-up { to { transform: translateY(-101%); } }
+  @keyframes sr-curtain-down { to { transform: translateY(101%); } }
+  @keyframes sr-curtain-word { to { clip-path: inset(0 0 0 0); } }
+  @keyframes sr-curtain-fade { to { opacity: 0; } }
+  @keyframes sr-curtain-hide { to { visibility: hidden; } }
+
+  /* ---------- Brillo y anillo que siguen al cursor (solo puntero fino) ---------- */
+  @media (any-hover: hover) and (any-pointer: fine) {
+    .sr-glow,
+    .sr-ring {
+      display: block;
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 5;
+      pointer-events: none;
+      opacity: 0;
+      will-change: transform;
+    }
+    .sr-glow[data-on],
+    .sr-ring[data-on] { opacity: 1; }
+    .sr-glow {
+      width: 560px;
+      height: 560px;
+      margin: -280px 0 0 -280px;
+      border-radius: 50%;
+      background: radial-gradient(closest-side, rgba(245, 166, 35, 0.16), rgba(245, 166, 35, 0.05) 55%, transparent);
+      mix-blend-mode: screen;
+      transition: opacity 0.4s ease;
+    }
+    .sr-ring {
+      width: 38px;
+      height: 38px;
+      margin: -19px 0 0 -19px;
+      border-radius: 50%;
+      border: 1.5px solid rgba(245, 166, 35, 0.85);
+      mix-blend-mode: difference;
+      transition: opacity 0.4s ease, width 0.3s ease, height 0.3s ease, margin 0.3s ease, background 0.3s ease;
+    }
+    .sr-ring[data-hot] {
+      width: 72px;
+      height: 72px;
+      margin: -36px 0 0 -36px;
+      background: rgba(245, 166, 35, 0.18);
+    }
+  }
+
+  /* ---------- Marquee con inercia: se inclina según la velocidad del scroll ---------- */
+  .sr-marquee-row { transform: skewX(calc(var(--skew, 0) * 1deg)); }
+}
+
+/* ---------- Efectos ligados al scroll (CSS puro, sin JS) ---------- */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    /* Barra de progreso de lectura */
+    .sr-progress {
+      display: block;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      z-index: 250;
+      background: linear-gradient(90deg, #f5a623, #ffd38a);
+      transform-origin: 0 50%;
+      pointer-events: none;
+      animation: sr-progress linear both;
+      animation-timeline: scroll(root);
+    }
+    @keyframes sr-progress { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+
+    /* Las secciones claras se abren como una ventana al entrar y se cierran al salir */
+    .sr-section.sr-light {
+      animation: sr-window-in linear backwards, sr-window-out linear forwards;
+      animation-timeline: view(), view();
+      animation-range: entry 0% entry 85%, exit 15% exit 100%;
+    }
+    @keyframes sr-window-in {
+      from { clip-path: inset(9% 5% 0 round 64px 64px 0 0); }
+      to { clip-path: inset(0 0 0 round 0); }
+    }
+    @keyframes sr-window-out {
+      from { clip-path: inset(0 0 0 round 0); }
+      to { clip-path: inset(0 5% 6% round 0 0 64px 64px); }
+    }
+
+    /* Parallax del hero: el texto y las tarjetas se separan a distinta velocidad al salir */
+    .sr-hero-copy {
+      animation: sr-hero-copy linear forwards;
+      animation-timeline: view();
+      animation-range: exit 0% exit 90%;
+    }
+    .sr-hero-cards {
+      animation: sr-hero-cards linear forwards;
+      animation-timeline: view();
+      animation-range: exit 0% exit 100%;
+    }
+    @keyframes sr-hero-copy { to { translate: 0 -70px; opacity: 0.4; scale: 0.97; } }
+    @keyframes sr-hero-cards { to { translate: 0 -170px; scale: 0.94; } }
+
+    /* Tarjetas de servicio: suben y crecen escalonadas mientras entran */
+    .sr-services-grid .sr-service {
+      animation: sr-rise linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 55%;
+    }
+    .sr-services-grid > li:nth-child(even) .sr-service { animation-range: entry 10% entry 65%; }
+    @keyframes sr-rise { from { translate: 0 70px; scale: 0.92; } to { translate: 0 0; scale: 1; } }
+
+    /* Titulares: se deslizan al entrar */
+    .sr-section-head .sr-h2 {
+      animation: sr-head linear both;
+      animation-timeline: view();
+      animation-range: entry 10% entry 60%;
+    }
+    @keyframes sr-head {
+      from { translate: -40px 0; filter: blur(10px); opacity: 0.25; }
+      to { translate: 0 0; filter: blur(0); opacity: 1; }
+    }
+
+    /* Lente: el río 3D se acerca como una cámara al salir del hero */
+    .sr-hero-3d {
+      animation: sr-lens linear forwards;
+      animation-timeline: view();
+      animation-range: exit 0% exit 100%;
+    }
+    @keyframes sr-lens { to { scale: 1.35; } }
+
+    /* Franja de proyectos: se desliza lateralmente con el scroll */
+    .sr-projects-list {
+      animation: sr-strip linear both;
+      animation-timeline: view();
+      animation-range: cover 0% cover 100%;
+    }
+    @keyframes sr-strip { from { translate: 36px 0; } to { translate: -36px 0; } }
+  }
+
+  @media (prefers-reduced-motion: no-preference) and (max-width: 767px) {
+    @keyframes sr-window-in {
+      from { clip-path: inset(4% 3% 0 round 32px 32px 0 0); }
+      to { clip-path: inset(0 0 0 round 0); }
+    }
+    @keyframes sr-window-out {
+      from { clip-path: inset(0 0 0 round 0); }
+      to { clip-path: inset(0 3% 3% round 0 0 32px 32px); }
+    }
+    @keyframes sr-hero-cards { to { translate: 0 -60px; scale: 0.97; } }
+  }
+}
+
+/* ---------- Capa de cine: grano, viñeta, título enmascarado, flotación y destello anamórfico ---------- */
+.sr-film { display: none; }
+
+@media (prefers-reduced-motion: no-preference) {
+  .sr-film {
+    display: block;
+    position: fixed;
+    inset: 0;
+    z-index: 4;
+    pointer-events: none;
+    background: radial-gradient(ellipse 120% 100% at 50% 50%, transparent 55%, rgba(0, 0, 0, 0.32));
+  }
+  .sr-film::before {
+    content: '';
+    position: absolute;
+    inset: -50%;
+    opacity: 0.07;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    animation: sr-grain 0.9s steps(6) infinite;
+  }
+  @keyframes sr-grain {
+    0% { transform: translate(0, 0); }
+    20% { transform: translate(-4%, 3%); }
+    40% { transform: translate(3%, -5%); }
+    60% { transform: translate(-5%, -2%); }
+    80% { transform: translate(4%, 4%); }
+    100% { transform: translate(0, 0); }
+  }
+
+  /* Titular del hero: cada línea sube desde una máscara, desenfocada, y asienta el tracking */
+  .sr-h1-line {
+    animation: sr-title-in 1.15s cubic-bezier(0.16, 1, 0.3, 1) both;
+    animation-delay: 3.1s;
+  }
+  .sr-h1-line + .sr-h1-line { animation-delay: 3.3s; }
+  .sr[data-nocurtain] .sr-h1-line { animation-delay: 0.15s; }
+  .sr[data-nocurtain] .sr-h1-line + .sr-h1-line { animation-delay: 0.35s; }
+  @keyframes sr-title-in {
+    from { clip-path: inset(0 0 100% 0); translate: 0 0.5em; filter: blur(14px); letter-spacing: 0.06em; }
+    60% { filter: blur(0); }
+    to { clip-path: inset(-20% -6% -20% -6%); translate: 0 0; filter: blur(0); letter-spacing: normal; }
+  }
+  .sr-hero-lead, .sr-actions, .sr-hero-note, .sr-hero .sr-label {
+    animation: sr-fade-up 0.9s cubic-bezier(0.16, 1, 0.3, 1) both;
+    animation-delay: 3.6s;
+  }
+  .sr[data-nocurtain] .sr-hero-lead, .sr[data-nocurtain] .sr-actions,
+  .sr[data-nocurtain] .sr-hero-note, .sr[data-nocurtain] .sr-hero .sr-label { animation-delay: 0.5s; }
+  @keyframes sr-fade-up { from { opacity: 0; translate: 0 24px; } to { opacity: 1; translate: 0 0; } }
+
+  /* Las tarjetas del hero flotan, cada una a su ritmo */
+  .sr-reel { animation: sr-float 7s ease-in-out infinite alternate; }
+  .sr-bot { animation: sr-float 9s ease-in-out -3s infinite alternate; }
+  @keyframes sr-float { from { translate: 0 -7px; } to { translate: 0 9px; } }
+
+  /* Destello anamórfico horizontal que acompaña al brillo del cursor */
+  @media (any-hover: hover) and (any-pointer: fine) {
+    .sr-glow::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 1100px;
+      height: 2px;
+      margin: -1px 0 0 -550px;
+      background: linear-gradient(90deg, transparent, rgba(255, 190, 90, 0.55), transparent);
+      filter: blur(1px);
+    }
+  }
+}

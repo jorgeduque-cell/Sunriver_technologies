@@ -108,7 +108,7 @@ export const LocalBusinessSchema = {
   logo: 'https://www.sunriverstech.com/favicon.svg',
   image: 'https://www.sunriverstech.com/og-image.jpg',
   telephone: '+57-312-4183002',
-  email: 'jorge_duque@sunriver.cloud',
+  email: 'jdriosol97@gmail.com',
   address: {
     '@type': 'PostalAddress',
     addressCountry: 'CO',

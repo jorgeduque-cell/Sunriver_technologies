@@ -50,11 +50,11 @@ const Footer = () => {
             {/* Contact */}
             <div className="space-y-3">
               <a
-                href="mailto:jorge_duque@sunriver.cloud"
+                href="mailto:jdriosol97@gmail.com"
                 className="flex items-center gap-2 text-gray-400 hover:text-sunriver-orange transition-colors"
               >
                 <Mail className="w-4 h-4" />
-                <span className="text-sm">jorge_duque@sunriver.cloud</span>
+                <span className="text-sm">jdriosol97@gmail.com</span>
               </a>
               <a
                 href="https://wa.me/573124183002?text=%F0%9F%9A%80%20Hola%20SunRiver%2C%20estoy%20interesado%20en%20un%20desarrollo%20web%20con%20IA%20para%20mi%20negocio.%20%C2%BFPodemos%20agendar%20una%20consulta%3F"

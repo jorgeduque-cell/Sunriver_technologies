@@ -7,22 +7,17 @@ export function Testimonial() {
   return (
     <section className="sr-section sr-dark sr-section--flush-top" aria-label="Testimonio">
       <div className="sr-container">
-        {/*
-          PLACEHOLDER: reemplazar por un testimonio REAL y verificable:
-          cita del cliente, nombre, cargo, empresa y un resultado que se pueda comprobar.
-          No publicar testimonios inventados.
-        */}
         <figure className="sr-testimonial" data-reveal>
           <span className="sr-quote-mark" aria-hidden="true">
             “
           </span>
           <blockquote>
             <p className="sr-serif">
-              [Testimonio real de un cliente, con su nombre, su negocio y un resultado que se pueda
-              comprobar]
+              Esta automatización de reservas resolvió el 90 % del trabajo manual que tenía que
+              hacer en mi empresa. Estoy muy contento.
             </p>
           </blockquote>
-          <figcaption className="sr-label">[Nombre · Cargo · Empresa]</figcaption>
+          <figcaption className="sr-label">Nicolás Suárez · CEO · Eventos deportivos 90+1</figcaption>
         </figure>
       </div>
     </section>

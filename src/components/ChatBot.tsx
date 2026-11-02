@@ -90,7 +90,7 @@ const ChatBot = () => {
                 ...prev,
                 {
                     role: 'assistant',
-                    content: '¡Nuestro asistente está descansando un momento! 😅 Puedes escribirnos directamente por WhatsApp al +57 312 4183002 o a jorge_duque@sunriver.cloud 💌',
+                    content: '¡Nuestro asistente está descansando un momento! 😅 Puedes escribirnos directamente por WhatsApp al +57 312 4183002 o a jdriosol97@gmail.com 💌',
                 },
             ]);
         } finally {
