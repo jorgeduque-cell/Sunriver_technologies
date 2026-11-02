@@ -28,7 +28,7 @@ const vertexShader = /* glsl */ `
     gl_Position = projectionMatrix * mv;
     float depth = -mv.z;
     gl_PointSize = uSize * (7.0 / depth);
-    float fadeFar = smoothstep(26.0, 6.0, depth);
+    float fadeFar = smoothstep(36.0, 7.0, depth);
     float fadeEdge = 1.0 - smoothstep(13.0, 18.0, abs(p.x));
     vAlpha = fadeFar * fadeEdge * (0.22 + 0.78 * smoothstep(-0.45, 0.55, w));
   }
@@ -40,13 +40,17 @@ const fragmentShader = /* glsl */ `
   void main() {
     float d = length(gl_PointCoord - 0.5);
     if (d > 0.5) discard;
-    gl_FragColor = vec4(uColor, smoothstep(0.5, 0.08, d) * vAlpha * 0.8);
+    gl_FragColor = vec4(uColor, smoothstep(0.5, 0.08, d) * vAlpha * 0.95);
   }
 `;
 
 const AUTOPLAY_MS = 4500; // tras esto solo se mueve con la interacción (WCAG 2.2.2)
 
-export function mountRiver(container: HTMLElement): () => void {
+/**
+ * @param animate false con "reducir movimiento": se dibuja un solo cuadro (3D quieto),
+ * sin bucle ni reacción al mouse o al scroll.
+ */
+export function mountRiver(container: HTMLElement, { animate = true }: { animate?: boolean } = {}): () => void {
   let renderer: WebGLRenderer;
   try {
     renderer = new WebGLRenderer({ antialias: false, alpha: true, powerPreference: 'low-power' });
@@ -62,13 +66,13 @@ export function mountRiver(container: HTMLElement): () => void {
 
   const scene = new Scene();
   const camera = new PerspectiveCamera(50, 1, 0.1, 60);
-  camera.position.set(0, 1.7, 6.5);
-  camera.lookAt(0, -0.3, -6);
+  camera.position.set(0, 1.9, 6.5);
+  camera.lookAt(0, -0.9, -6);
 
   const COLS = 210;
-  const ROWS = 64;
+  const ROWS = 84;
   const WIDTH = 36;
-  const DEPTH = 22;
+  const DEPTH = 32;
   const positions = new Float32Array(COLS * ROWS * 3);
   let k = 0;
   for (let r = 0; r < ROWS; r++) {
@@ -82,7 +86,7 @@ export function mountRiver(container: HTMLElement): () => void {
   geometry.setAttribute('position', new BufferAttribute(positions, 3));
   const uniforms = {
     uTime: { value: 0 },
-    uSize: { value: 2.1 * dpr },
+    uSize: { value: 2.5 * dpr },
     // #F5A623 en sRGB directo (el shader no pasa por la gestión de color de three)
     uColor: { value: new Vector3(245 / 255, 166 / 255, 35 / 255) },
   };
@@ -117,7 +121,7 @@ export function mountRiver(container: HTMLElement): () => void {
   let speed = 1;
   let energy = 1;
   let targetX = 0;
-  let targetY = 1.7;
+  let targetY = 1.9;
   let visible = true;
 
   const renderOnce = () => renderer.render(scene, camera);
@@ -133,7 +137,7 @@ export function mountRiver(container: HTMLElement): () => void {
     uniforms.uTime.value = time;
     camera.position.x += (targetX - camera.position.x) * Math.min(1, dt * 2);
     camera.position.y += (targetY - camera.position.y) * Math.min(1, dt * 2);
-    camera.lookAt(camera.position.x * 0.4, -0.3, -6);
+    camera.lookAt(camera.position.x * 0.4, -0.9, -6);
     renderOnce();
     const settled =
       speed < 0.003 && Math.abs(targetX - camera.position.x) < 0.002 && Math.abs(targetY - camera.position.y) < 0.002;
@@ -146,9 +150,23 @@ export function mountRiver(container: HTMLElement): () => void {
     }
   };
 
+  // "Reducir movimiento": un único cuadro fijo (se redibuja solo si cambia el tamaño).
+  if (!animate) {
+    uniforms.uTime.value = 1.6;
+    resize();
+    canvas.classList.add('is-ready');
+    return () => {
+      ro.disconnect();
+      geometry.dispose();
+      material.dispose();
+      renderer.dispose();
+      canvas.remove();
+    };
+  }
+
   const onPointer = (e: PointerEvent) => {
     targetX = (e.clientX / window.innerWidth - 0.5) * 1.6;
-    targetY = 1.7 - (e.clientY / window.innerHeight - 0.5) * 0.5;
+    targetY = 1.9 - (e.clientY / window.innerHeight - 0.5) * 0.5;
     energy = Math.min(1, energy + 0.06);
     wake();
   };

@@ -391,10 +391,7 @@ html:has(.sr) {
 /* Río 3D (solo escritorio): ocupa la mitad baja del hero, detrás del contenido */
 .sr-hero-3d {
   position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  height: 64%;
+  inset: 0;
   z-index: -1;
   pointer-events: none;
 }
@@ -409,8 +406,9 @@ html:has(.sr) {
 @media (min-width: 1024px) {
   .sr-hero { padding-bottom: 140px; }
   .sr-hero-3d {
-    -webkit-mask-image: linear-gradient(to bottom, transparent, #000 38%, #000 82%, transparent);
-    mask-image: linear-gradient(to bottom, transparent, #000 38%, #000 82%, transparent);
+    /* Ocupa todo el hero: se desvanece arriba (zona de la nav) y al final */
+    -webkit-mask-image: linear-gradient(to bottom, transparent 8%, #000 34%, #000 86%, transparent);
+    mask-image: linear-gradient(to bottom, transparent 8%, #000 34%, #000 86%, transparent);
   }
 }
 
@@ -1310,7 +1308,7 @@ html:not(.js) .sr-faq-inner { visibility: visible; }
 
 /* ---------- Inclinación 3D y brillo que sigue al cursor ---------- */
  /* Solo con mouse: en táctil no se aplica transform 3D (evita crear capas por tarjeta) */
-@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+@media (any-hover: hover) and (any-pointer: fine) and (prefers-reduced-motion: no-preference) {
   .sr-tilt {
     transform: perspective(1000px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
     transition: transform 0.6s var(--ease-out), border-color 0.3s ease;

@@ -2,7 +2,8 @@ import { useEffect } from 'react';
 import type { RefObject } from 'react';
 
 const prefersReducedMotion = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-const hasFinePointer = () => window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+// any-*: también cubre portátiles con pantalla táctil que además tienen touchpad o mouse.
+const hasFinePointer = () => window.matchMedia('(any-hover: hover) and (any-pointer: fine)').matches;
 
 /**
  * Escribe en el elemento la variable CSS --p (0 → 1) según cuánto ha recorrido la pantalla:

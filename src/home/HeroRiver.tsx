@@ -4,8 +4,9 @@ type NavigatorWithConnection = Navigator & { connection?: { saveData?: boolean }
 
 /**
  * Contenedor del río 3D. En el HTML prerenderizado es un div vacío; three.js solo se
- * descarga en escritorio con mouse, sin "ahorro de datos" ni movimiento reducido, y
- * después de que la página terminó de cargar. En móvil no se descarga nada.
+ * descarga en pantallas de 1024 px o más (sin "ahorro de datos") y después de que la
+ * página terminó de cargar. En móvil no se descarga nada.
+ * Con "reducir movimiento" se muestra igual, pero como imagen 3D fija.
  */
 export function HeroRiver() {
   const ref = useRef<HTMLDivElement>(null);
@@ -13,10 +14,10 @@ export function HeroRiver() {
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
-    const desktop = window.matchMedia('(min-width: 1024px) and (hover: hover) and (pointer: fine)').matches;
+    const wide = window.matchMedia('(min-width: 1024px)').matches;
     const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const saveData = (navigator as NavigatorWithConnection).connection?.saveData === true;
-    if (!desktop || reduce || saveData) return;
+    if (!wide || saveData) return;
 
     let cancelled = false;
     let dispose: (() => void) | undefined;
@@ -26,7 +27,7 @@ export function HeroRiver() {
     const mount = () => {
       import('./river3d')
         .then((m) => {
-          if (!cancelled) dispose = m.mountRiver(el);
+          if (!cancelled) dispose = m.mountRiver(el, { animate: !reduce });
         })
         .catch(() => {
           /* sin WebGL o sin red: el hero se queda sin fondo, no pasa nada */
