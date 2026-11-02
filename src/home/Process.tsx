@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { STEPS } from './content';
+import { SplitTitle } from './Words';
 
 export function Process() {
   const listRef = useRef<HTMLDivElement>(null);
@@ -65,10 +66,10 @@ export function Process() {
   return (
     <section id="proceso" className="sr-section sr-dark" aria-labelledby="proceso-title">
       <div className="sr-container">
-        <div className="sr-section-head" data-reveal>
+        <div className="sr-section-head" data-reveal="words">
           <p className="sr-label">Cómo trabajamos</p>
           <h2 id="proceso-title" className="sr-h2">
-            De la primera llamada a <span className="sr-serif sr-accent-text">resultados medidos.</span>
+            <SplitTitle lead="De la primera llamada a" accent="resultados medidos." accentClass="sr-serif sr-accent-text" />
           </h2>
         </div>
 

@@ -54,6 +54,14 @@ export const WebIcon = (p: IconProps) => (
   </Icon>
 );
 
+export const AgentIcon = (p: IconProps) => (
+  <Icon {...p}>
+    <rect x="6" y="6" width="12" height="12" rx="2.5" />
+    <path d="M9.5 2.5v3M14.5 2.5v3M9.5 18.5v3M14.5 18.5v3M2.5 9.5h3M2.5 14.5h3M18.5 9.5h3M18.5 14.5h3" />
+    <path d="M12 9.3l.8 1.9 1.9.8-1.9.8-.8 1.9-.8-1.9-1.9-.8 1.9-.8z" />
+  </Icon>
+);
+
 export const ShieldIcon = (p: IconProps) => (
   <Icon {...p}>
     <path d="M12 3l7 3v5.2c0 4.4-2.9 8.3-7 9.8-4.1-1.5-7-5.4-7-9.8V6z" />

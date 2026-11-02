@@ -27,28 +27,29 @@ export const PROJECTS = [
   { name: 'GESSEG Colombia', detail: 'sitio web' },
 ] as const;
 
+// El dato de cada tarjeta cuenta de `from` a `to` al entrar en pantalla (el valor final va en el HTML).
 export const CASE_LESSONS = [
   {
     title: 'El primer segundo decide',
     text: 'Un titular grande desde el primer cuadro. Cuando lo aplicamos, los saltos bajaron de 39 % a 20 %.',
     dataLabel: 'Saltos',
-    dataValue: '39 % → 20 %',
+    data: { prefix: '39 % → ', from: 39, to: 20, suffix: ' %' },
   },
   {
     title: 'Una historia, no un anuncio',
     text: 'Historias reales con pocas cifras, cada una con una comparación. La gente se quedó casi 47 segundos de promedio.',
     dataLabel: 'Permanencia media',
-    dataValue: '≈ 47 s',
+    data: { prefix: '≈ ', from: 0, to: 47, suffix: ' s' },
   },
   {
     title: 'Prometer la continuación',
     text: 'Cerrar con «cuando salga, te lo cuento». Pasamos de un máximo de 2 seguidores por reel a 425.',
     dataLabel: 'Seguidores por reel',
-    dataValue: '2 → 425',
+    data: { prefix: '2 → ', from: 2, to: 425, suffix: '' },
   },
 ] as const;
 
-export type ServiceIcon = 'reel' | 'bot' | 'web';
+export type ServiceIcon = 'reel' | 'bot' | 'agent' | 'web';
 
 export const SERVICES: ReadonlyArray<{
   icon: ServiceIcon;
@@ -61,29 +62,40 @@ export const SERVICES: ReadonlyArray<{
 }> = [
   {
     icon: 'reel',
-    title: 'Contenido que alcanza',
-    text: 'Reels con guion, edición e IA, pensados para llegar a gente que todavía no te sigue. Medimos cada publicación y ajustamos cada semana.',
+    title: 'Redes que alcanzan',
+    text: 'Manejamos tus redes con reels con guion, edición e IA, pensados para llegar a gente que todavía no te sigue. Medimos cada publicación y ajustamos cada semana.',
     bullets: [
-      'Guiones e investigación verificada',
-      'Publicación en Instagram y Facebook',
+      '3 reels a la semana, con guion e investigación verificada',
+      'Historias todos los días en Instagram y Facebook',
       'Informe semanal de resultados',
     ],
-    pricePrefix: 'Desde',
-    price: '$900.000',
+    pricePrefix: '',
+    price: 'US$500',
     priceSuffix: '/ mes',
   },
   {
     icon: 'bot',
-    title: 'Bots que responden',
+    title: 'Automatizaciones que responden',
     text: 'Cada comentario, mensaje o consulta recibe respuesta en segundos, también a las 11 de la noche. Tus clientes no esperan y tú no pierdes la venta.',
     bullets: [
-      'Comentario → mensaje privado automático',
-      'WhatsApp fuera de horario y agenda de citas',
-      'Seguimiento a quien no compró',
+      'Respuestas automáticas en comentarios, mensajes y WhatsApp',
+      'Automatizaciones personalizadas para tu negocio',
+      'Agenda de citas y seguimiento a quien no compró',
     ],
-    pricePrefix: 'Instalación desde',
-    // PLACEHOLDER: reemplazar por el precio real de instalación.
-    price: '[TU PRECIO]',
+    pricePrefix: 'Desde',
+    price: 'US$650',
+  },
+  {
+    icon: 'agent',
+    title: 'Agentes de IA, probados',
+    text: 'Creamos agentes de IA que trabajan para tu negocio y ponemos a prueba los que ya usas: qué pueden hacer, qué datos ven y si alguien los puede engañar.',
+    bullets: [
+      'Creación de agentes de IA a la medida',
+      'Diagnóstico de los agentes que ya tienes',
+      'Pruebas de seguridad antes de ponerlos a trabajar',
+    ],
+    pricePrefix: 'Desde',
+    price: 'US$1.000',
   },
   {
     icon: 'web',
@@ -94,13 +106,25 @@ export const SERVICES: ReadonlyArray<{
       'Dominio, hosting y SSL el primer año',
       'Conectado a WhatsApp y a tus bots',
     ],
-    pricePrefix: 'Desde',
-    // PLACEHOLDER: reemplazar por el precio real de la web.
-    price: '[TU PRECIO]',
+    pricePrefix: '',
+    price: 'US$150',
   },
 ];
 
 export const SAFEGUARDS = ['Permisos mínimos', 'Aprobación humana', 'Apagado con un botón'] as const;
+
+// PLACEHOLDER: la startup que viene. Reemplazar nombre y descripción.
+export const COMING_SOON = {
+  name: '[NOMBRE DE LA STARTUP]',
+  tagline: 'Un servicio por llegar.',
+  text: '[Qué hace tu startup y para quién, en una o dos frases]',
+  cta: 'Avísame cuando salga',
+  whatsappUrl:
+    'https://wa.me/573124183002?text=Hola,%20quiero%20que%20me%20avisen%20cuando%20salga%20el%20nuevo%20servicio%20de%20SunRiver',
+} as const;
+
+// Banda que se desplaza con el scroll (decorativa, oculta a lectores de pantalla).
+export const MARQUEE_WORDS = ['Contenido', 'Automatización', 'Agentes de IA', 'Ciberseguridad', 'Web que vende'] as const;
 
 export const STEPS = [
   {

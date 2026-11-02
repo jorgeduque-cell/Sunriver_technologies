@@ -112,6 +112,9 @@ export function Nav() {
         </button>
       </nav>
 
+      {/* Progreso de lectura: animación ligada al scroll, 100 % CSS (donde el navegador la soporte) */}
+      <span className="sr-progress" aria-hidden="true" />
+
       <div id="sr-mobile-menu" ref={menuRef} className="sr-mobile-menu" hidden={!open}>
         <ul className="sr-container sr-mobile-links">
           {NAV_LINKS.map((link) => (

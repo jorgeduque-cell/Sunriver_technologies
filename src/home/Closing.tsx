@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { CONTACT } from './content';
 import { ArrowRight, MailIcon, WhatsAppIcon } from './icons';
+import { SplitTitle } from './Words';
 
 export function Testimonial() {
   return (
@@ -32,9 +33,9 @@ export function Contact() {
   return (
     <section id="contacto" className="sr-section sr-dark sr-contact" aria-labelledby="contacto-title">
       <div className="sr-container sr-contact-grid">
-        <div data-reveal>
+        <div data-reveal="words">
           <h2 id="contacto-title" className="sr-h2 sr-h2--xl">
-            ¿Hablamos <span className="sr-serif sr-accent-text">15 minutos?</span>
+            <SplitTitle lead="¿Hablamos" accent="15 minutos?" accentClass="sr-serif sr-accent-text" />
           </h2>
           <p className="sr-lead">
             Cuéntanos qué vendes y cómo te encuentran tus clientes hoy. Te respondemos el mismo día.
@@ -43,6 +44,7 @@ export function Contact() {
             <a
               href={CONTACT.whatsappUrl}
               className="sr-btn sr-btn--primary"
+              data-magnetic
               target="_blank"
               rel="noopener noreferrer"
             >

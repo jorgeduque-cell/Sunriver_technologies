@@ -9,7 +9,16 @@ const formatThousands =(n: number) => String(n).replace(/\B(?=(\d{3})+(?!\d))/g,
  * Con JS, home.css la oculta un instante hasta que arranca el conteo (con salida de
  * seguridad por CSS si el JS no llega a ejecutarse).
  */
-export function CountUp({ value, className }: { value: number; className?: string }) {
+export function CountUp({
+  value,
+  from = 0,
+  className,
+}: {
+  value: number;
+  /** Valor inicial del conteo (puede ser mayor que `value` para contar hacia abajo). */
+  from?: number;
+  className?: string;
+}) {
   const ref = useRef<HTMLSpanElement>(null);
   const finalText = formatThousands(value);
 
@@ -34,12 +43,12 @@ export function CountUp({ value, className }: { value: number; className?: strin
         io.disconnect();
         const duration = 1600;
         const start = performance.now();
-        setText(formatThousands(0));
+        setText(formatThousands(from));
         el.dataset.countup = 'running';
         const tick = (now: number) => {
           const t = Math.min(1, (now - start) / duration);
           const eased = 1 - Math.pow(1 - t, 3);
-          setText(formatThousands(Math.round(value * eased)));
+          setText(formatThousands(Math.round(from + (value - from) * eased)));
           if (t < 1) {
             raf = requestAnimationFrame(tick);
           } else {
@@ -58,7 +67,7 @@ export function CountUp({ value, className }: { value: number; className?: strin
       cancelAnimationFrame(raf);
       setText(finalText);
     };
-  }, [value, finalText]);
+  }, [value, from, finalText]);
 
   return (
     <span ref={ref} className={className} data-countup="pending">

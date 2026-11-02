@@ -1,3 +1,5 @@
+import { Suspense } from 'react';
+import type { ReactNode } from 'react';
 import '../home/home.css';
 import { Nav } from '../home/Nav';
 import { Hero } from '../home/Hero';
@@ -8,11 +10,20 @@ import { Process } from '../home/Process';
 import { Contact, Footer, Testimonial, WhatsAppFloat } from '../home/Closing';
 import { Faq } from '../home/Faq';
 import { useReveal } from '../home/useReveal';
+import { useInteractiveMotion } from '../home/motion';
+
+/**
+ * Límite de hidratación: el HTML ya viene prerenderizado, y cada sección envuelta se
+ * hidrata en su propia pasada (React cede el hilo entre una y otra). Así la carga no
+ * genera una sola tarea larga. No cambia nada visible ni el HTML final.
+ */
+const Island = ({ children }: { children: ReactNode }) => <Suspense fallback={null}>{children}</Suspense>;
 
 // Home de SunRiver. Se prerenderiza en build (scripts/prerender.mjs).
 // Meta, canonical y JSON-LD viven en index.html y en src/home/schema.ts.
 const Home = () => {
     useReveal();
+    useInteractiveMotion();
 
     return (
         <div className="sr" id="top">
@@ -22,15 +33,15 @@ const Home = () => {
             <Nav />
             <main id="contenido" tabIndex={-1}>
                 <Hero />
-                <CaseStudy />
-                <Services />
-                <Guide />
-                <Process />
-                <Testimonial />
-                <Faq />
-                <Contact />
+                <Island><CaseStudy /></Island>
+                <Island><Services /></Island>
+                <Island><Guide /></Island>
+                <Island><Process /></Island>
+                <Island><Testimonial /></Island>
+                <Island><Faq /></Island>
+                <Island><Contact /></Island>
             </main>
-            <Footer />
+            <Island><Footer /></Island>
             <WhatsAppFloat />
         </div>
     );

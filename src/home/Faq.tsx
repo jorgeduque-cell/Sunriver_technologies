@@ -1,5 +1,6 @@
 import { useId, useState } from 'react';
 import { FAQS } from './content';
+import { SplitTitle } from './Words';
 
 export function Faq() {
   const baseId = useId();
@@ -16,9 +17,9 @@ export function Faq() {
   return (
     <section id="preguntas" className="sr-section sr-light" aria-labelledby="faq-title">
       <div className="sr-container sr-faq-grid">
-        <div className="sr-faq-head" data-reveal>
+        <div className="sr-faq-head" data-reveal="words">
           <h2 id="faq-title" className="sr-h2">
-            Preguntas <span className="sr-serif">frecuentes</span>
+            <SplitTitle lead="Preguntas" accent="frecuentes" />
           </h2>
         </div>
 

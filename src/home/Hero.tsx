@@ -1,11 +1,12 @@
 import { useState } from 'react';
 import { CountUp } from './CountUp';
+import { HeroRiver } from './HeroRiver';
 import { ArrowRight, CheckIcon, PauseIcon, PlayIcon } from './icons';
 import { PROJECTS } from './content';
 
 function ReelCard() {
   return (
-    <article className="sr-card sr-card--panel sr-reel" aria-label="Resultado del reel 007">
+    <article className="sr-card sr-card--panel sr-reel sr-tilt" data-tilt="7" aria-label="Resultado del reel 007">
       <div className="sr-card-top">
         <span className="sr-label">Reel 007 · Cuenta propia</span>
         <span className="sr-label sr-label--accent">37 horas</span>
@@ -33,7 +34,8 @@ function BotCard() {
   const [paused, setPaused] = useState(false);
   return (
     <article
-      className="sr-card sr-card--paper sr-bot"
+      className="sr-card sr-card--paper sr-bot sr-tilt"
+      data-tilt="7"
       aria-label="Ejemplo del bot de comentarios"
       data-paused={paused ? 'true' : 'false'}
     >
@@ -80,13 +82,20 @@ export function Hero() {
   return (
     <>
       <section className="sr-hero sr-dark" aria-labelledby="hero-title">
+        <HeroRiver />
         <div className="sr-container sr-hero-grid">
           <div className="sr-hero-copy">
             <p className="sr-label sr-hero-label">Contenido + automatización con IA · Bogotá</p>
             <h1 id="hero-title" className="sr-h1">
               <span className="sr-h1-line">Hacemos que te vean.</span>{' '}
               <span className="sr-h1-line sr-serif sr-accent-text">
-                Y que nadie se quede sin respuesta.
+                Y que nadie se quede{' '}
+                <span className="sr-underline">
+                  sin respuesta.
+                  <svg className="sr-swoosh" viewBox="0 0 300 20" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+                    <path d="M3 14.5c46-7.5 98-10.5 150-9.5 50 1 98 4.5 144 9" pathLength="1" />
+                  </svg>
+                </span>
               </span>
             </h1>
             <p className="sr-lead sr-hero-lead">
@@ -94,7 +103,7 @@ export function Hero() {
               persona que llega: en Instagram, en WhatsApp y en tu web.
             </p>
             <div className="sr-actions">
-              <a href="#contacto" className="sr-btn sr-btn--primary">
+              <a href="#contacto" className="sr-btn sr-btn--primary" data-magnetic>
                 Agenda tu diagnóstico de 15 min
                 <ArrowRight className="sr-arrow" size={18} />
               </a>
