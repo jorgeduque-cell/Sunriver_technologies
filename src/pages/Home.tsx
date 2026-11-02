@@ -11,6 +11,7 @@ import { Process } from '../home/Process';
 import { Contact, Footer, Testimonial, WhatsAppFloat } from '../home/Closing';
 import { Faq } from '../home/Faq';
 import { useReveal } from '../home/useReveal';
+import { GuidePopup } from '../home/GuidePopup';
 import { IntroScene } from '../home/IntroScene';
 import { useCursorGlow, useInteractiveMotion, useScrollSkew } from '../home/motion';
 
@@ -74,6 +75,7 @@ const Home = () => {
             </main>
             <Island><Footer /></Island>
             <WhatsAppFloat />
+            <GuidePopup />
         </div>
     );
 };

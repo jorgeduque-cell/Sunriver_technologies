@@ -5,7 +5,7 @@
             "destination": "/api/:path*"
         },
         {
-            "source": "/((?!api/|assets/|fonts/|favicon|apple-touch-icon|og-image|robots.txt|sitemap.xml).+)",
+            "source": "/((?!api/|assets/|fonts/|guias/|favicon|apple-touch-icon|og-image|robots.txt|sitemap.xml).+)",
             "destination": "/spa.html"
         }
     ],

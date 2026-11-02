@@ -322,3 +322,59 @@
     }
   }
 }
+
+/* ---------- Pop-up de descarga de la guía (llegadas desde Instagram) ---------- */
+.sr-popup {
+  width: min(92vw, 460px);
+  max-height: 92dvh;
+  padding: 0;
+  border: 0;
+  border-radius: 24px;
+  background: var(--paper);
+  color: var(--fg);
+  overflow: visible;
+}
+.sr-popup::backdrop { background: rgba(8, 9, 11, 0.72); backdrop-filter: blur(6px); }
+.sr-popup-card { position: relative; padding: 40px 32px 28px; }
+.sr-popup-close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 44px;
+  height: 44px;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  font-size: 30px;
+  line-height: 1;
+  color: var(--fg);
+  cursor: pointer;
+}
+.sr-popup-close:hover { background: rgba(14, 15, 18, 0.08); }
+.sr-popup-title {
+  margin-top: 12px;
+  font-size: clamp(26px, 7vw, 34px);
+  font-weight: 800;
+  line-height: 1.08;
+  letter-spacing: -0.03em;
+}
+.sr-popup-title .sr-serif { font-size: 1.08em; color: #c2410c; }
+.sr-popup-text { margin-top: 14px; font-size: 16px; line-height: 1.55; color: var(--fg-body); }
+.sr-popup-cta { margin-top: 24px; width: 100%; justify-content: center; }
+.sr-popup-skip {
+  display: block;
+  margin: 12px auto 0;
+  padding: 10px 16px;
+  border: 0;
+  background: none;
+  font-size: 15px;
+  color: var(--fg-body);
+  text-decoration: underline;
+  cursor: pointer;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .sr-popup[open] { animation: sr-popup-in 0.45s cubic-bezier(0.16, 1, 0.3, 1); }
+  .sr-popup[open]::backdrop { animation: sr-fade-in 0.35s ease; }
+  @keyframes sr-popup-in { from { opacity: 0; translate: 0 24px; scale: 0.96; } }
+  @keyframes sr-fade-in { from { opacity: 0; } }
+}
