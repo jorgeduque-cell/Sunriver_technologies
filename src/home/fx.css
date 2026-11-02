@@ -332,10 +332,11 @@
   border-radius: 24px;
   background: var(--paper);
   color: var(--fg);
-  overflow: visible;
+  overflow-y: auto;
+  overscroll-behavior: contain;
 }
 .sr-popup::backdrop { background: rgba(8, 9, 11, 0.72); backdrop-filter: blur(6px); }
-.sr-popup-card { position: relative; padding: 40px 32px 28px; }
+.sr-popup-card { position: relative; padding: 36px 32px 28px; text-align: center; }
 .sr-popup-close {
   position: absolute;
   top: 10px;
@@ -351,6 +352,19 @@
   cursor: pointer;
 }
 .sr-popup-close:hover { background: rgba(14, 15, 18, 0.08); }
+.sr-popup-cover {
+  width: min(46%, 180px, 26dvh);
+  margin: 0 auto 22px;
+  perspective: 900px;
+}
+.sr-popup-cover img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 6px 10px 10px 6px;
+  box-shadow: -3px 0 0 rgba(0, 0, 0, 0.35), 0 22px 40px -14px rgba(14, 15, 18, 0.55), 0 6px 14px rgba(14, 15, 18, 0.25);
+  transform: rotateY(-9deg) rotateX(2deg);
+}
 .sr-popup-title {
   margin-top: 12px;
   font-size: clamp(26px, 7vw, 34px);
@@ -375,6 +389,8 @@
 @media (prefers-reduced-motion: no-preference) {
   .sr-popup[open] { animation: sr-popup-in 0.45s cubic-bezier(0.16, 1, 0.3, 1); }
   .sr-popup[open]::backdrop { animation: sr-fade-in 0.35s ease; }
+  .sr-popup[open] .sr-popup-cover img { animation: sr-cover-in 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.15s backwards; }
+  @keyframes sr-cover-in { from { opacity: 0; transform: rotateY(-35deg) translateY(20px) scale(0.92); } }
   @keyframes sr-popup-in { from { opacity: 0; translate: 0 24px; scale: 0.96; } }
   @keyframes sr-fade-in { from { opacity: 0; } }
 }
