@@ -1054,6 +1054,8 @@ html:not(.js) .sr-anim-toggle { display: none; }
   display: flex;
   flex-direction: column;
   justify-content: center;
+  /* Si en una pantalla muy baja no cabe, se recorta por abajo, nunca el título */
+  justify-content: safe center;
   padding: 16px 0 84px;
   overflow: hidden;
 }
@@ -1074,13 +1076,30 @@ html:not(.js) .sr-anim-toggle { display: none; }
   gap: clamp(28px, 3.4vw, 56px);
   max-width: none;
   margin: 0;
-  padding-inline: max(var(--gutter), calc((100vw - var(--container)) / 2)) 10vw;
+  padding-inline: max(var(--gutter), calc((100vw - var(--container)) / 2)) 0;
   translate: var(--rail-x, 0) 0;
+}
+/* Margen final como elemento real: el padding del final no cuenta en scrollWidth, y sin esto
+   la última tarjeta terminaba pegada al borde, debajo de la regla de profundidad. */
+.sr-projects[data-mode='pinned'] .sr-rail::after {
+  content: '';
+  flex: none;
+  align-self: stretch; /* con alto 0, Chrome no lo cuenta en scrollWidth */
+  width: max(var(--gutter), calc((100vw - var(--container)) / 2), 72px);
 }
 /* El ancho depende también del alto: en pantallas bajas el título no se corta */
 .sr-projects[data-mode='pinned'] .sr-rail-card { flex: none; width: clamp(240px, min(32vw, 54vh), 500px); }
 .sr-projects[data-mode='pinned'] .sr-rail-card:nth-child(even) { margin-top: 5vh; }
-.sr-rail-card .sr-media { border-radius: 4px; box-shadow: 0 30px 60px -30px rgba(0, 0, 0, 0.6); }
+/* Ventanas muy bajas (portátil con zoom, navegador con barras): tarjetas más chicas para que
+   título, fotos y pies quepan por encima de la barra flotante */
+@media (max-height: 560px) {
+  .sr-projects[data-mode='pinned'] .sr-rail-card { width: clamp(200px, min(30vw, 44vh), 500px); }
+  .sr-projects[data-mode='pinned'] .sr-rail-head { margin-bottom: 20px; }
+}
+/* Todas las tarjetas en 4:3: la portada vertical de la guía se ve completa dentro del marco
+   (object-fit: contain) en vez de estirar la fila y empujar el título fuera de la pantalla.
+   !important porque MediaSlot fija la proporción de cada foto en línea. */
+.sr-rail-card .sr-media { aspect-ratio: 4 / 3 !important; border-radius: 4px; box-shadow: 0 30px 60px -30px rgba(0, 0, 0, 0.6); }
 .sr-rail-cap { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 12px; margin-top: 14px; font-size: 14px; }
 .sr-rail-name { font-weight: 600; color: var(--fg); }
 .sr-rail-detail { color: var(--fg-muted); }
