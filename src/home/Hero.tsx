@@ -123,7 +123,7 @@ export function Hero() {
           <Tile num="03" foot="Bot de comentarios · en vivo">
             <BotDemo />
           </Tile>
-          <Tile num="04" foot="Proyecto" media="proyecto-pyp" value="PyP Liquors" caption="página web con CRM" />
+          <Tile num="04" foot="Proyecto" media="proyecto-pyp" still value="PyP Liquors" caption="página web con CRM" />
           <Tile num="05" foot="Proyecto" media="proyecto-venco" still value="Venco Oil" caption="inventario, clientes y rutas" />
         </ol>
       </div>
