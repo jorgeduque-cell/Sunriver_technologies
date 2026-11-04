@@ -1115,8 +1115,112 @@ html:not(.js) .sr-anim-toggle { display: none; }
 .sr-rail-detail { color: var(--fg-muted); }
 .sr-rail-desc { margin-top: 6px; max-width: 44ch; font-size: 14px; line-height: 1.45; color: var(--fg-body); text-wrap: pretty; }
 
+/* ---------- Tarjeta que abre la ficha del proyecto ---------- */
+.sr-rail-card { position: relative; }
+/* El botón cubre toda la tarjeta (área de clic); los controles del carrusel (z-index 4) quedan encima. */
+.sr-rail-open { position: absolute; inset: 0; z-index: 3; border-radius: 4px; cursor: pointer; }
+.sr-rail-open:focus-visible { outline: 2px solid var(--focus); outline-offset: 6px; }
+.sr-rail-open-chip {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 36px;
+  padding: 0 14px;
+  border-radius: 999px;
+  background: rgba(11, 12, 15, 0.78);
+  backdrop-filter: blur(6px);
+  color: var(--foam);
+  font-size: 13px;
+  font-weight: 600;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+.sr-rail-card--open:hover .sr-rail-open-chip,
+.sr-rail-open:focus-visible .sr-rail-open-chip { background: var(--sun); color: var(--ink); }
+.sr-rail-open-chip svg { transition: translate 0.25s var(--ease-out); }
+.sr-rail-card--open:hover .sr-rail-open-chip svg { translate: 3px 0; }
+.sr-rail-card--open .sr-media { transition: box-shadow 0.3s ease; }
+.sr-rail-card--open:hover .sr-media { box-shadow: 0 0 0 2px var(--sun), 0 30px 60px -30px rgba(0, 0, 0, 0.6); }
+.sr-rail-card .sr-carousel-bar { z-index: 4; }
+@media (pointer: coarse) { .sr-rail-open-chip { min-height: 40px; } }
+
+/* ---------- Ficha del proyecto (modal) ---------- */
+.sr-project-dialog {
+  width: min(1120px, calc(100vw - 32px));
+  max-width: none;
+  max-height: calc(100dvh - 32px);
+  margin: auto;
+  padding: 0;
+  border: 0;
+  border-radius: 14px;
+  background: transparent;
+  color: inherit;
+  overflow: hidden;
+  overscroll-behavior: contain;
+}
+.sr-project-dialog::backdrop { background: rgba(4, 10, 20, 0.8); backdrop-filter: blur(6px); }
+.sr-project-card {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+  /* Alto fijo: la columna de texto se desplaza por dentro y la foto queda centrada. */
+  grid-template-rows: minmax(0, 1fr);
+  height: min(calc(100dvh - 32px), 820px);
+  background: var(--abyss);
+  color: var(--fg);
+  box-shadow: 0 40px 120px -40px rgba(0, 0, 0, 0.8);
+}
+.sr-project-media { position: relative; display: grid; align-items: center; padding: 28px; background: linear-gradient(160deg, var(--river-deep), #071A33); }
+.sr-project-media .sr-media { border-radius: 8px; box-shadow: 0 30px 60px -30px rgba(0, 0, 0, 0.7); }
+.sr-project-body { overflow-y: auto; overscroll-behavior: contain; padding: 44px 40px 32px; }
+.sr-project-close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 5;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 999px;
+  background: rgba(247, 243, 236, 0.08);
+  color: var(--fg);
+  font-size: 26px;
+  line-height: 1;
+}
+.sr-project-close:hover { background: rgba(247, 243, 236, 0.16); }
+.sr-project-title { margin-top: 12px; font-size: clamp(30px, 3.2vw, 44px); font-weight: 800; line-height: 1.02; letter-spacing: -0.035em; }
+.sr-project-intro { margin-top: 16px; font-size: 16.5px; line-height: 1.6; color: var(--fg-body); }
+.sr-project-results { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin-top: 22px; }
+.sr-project-results li { padding: 12px 14px; border: 1px solid var(--line); border-radius: 10px; font-weight: 700; font-size: 15px; }
+.sr-project-results li:first-child { color: var(--accent-word); }
+.sr-project-h3 { margin-top: 30px; font-family: var(--font-mono); font-size: 13px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: var(--fg-muted); }
+.sr-project-steps { margin-top: 10px; border-top: 1px solid var(--line); }
+.sr-project-steps li { display: grid; grid-template-columns: 34px minmax(0, 1fr); gap: 4px 12px; padding: 14px 0; border-bottom: 1px solid var(--line); }
+.sr-project-steps .sr-num { padding-top: 3px; color: var(--accent-word); }
+.sr-project-steps h4 { font-size: 16px; font-weight: 700; }
+.sr-project-steps p { margin-top: 4px; font-size: 15px; line-height: 1.55; color: var(--fg-body); }
+.sr-project-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+.sr-project-tags li { padding: 7px 12px; border: 1px solid var(--line-strong); border-radius: 999px; font-size: 13.5px; color: var(--fg-body); }
+.sr-project-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
+.sr-project-nav { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 28px; padding-top: 16px; border-top: 1px solid var(--line); font-family: var(--font-mono); font-size: 13px; color: var(--fg-muted); }
+.sr-project-nav button { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 0 6px; color: var(--fg); font-family: var(--font-sans); font-size: 14px; font-weight: 600; }
+.sr-project-nav button:hover { color: var(--accent-word); }
+.sr-project-prev { rotate: 180deg; }
+@media (max-width: 899px) {
+  .sr-project-dialog { overflow-y: auto; }
+  .sr-project-card { grid-template-columns: 1fr; grid-template-rows: none; height: auto; }
+  .sr-project-media { padding: 56px 16px 16px; }
+  .sr-project-body { overflow: visible; padding: 24px 20px 24px; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .sr-project-dialog[open] { animation: sr-popup-in 0.45s cubic-bezier(0.16, 1, 0.3, 1); }
+  .sr-project-dialog[open]::backdrop { animation: sr-fade-in 0.35s ease; }
+}
+
 /* ---------- Carrusel de capturas (dentro de un marco de foto) ---------- */
-.sr-carousel { isolation: isolate; }
 .sr-carousel-slide {
   position: absolute;
   inset: 0;

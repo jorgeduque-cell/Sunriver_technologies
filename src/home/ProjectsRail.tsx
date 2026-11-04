@@ -4,6 +4,11 @@ import type { MediaId } from './media';
 import { MediaSlot } from './MediaSlot';
 import { usePinnedProgress } from './motion';
 import { SplitTitle } from './Words';
+import { ArrowRight } from './icons';
+import { ProjectDialog } from './ProjectDialog';
+
+/** Índices de los proyectos que tienen ficha (para "Anterior / Siguiente" dentro de la ficha). */
+const withMore = PROJECT_ITEMS.flatMap((item, i) => (item.more ? [i] : []));
 
 /**
  * Galería horizontal: en escritorio la sección queda fija y las tarjetas avanzan de lado
@@ -13,6 +18,8 @@ export function ProjectsRail() {
   const trackRef = useRef<HTMLDivElement>(null);
   const railRef = useRef<HTMLUListElement>(null);
   const [pinned, setPinned] = useState(false);
+  const [open, setOpen] = useState<number | null>(null);
+  const openItem = open === null ? null : PROJECT_ITEMS[open];
 
   usePinnedProgress(
     trackRef,
@@ -90,20 +97,44 @@ export function ProjectsRail() {
                 </>
               );
               return (
-                <li key={item.name} className="sr-rail-card">
-                  {'href' in item ? (
+                <li key={item.name} className={`sr-rail-card${item.more ? ' sr-rail-card--open' : ''}`}>
+                  {item.href ? (
                     <a href={item.href} className="sr-rail-link">
                       {body}
                     </a>
                   ) : (
                     body
                   )}
+                  {item.more ? (
+                    // El botón cubre toda la tarjeta y abre la ficha; los controles del carrusel
+                    // quedan por encima y siguen funcionando.
+                    <button type="button" className="sr-rail-open" aria-haspopup="dialog" onClick={() => setOpen(i)}>
+                      <span className="sr-rail-open-chip">
+                        Ver cómo funciona
+                        <span className="sr-visually-hidden">: {item.name}</span>
+                        <ArrowRight size={14} />
+                      </span>
+                    </button>
+                  ) : null}
                 </li>
               );
             })}
           </ul>
         </div>
       </div>
+      {openItem?.more ? (
+        <ProjectDialog
+          project={{ ...openItem, more: openItem.more }}
+          number={(open ?? 0) + 1}
+          position={withMore.indexOf(open ?? -1)}
+          total={withMore.length}
+          onClose={() => setOpen(null)}
+          onStep={(step) => {
+            const at = withMore.indexOf(open ?? -1);
+            setOpen(withMore[(at + step + withMore.length) % withMore.length]);
+          }}
+        />
+      ) : null}
     </section>
   );
 }

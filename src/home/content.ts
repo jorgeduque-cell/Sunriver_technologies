@@ -235,40 +235,178 @@ export const CASE_STATS = [
   { text: '99,6 %', key: 'no_nos_seguía' },
 ] as const;
 
+/** Ficha que se abre al hacer clic en un proyecto: solo hechos que contó el cliente o que se ven en sus capturas. */
+export type ProjectMore = {
+  intro: string;
+  how: readonly { title: string; text: string }[];
+  includes: readonly string[];
+  results?: readonly string[];
+  link?: { href: string; label: string };
+};
+
 /**
  * Galería horizontal de proyectos y piezas. `media` apunta a un espacio de foto de media.ts.
- * `detail` es la etiqueta corta junto al nombre; `desc`, una frase con lo que hace.
+ * `detail` es la etiqueta corta junto al nombre; `desc`, una frase con lo que hace; `more`, la ficha.
  */
-export const PROJECT_ITEMS = [
+export const PROJECT_ITEMS: readonly {
+  name: string;
+  detail: string;
+  desc: string;
+  media: string;
+  href?: string;
+  more?: ProjectMore;
+}[] = [
   {
     name: 'PyP Liquors',
     detail: 'Página web + CRM',
     desc: 'Una página web con un CRM detrás que gestiona todo el negocio en un solo lugar.',
     media: 'proyecto-pyp',
+    more: {
+      intro:
+        'Una página pública para que la gente conozca el lugar y reserve, y un CRM detrás para que el equipo gestione todo el negocio desde su propio panel.',
+      how: [
+        {
+          title: 'La página pública',
+          text: 'Historia, galería, eventos, menú y contacto, con botones directos para reservar mesa y ver los próximos eventos.',
+        },
+        {
+          title: 'Contacto inmediato',
+          text: 'Desde cualquier página se puede reservar o escribir por WhatsApp, sin buscar un número.',
+        },
+        {
+          title: 'El panel administrativo',
+          text: 'Detrás de la página hay un panel al que solo entra el personal autorizado, con su usuario y contraseña.',
+        },
+        {
+          title: 'El CRM del negocio',
+          text: 'Desde ese panel se gestiona el negocio: clientes y operación en un solo lugar, en vez de hojas sueltas y chats.',
+        },
+      ],
+      includes: ['Página web a la medida', 'Reservas y eventos', 'Botón de WhatsApp', 'Panel con acceso restringido', 'CRM del negocio'],
+    },
   },
   {
     name: 'Venco Oil',
     detail: 'Sistema de gestión',
     desc: 'Inventario, clientes, facturas y rutas de venta en un solo sistema, también desde el celular.',
     media: 'proyecto-venco',
+    more: {
+      intro:
+        'Un sistema para llevar todo el negocio desde el celular: inventario, clientes, pedidos y facturas, y la ruta de visitas de cada semana.',
+      how: [
+        {
+          title: 'Clientes',
+          text: 'La cartera completa con tipo de negocio, zona y prioridad. Marca quién no ha sido visitado, quién está en riesgo y qué seguimientos se vencieron.',
+        },
+        {
+          title: 'Pedidos y facturas',
+          text: 'Cada pedido pasa de cotizado a entregado y cobrado, con su número, su fecha, su total y la ganancia que deja.',
+        },
+        {
+          title: 'Ruta de la semana',
+          text: 'Qué zonas visitar cada día, cuántas visitas presenciales y llamadas se hicieron, y cómo va la meta acumulada.',
+        },
+        {
+          title: 'Precios e informes',
+          text: 'Lista de precios vigente con costos y márgenes, indicadores del negocio y exportación a Excel.',
+        },
+        {
+          title: 'Inventario y respaldo',
+          text: 'El inventario vive en el mismo sistema, con respaldo para exportar o restaurar la información y sincronización al día.',
+        },
+      ],
+      includes: ['Inventario', 'Clientes y seguimiento', 'Pedidos y facturas', 'Rutas de visita', 'Meta semanal', 'Informes y Excel', 'Respaldo y sincronización'],
+    },
   },
   {
     name: 'GESSEG Colombia',
     detail: 'Web a la medida',
     desc: 'Una página web personalizada, construida según los requerimientos del cliente.',
     media: 'proyecto-gesseg',
+    more: {
+      intro:
+        'Una página web hecha a la medida para GESSEG Colombia, una firma de soluciones en SG-SST (seguridad y salud en el trabajo), según lo que el cliente necesitaba mostrar.',
+      how: [
+        {
+          title: 'Desde los requerimientos',
+          text: 'Partimos de lo que el cliente necesitaba: qué ofrece, a quién le habla y qué debe hacer quien entra a la página.',
+        },
+        {
+          title: 'Un mensaje claro',
+          text: 'Desde el primer pantallazo se entiende qué hace la empresa, con secciones de nosotros, servicios y planes.',
+        },
+        {
+          title: 'Del interés al contacto',
+          text: 'Un botón para solicitar un diagnóstico y contacto directo por WhatsApp en toda la página.',
+        },
+      ],
+      includes: ['Diseño a la medida', 'Nosotros, servicios y planes', 'Solicitud de diagnóstico', 'Botón de WhatsApp'],
+      link: { href: 'https://gessegcolombia.com/', label: 'Ver la página' },
+    },
   },
   {
     name: 'Eventos deportivos 90+1',
     detail: 'Bot de reservas',
     desc: 'Un bot de alta frecuencia conectado a la página de reservas con una API propia, porque la página no tenía una pública.',
     media: 'proyecto-90mas1',
+    more: {
+      intro:
+        'Un bot que reserva canchas para Eventos deportivos 90+1 en cuanto se liberan. La página de reservas no tenía una API pública, así que construimos una propia para conectarnos directamente.',
+      how: [
+        {
+          title: 'Una API propia',
+          text: 'El bot habla directo con la página de reservas, sin depender de abrirla a mano, porque la página no ofrecía una conexión pública.',
+        },
+        {
+          title: 'Alta frecuencia',
+          text: 'Revisa la disponibilidad de varias sedes cada pocos segundos y reserva apenas aparece un cupo.',
+        },
+        {
+          title: 'Aviso por Telegram',
+          text: 'Envía la cancha, la fecha, el horario, el valor y el enlace de pago. Desde ahí quedan 15 minutos para pagar.',
+        },
+        {
+          title: 'Respeta los límites',
+          text: 'Si la página pide bajar la velocidad, el bot hace una pausa y sigue después.',
+        },
+        {
+          title: 'Reporte de cada jornada',
+          text: 'Al terminar envía un resumen con las reservas logradas, los cupos vistos y los errores.',
+        },
+      ],
+      includes: ['API propia', 'Reserva automática', 'Avisos por Telegram', 'Enlace de pago', 'Reporte por jornada'],
+    },
   },
   {
     name: 'Reel 007',
     detail: 'Contenido propio',
     desc: '1 millón de vistas en nuestra cuenta. Las primeras 49.000 llegaron en 37 horas.',
     media: 'proyecto-reel',
+    more: {
+      intro:
+        '«¿Una IA rompió una regla de 25 años?», un reel de nuestra propia cuenta. Antes de ofrecer el método a un cliente, lo probamos en lo nuestro.',
+      how: [
+        {
+          title: 'El primer segundo decide',
+          text: 'Un titular grande desde el primer cuadro. Cuando lo aplicamos, los saltos bajaron de 39 % a 20 %.',
+        },
+        {
+          title: 'Una historia, no un anuncio',
+          text: 'Historias reales con pocas cifras, cada una con una comparación. La gente se quedó casi 47 segundos de promedio.',
+        },
+        {
+          title: 'Prometer la continuación',
+          text: 'Cerrar con «cuando salga, te lo cuento». Pasamos de un máximo de 2 seguidores por reel a 425.',
+        },
+        {
+          title: 'Medir y repetir',
+          text: 'Cada reel se mide a las 24 horas y a los 7 días. Lo que funciona se vuelve regla.',
+        },
+      ],
+      includes: ['Titular desde el primer cuadro', 'Historia real con pocas cifras', 'Cierre que promete continuación', 'Medición a las 24 h y a los 7 días'],
+      results: ['1 millón de vistas', '49.000 en las primeras 37 horas', '+425 seguidores nuevos', '99,6 % no nos seguía'],
+      link: { href: CONTACT.instagramUrl, label: 'Ver en Instagram' },
+    },
   },
   {
     name: 'Guía: 7 trampas con IA',

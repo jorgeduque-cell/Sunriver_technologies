@@ -86,7 +86,7 @@ export function Hero() {
         <div className="sr-hero-top">
           <span className="sr-label">SunRiver Solution</span>
           <SunRiverMark size={42} idPrefix="srm-hero" className="sr-hero-mark" />
-          <span className="sr-label sr-hero-top-right">Contenido + automatización con IA · Bogotá</span>
+          <span className="sr-label sr-hero-top-right">Contenido + automatización con IA</span>
         </div>
 
         <p className="sr-wordmark" aria-hidden="true">
