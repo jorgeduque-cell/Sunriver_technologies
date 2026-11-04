@@ -993,13 +993,19 @@ html:not(.js) .sr-anim-toggle { display: none; }
 
 .sr-stats {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0 24px;
   margin-bottom: clamp(48px, 8vh, 96px);
   border-block: 1px solid var(--line);
 }
 .sr-stats > div { padding: 22px 0; }
-.sr-stats > div:nth-child(2) { text-align: center; }
-.sr-stats > div:nth-child(3) { text-align: right; }
+/* Cuatro cifras en fila solo donde caben; cada etiqueta va debajo de su cifra. */
+@media (min-width: 1024px) {
+  .sr-stats { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .sr-stats > div:not(:first-child):not(:last-child) { text-align: center; }
+  .sr-stats > div:last-child { text-align: right; }
+}
+.sr-stats-key { display: block; margin-top: 6px; }
 .sr-stats dd { margin: 0; font-family: var(--font-mono); font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--fg-muted); }
 .sr-stats-value {
   font-family: var(--font-sans);
@@ -1093,8 +1099,12 @@ html:not(.js) .sr-anim-toggle { display: none; }
 /* Ventanas muy bajas (portátil con zoom, navegador con barras): tarjetas más chicas para que
    título, fotos y pies quepan por encima de la barra flotante */
 @media (max-height: 560px) {
-  .sr-projects[data-mode='pinned'] .sr-rail-card { width: clamp(200px, min(30vw, 44vh), 500px); }
-  .sr-projects[data-mode='pinned'] .sr-rail-head { margin-bottom: 20px; }
+  .sr-projects[data-mode='pinned'] .sr-rail-card { width: clamp(220px, min(30vw, 46vh), 500px); }
+  .sr-projects[data-mode='pinned'] .sr-rail-card:nth-child(even) { margin-top: 0; }
+  .sr-projects[data-mode='pinned'] .sr-rail-head { margin-bottom: 16px; }
+  .sr-projects[data-mode='pinned'] .sr-rail-head .sr-label { margin-bottom: 8px; }
+  .sr-projects[data-mode='pinned'] .sr-rail-head .sr-h2 { font-size: clamp(30px, 7.5vh, 44px); }
+  .sr-projects[data-mode='pinned'] .sr-rail-desc { font-size: 13px; line-height: 1.4; }
 }
 /* Todas las tarjetas en 4:3: la portada vertical de la guía se ve completa dentro del marco
    (object-fit: contain) en vez de estirar la fila y empujar el título fuera de la pantalla.
@@ -1103,6 +1113,46 @@ html:not(.js) .sr-anim-toggle { display: none; }
 .sr-rail-cap { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 12px; margin-top: 14px; font-size: 14px; }
 .sr-rail-name { font-weight: 600; color: var(--fg); }
 .sr-rail-detail { color: var(--fg-muted); }
+.sr-rail-desc { margin-top: 6px; max-width: 44ch; font-size: 14px; line-height: 1.45; color: var(--fg-body); text-wrap: pretty; }
+
+/* ---------- Carrusel de capturas (dentro de un marco de foto) ---------- */
+.sr-carousel { isolation: isolate; }
+.sr-carousel-slide {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 0.6s var(--ease-out);
+}
+.sr-carousel-slide[data-active] { opacity: 1; }
+.sr-carousel-slide img { display: block; width: 100%; height: 100%; object-fit: contain; padding: 5% 6% 16%; }
+.sr-carousel-bar {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding: 3px;
+  border-radius: 999px;
+  background: rgba(11, 12, 15, 0.72);
+  backdrop-filter: blur(6px);
+  color: var(--foam);
+}
+.sr-carousel-btn {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 999px;
+  color: inherit;
+  transition: background-color 0.2s ease;
+}
+.sr-carousel-btn:hover { background: rgba(247, 243, 236, 0.14); }
+.sr-carousel-btn--prev svg { rotate: 180deg; }
+.sr-carousel-count { min-width: 44px; text-align: center; font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.06em; }
+@media (pointer: coarse) { .sr-carousel-btn { width: 44px; height: 44px; } }
+@media (prefers-reduced-motion: reduce) { .sr-carousel-slide { transition: none; } }
 .sr-rail-link { display: block; border-radius: 4px; }
 .sr-rail-link:hover .sr-rail-name { text-decoration: underline; text-underline-offset: 4px; }
 

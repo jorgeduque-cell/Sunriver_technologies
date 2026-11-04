@@ -47,6 +47,7 @@ function Tile({
   media,
   value,
   caption,
+  still = false,
   children,
 }: {
   num: string;
@@ -54,12 +55,14 @@ function Tile({
   media?: MediaId;
   value?: ReactNode;
   caption?: string;
+  /** Si la foto es un carrusel, aquí se muestra solo la primera imagen (la tarjeta es chica). */
+  still?: boolean;
   children?: ReactNode;
 }) {
   return (
     <li className="sr-tile">
       <figure className="sr-tile-frame sr-tilt" data-tilt="6">
-        {media ? <MediaSlot id={media} sizes="(max-width: 767px) 46vw, 20vw" /> : children}
+        {media ? <MediaSlot id={media} still={still} sizes="(max-width: 767px) 46vw, 20vw" /> : children}
         {value ? (
           <figcaption className="sr-tile-over">
             <span className="sr-tile-value">{value}</span>
@@ -107,7 +110,7 @@ export function Hero() {
                 <ArrowRight className="sr-arrow" size={18} />
               </a>
               <a href="#caso" className="sr-btn sr-btn--ghost">
-                Ver el caso de las 49.000 vistas
+                Ver el caso del millón de vistas
               </a>
             </div>
             <p className="sr-hero-note">Sin costo y sin compromiso. Te decimos qué cambiaríamos primero.</p>
@@ -115,13 +118,13 @@ export function Hero() {
         </div>
 
         <ol className="sr-tiles" aria-label="Resultados y proyectos">
-          <Tile num="01" foot="Reel 007 · cuenta propia" media="proyecto-reel" value={<CountUp value={49000} />} caption="vistas en 37 horas" />
+          <Tile num="01" foot="Reel 007 · cuenta propia" media="proyecto-reel" value={<CountUp value={1000000} />} caption="vistas · las primeras 49.000 en 37 h" />
           <Tile num="02" foot="El mismo reel" media="cuenta-estadisticas" value="+425" caption="seguidores nuevos" />
           <Tile num="03" foot="Bot de comentarios · en vivo">
             <BotDemo />
           </Tile>
-          <Tile num="04" foot="Proyecto" media="proyecto-pyp" value="PyP Liquors" caption="club de fidelización" />
-          <Tile num="05" foot="Proyecto" media="proyecto-venco" value="Venco Oil" caption="datos y asistente" />
+          <Tile num="04" foot="Proyecto" media="proyecto-pyp" value="PyP Liquors" caption="página web con CRM" />
+          <Tile num="05" foot="Proyecto" media="proyecto-venco" still value="Venco Oil" caption="inventario, clientes y rutas" />
         </ol>
       </div>
     </section>

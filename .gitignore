@@ -33,3 +33,6 @@ yarn-error.log*
 
 # Build SSR temporal del prerender
 dist-ssr/
+
+# Capturas originales para la home (tienen datos privados; a la web van las procesadas)
+fotos-originales/

@@ -4,7 +4,7 @@
 // 3) Este script:
 //    - guarda el shell vacío como dist/spa.html (fallback para el resto de rutas),
 //    - escribe dist/index.html con el HTML de la home ya renderizado + canonical + JSON-LD.
-// Así la home se lee completa sin JavaScript (y Google ve "49.000", nunca "0").
+// Así la home se lee completa sin JavaScript (y Google ve "1.000.000", nunca "0").
 import { readFile, writeFile, rm } from 'node:fs/promises'
 import path from 'node:path'
 import { fileURLToPath, pathToFileURL } from 'node:url'
@@ -23,8 +23,8 @@ if (!template.includes(ROOT_MARK) || !template.includes(HEAD_MARK)) {
 
 const { render, homeHeadTags } = await import(pathToFileURL(path.join(ssrDir, 'entry-server.js')).href)
 const appHtml = render('/')
-if (!appHtml.includes('data-countup="pending">49.000<')) {
-  throw new Error('prerender: el HTML de la home no contiene la cifra final (49.000)')
+if (!appHtml.includes('data-countup="pending">1.000.000<')) {
+  throw new Error('prerender: el HTML de la home no contiene la cifra final (1.000.000)')
 }
 
 await writeFile(path.join(distDir, 'spa.html'), template.replace(HEAD_MARK, ''))

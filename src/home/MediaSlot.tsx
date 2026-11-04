@@ -1,4 +1,5 @@
 import { MEDIA, type MediaId } from './media';
+import { MediaCarousel } from './MediaCarousel';
 
 /**
  * Foto de la home o, si todavía no existe, un bloque con la paleta de marca y la etiqueta
@@ -10,6 +11,7 @@ export function MediaSlot({
   sizes = '(max-width: 767px) 92vw, 40vw',
   eager = false,
   decorative = false,
+  still = false,
 }: {
   id: MediaId;
   className?: string;
@@ -17,9 +19,18 @@ export function MediaSlot({
   eager?: boolean;
   /** Dentro de un bloque ya oculto a lectores de pantalla (p. ej. caras del cubo). */
   decorative?: boolean;
+  /** Con varias imágenes, mostrar solo la primera (donde no cabe un carrusel). */
+  still?: boolean;
 }) {
-  const m = MEDIA[id];
-  const cls = ['sr-media', m.contain ? 'sr-media--contain' : '', className ?? ''].filter(Boolean).join(' ');
+  const base = MEDIA[id];
+  const first = base.slides?.[0];
+  const cls = ['sr-media', base.contain ? 'sr-media--contain' : '', className ?? ''].filter(Boolean).join(' ');
+
+  if (base.slides && base.slides.length > 1 && !still && !decorative) {
+    return <MediaCarousel media={base} className={cls} />;
+  }
+  // Con carrusel pero sin espacio para él: la primera imagen, como foto normal.
+  const m = first ? { ...base, src: first.src, srcSmall: undefined, alt: first.alt } : base;
 
   if (!m.src) {
     return (

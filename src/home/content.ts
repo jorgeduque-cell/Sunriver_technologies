@@ -25,9 +25,9 @@ export const NAV_LINKS = [
 ] as const;
 
 export const PROJECTS = [
-  { name: 'PyP Liquors', detail: 'club de fidelización' },
-  { name: 'Venco Oil', detail: 'datos y asistente' },
-  { name: 'GESSEG Colombia', detail: 'sitio web' },
+  { name: 'PyP Liquors', detail: 'página web con CRM' },
+  { name: 'Venco Oil', detail: 'sistema de gestión' },
+  { name: 'GESSEG Colombia', detail: 'web a la medida' },
 ] as const;
 
 // El dato de cada tarjeta cuenta de `from` a `to` al entrar en pantalla (el valor final va en el HTML).
@@ -229,19 +229,54 @@ export const TERMINAL_LINES = [
 
 /** Franja de cifras del caso (formato mono "VALOR_CLAVE"). */
 export const CASE_STATS = [
-  { value: 49000, key: 'vistas_en_37_h' },
+  { value: 1000000, key: 'vistas_del_reel' },
+  { value: 49000, key: 'en_las_primeras_37_h' },
   { text: '+425', key: 'seguidores_nuevos' },
   { text: '99,6 %', key: 'no_nos_seguía' },
 ] as const;
 
-/** Galería horizontal de proyectos y piezas. `media` apunta a un espacio de foto de media.ts. */
+/**
+ * Galería horizontal de proyectos y piezas. `media` apunta a un espacio de foto de media.ts.
+ * `detail` es la etiqueta corta junto al nombre; `desc`, una frase con lo que hace.
+ */
 export const PROJECT_ITEMS = [
-  { name: 'PyP Liquors', detail: 'Club de fidelización', media: 'proyecto-pyp' },
-  { name: 'Venco Oil', detail: 'Datos y asistente', media: 'proyecto-venco' },
-  { name: 'GESSEG Colombia', detail: 'Sitio web', media: 'proyecto-gesseg' },
-  { name: 'Eventos deportivos 90+1', detail: 'Automatización de reservas', media: 'proyecto-90mas1' },
-  { name: 'Reel 007', detail: '49.000 vistas en 37 horas', media: 'proyecto-reel' },
-  { name: 'Guía: 7 trampas con IA', detail: 'PDF gratis de 11 páginas', media: 'guia-7-trampas', href: '#guia' },
+  {
+    name: 'PyP Liquors',
+    detail: 'Página web + CRM',
+    desc: 'Una página web con un CRM detrás que gestiona todo el negocio en un solo lugar.',
+    media: 'proyecto-pyp',
+  },
+  {
+    name: 'Venco Oil',
+    detail: 'Sistema de gestión',
+    desc: 'Inventario, clientes, facturas y rutas de venta en un solo sistema, también desde el celular.',
+    media: 'proyecto-venco',
+  },
+  {
+    name: 'GESSEG Colombia',
+    detail: 'Web a la medida',
+    desc: 'Una página web personalizada, construida según los requerimientos del cliente.',
+    media: 'proyecto-gesseg',
+  },
+  {
+    name: 'Eventos deportivos 90+1',
+    detail: 'Bot de reservas',
+    desc: 'Un bot de alta frecuencia conectado a la página de reservas con una API propia, porque la página no tenía una pública.',
+    media: 'proyecto-90mas1',
+  },
+  {
+    name: 'Reel 007',
+    detail: 'Contenido propio',
+    desc: '1 millón de vistas en nuestra cuenta. Las primeras 49.000 llegaron en 37 horas.',
+    media: 'proyecto-reel',
+  },
+  {
+    name: 'Guía: 7 trampas con IA',
+    detail: 'PDF gratis',
+    desc: '11 páginas con las 7 trampas con IA que ya usan contra negocios, explicadas en simple.',
+    media: 'guia-7-trampas',
+    href: '#guia',
+  },
 ] as const;
 
 export const STEPS = [

@@ -34,41 +34,49 @@ export type Media = {
   srcSmall?: string;
   /** Imágenes verticales (portadas) que deben verse completas dentro del marco. */
   contain?: boolean;
+  /**
+   * Varias imágenes: se muestran en carrusel dentro del mismo marco. La primera va en el HTML
+   * y es la que se ve donde no cabe un carrusel (tarjetas del inicio).
+   */
+  slides?: readonly { src: string; alt: string; width: number; height: number }[];
 };
 
 export const MEDIA: Record<MediaId, Media> = {
   'proyecto-reel': {
     label: 'Reel 007',
-    brief: 'Portada o captura del reel 007 (el de las 49.000 vistas). Horizontal 4:3.',
-    alt: 'Reel 007 de @sunriversolution',
+    brief: 'Portada del reel 007 (1 millón de vistas). Lista.',
+    alt: 'Portada del reel 007 de @sunriversolution: «¿Una IA rompió una regla de 25 años?»',
+    // El marco sigue en 4:3; la portada (vertical, 339×452) se ve completa dentro (contain).
     width: 1200,
     height: 900,
+    src: '/media/proyecto-reel.webp',
+    contain: true,
   },
   'proyecto-pyp': {
     label: 'PyP Liquors',
-    brief: 'Captura del club de fidelización de PyP Liquors (app, web o tarjeta). Horizontal 4:3.',
-    alt: 'Club de fidelización de PyP Liquors',
+    brief: 'Captura de la página web (con el CRM detrás). Horizontal.',
+    alt: 'Página web de PyP Liquors, con su CRM detrás',
     width: 1200,
     height: 900,
   },
   'proyecto-venco': {
     label: 'Venco Oil',
-    brief: 'Captura del panel de datos o del asistente de Venco Oil. Horizontal 4:3.',
-    alt: 'Datos y asistente de Venco Oil',
+    brief: 'Capturas del sistema en el celular (pedidos, clientes, ruta, más): van en carrusel.',
+    alt: 'Pantallas del sistema de gestión de Venco Oil: pedidos, clientes, ruta y ajustes',
     width: 1200,
     height: 900,
   },
   'proyecto-gesseg': {
     label: 'GESSEG Colombia',
-    brief: 'Captura del sitio web de GESSEG Colombia. Horizontal 4:3.',
-    alt: 'Sitio web de GESSEG Colombia',
+    brief: 'Captura de la página web de GESSEG Colombia. Horizontal.',
+    alt: 'Página web de GESSEG Colombia',
     width: 1200,
     height: 900,
   },
   'proyecto-90mas1': {
     label: 'Eventos deportivos 90+1',
-    brief: 'Captura de la automatización de reservas o foto de un evento de 90+1. Horizontal 4:3.',
-    alt: 'Automatización de reservas de Eventos deportivos 90+1',
+    brief: 'Capturas de los reportes del bot en Telegram: van en carrusel.',
+    alt: 'Reportes del bot de reservas de Eventos deportivos 90+1 en Telegram',
     width: 1200,
     height: 900,
   },

@@ -86,6 +86,7 @@ export function ProjectsRail() {
                     <span className="sr-rail-name">{item.name}</span>
                     <span className="sr-rail-detail">{item.detail}</span>
                   </p>
+                  <p className="sr-rail-desc">{item.desc}</p>
                 </>
               );
               return (
