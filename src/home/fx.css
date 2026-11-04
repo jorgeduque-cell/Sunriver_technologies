@@ -212,6 +212,19 @@
   .sr[data-nocurtain] .sr-hero-side { animation-delay: 0.5s; }
   .sr[data-nocurtain] .sr-tile { animation-delay: calc(0.6s + var(--n, 0) * 0.08s); }
 
+  /* Celular: sin cortina (taparía el contenido casi 4 s y anima SVG en el hilo principal);
+     el hero entra de inmediato, como al volver a la home dentro del sitio. */
+  @media (max-width: 767px) {
+    .sr-curtain { display: none; }
+    .sr-wordmark-sun { animation-delay: 0.05s; }
+    .sr-wordmark-river { animation-delay: 0.2s; }
+    .sr-h1-line { animation-delay: 0.3s; }
+    .sr-h1-line + .sr-h1-line { animation-delay: 0.45s; }
+    .sr-hero-top,
+    .sr-hero-side { animation-delay: 0.5s; }
+    .sr-tile { animation-delay: calc(0.6s + var(--n, 0) * 0.08s); }
+  }
+
   /* Parallax del nombre gigante al salir del hero (CSS puro donde se soporte) */
   @supports (animation-timeline: view()) {
     .sr-wordmark {

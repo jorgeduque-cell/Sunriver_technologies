@@ -228,7 +228,15 @@ export function useAnchorScroll() {
       target.focus({ preventScroll: true });
     };
 
+    // Cambios de #hash que no pasan por un clic (código, historial, extensiones): mismo ajuste.
+    const onHashChange = () => {
+      const id = decodeURIComponent(window.location.hash.slice(1));
+      const target = id ? document.getElementById(id) : null;
+      if (target) settle(target);
+    };
+
     document.addEventListener('click', onClick);
+    window.addEventListener('hashchange', onHashChange);
     // Enlace directo al cargar (p. ej. /#proceso desde otra página)
     const initial = window.location.hash.slice(1);
     if (initial) {
@@ -238,7 +246,10 @@ export function useAnchorScroll() {
         else window.addEventListener('load', () => settle(target), { once: true });
       }
     }
-    return () => document.removeEventListener('click', onClick);
+    return () => {
+      document.removeEventListener('click', onClick);
+      window.removeEventListener('hashchange', onHashChange);
+    };
   }, []);
 }
 

@@ -169,7 +169,8 @@ html:has(.sr) {
 /* Las secciones de abajo no se maquetan ni pintan hasta acercarse a la pantalla
    ("auto" recuerda el alto real una vez renderizadas). El sticky del cubo y de la galería
    sigue funcionando: content-visibility no crea un contenedor de scroll. */
-.sr-services,
+.sr-cube-track,
+.sr-plans,
 .sr-projects,
 .sr-case,
 .sr-testimonial-section,
@@ -181,10 +182,14 @@ html:has(.sr) {
   content-visibility: auto;
   contain-intrinsic-size: auto 1000px;
 }
-.sr-services { contain-intrinsic-size: auto 5200px; }
+/* Servicios va por bloques: al cargar solo se dibujan la banda y el título (el cubo y los
+   planes, que suman cientos de elementos, esperan a acercarse). */
+.sr-cube-track { contain-intrinsic-size: auto 1400px; }
+.sr-plans { contain-intrinsic-size: auto 900px; }
 .sr-projects { contain-intrinsic-size: auto 2400px; }
 @media (max-width: 1023px) {
-  .sr-services { contain-intrinsic-size: auto 2600px; }
+  .sr-cube-track { contain-intrinsic-size: auto 1700px; }
+  .sr-plans { contain-intrinsic-size: auto 1600px; }
   .sr-projects { contain-intrinsic-size: auto 2600px; }
 }
 

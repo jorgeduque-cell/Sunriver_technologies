@@ -1,4 +1,4 @@
-import { Suspense, useLayoutEffect } from 'react';
+import { Suspense, use, useEffect, useLayoutEffect } from 'react';
 import type { ReactNode } from 'react';
 import '../home/home.css';
 import '../home/fx.css';
@@ -16,13 +16,24 @@ import { useReveal } from '../home/useReveal';
 import { GuidePopup } from '../home/GuidePopup';
 import { IntroScene } from '../home/IntroScene';
 import { useAnchorScroll, useCursorGlow, useInteractiveMotion, useScrollSkew } from '../home/motion';
+import { gateFor, releaseAll } from '../home/lazyHydrate';
+
+/** Espera (solo durante la hidratación inicial) a que la sección se acerque o la toquen. */
+const Gate = ({ selector, children }: { selector: string; children: ReactNode }) => {
+    if (typeof window !== 'undefined' && window.__srHydrating) use(gateFor(selector));
+    return children;
+};
 
 /**
- * Límite de hidratación: el HTML ya viene prerenderizado, y cada sección envuelta se
- * hidrata en su propia pasada (React cede el hilo entre una y otra). Así la carga no
+ * Límite de hidratación: el HTML ya viene prerenderizado y cada sección envuelta se activa
+ * por separado, cuando se acerca a la pantalla (ver home/lazyHydrate.ts). Así la carga no
  * genera una sola tarea larga. No cambia nada visible ni el HTML final.
  */
-const Island = ({ children }: { children: ReactNode }) => <Suspense fallback={null}>{children}</Suspense>;
+const Island = ({ at, children }: { at: string; children: ReactNode }) => (
+    <Suspense fallback={null}>
+        <Gate selector={at}>{children}</Gate>
+    </Suspense>
+);
 
 /** Tramo de puro color entre dos zonas: el fondo "desciende" del sol al fondo del río. */
 const DepthBand = ({ name }: { name: 'sand-river' | 'river-deep' | 'deep-abyss' | 'abyss-ink' }) => (
@@ -54,6 +65,16 @@ const Home = () => {
         }, 0);
     }, []);
 
+    // Al salir de la home se acaba la hidratación inicial: si se vuelve navegando dentro del
+    // sitio, las secciones se renderizan de inmediato en vez de esperar.
+    useEffect(
+        () => () => {
+            window.__srHydrating = false;
+            releaseAll();
+        },
+        [],
+    );
+
     return (
         <div className="sr" id="top">
             <div className="sr-curtain" aria-hidden="true">
@@ -73,20 +94,20 @@ const Home = () => {
             <Nav />
             <main id="contenido" tabIndex={-1}>
                 <Hero />
-                <Island><Services /></Island>
+                <Island at="#servicios"><Services /></Island>
                 <DepthBand name="sand-river" />
-                <Island><CaseStudy /></Island>
+                <Island at="#caso"><CaseStudy /></Island>
                 <DepthBand name="river-deep" />
-                <Island><ProjectsRail /></Island>
-                <Island><Testimonial /></Island>
-                <Island><Process /></Island>
+                <Island at="#proyectos"><ProjectsRail /></Island>
+                <Island at=".sr-testimonial-section"><Testimonial /></Island>
+                <Island at="#proceso"><Process /></Island>
                 <DepthBand name="deep-abyss" />
-                <Island><Guide /></Island>
-                <Island><Faq /></Island>
+                <Island at="#guia"><Guide /></Island>
+                <Island at="#preguntas"><Faq /></Island>
                 <DepthBand name="abyss-ink" />
-                <Island><Contact /></Island>
+                <Island at="#contacto"><Contact /></Island>
             </main>
-            <Island><Footer /></Island>
+            <Island at=".sr-footer"><Footer /></Island>
             <GuidePopup />
         </div>
     );
