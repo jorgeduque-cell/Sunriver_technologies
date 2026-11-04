@@ -15,10 +15,13 @@ export const GUIDE_WHATSAPP_URL =
   'https://wa.me/573124183002?text=Hola,%20quiero%20la%20gu%C3%ADa%20de%20las%207%20trampas';
 
 export const NAV_LINKS = [
-  { href: '#caso', label: 'El caso' },
   { href: '#servicios', label: 'Servicios' },
+  { href: '#caso', label: 'El caso' },
+  { href: '#proyectos', label: 'Proyectos' },
   { href: '#proceso', label: 'Cómo trabajamos' },
   { href: '#guia', label: 'Guía gratis' },
+  { href: '#preguntas', label: 'Preguntas' },
+  { href: '#contacto', label: 'Contacto' },
 ] as const;
 
 export const PROJECTS = [
@@ -178,7 +181,68 @@ export const PLAN_TERMS = [
 ] as const;
 
 // Banda que se desplaza con el scroll (decorativa, oculta a lectores de pantalla).
-export const MARQUEE_WORDS = ['Contenido', 'Automatización', 'Agentes de IA', 'Ciberseguridad', 'Web que vende'] as const;
+export const MARQUEE_ITEMS = [
+  { word: 'Redes', sub: 'contenido' },
+  { word: 'Automatización', sub: 'bots' },
+  { word: 'Agentes de IA', sub: 'seguridad' },
+  { word: 'Web', sub: 'que vende' },
+] as const;
+
+/**
+ * Las seis caras del cubo de servicios: los cuatro servicios + lo que nos diferencia + cómo empezar.
+ * Las caras 01–04 salen de SERVICES; los textos de 05 y 06 son los que ya estaban en la home.
+ */
+export const CUBE_EXTRA_FACES = [
+  {
+    kicker: 'Lo que nos diferencia',
+    title: 'Con los frenos puestos',
+    text: 'Hablamos de ciberseguridad todos los días, y se nota en lo que construimos: cada bot tiene solo los permisos que necesita, las acciones delicadas pasan por una persona y todo se puede apagar con un botón.',
+    bullets: ['Permisos mínimos', 'Aprobación humana', 'Apagado con un botón'],
+  },
+  {
+    kicker: 'Empieza aquí',
+    title: 'Diagnóstico gratis',
+    text: 'Revisamos tu Instagram, tu WhatsApp y tu web, y te decimos qué arreglaríamos primero.',
+    bullets: ['15 minutos', 'Sin costo y sin compromiso', 'Te decimos qué cambiaríamos primero'],
+  },
+] as const;
+
+/** "El caso" partido en frases grandes. La palabra entre *asteriscos* va en color. */
+export const MANIFESTO = [
+  'Antes de hacerlo por ti,',
+  'lo probamos en lo *nuestro*.',
+  'Cada reel se *mide*',
+  'a las 24 horas y a los 7 días,',
+  'y lo que *funciona*',
+  'se vuelve *regla*.',
+  'Fue un reel, no una garantía:',
+  'lo que te ofrecemos es el *método*.',
+] as const;
+
+/** Líneas tipo terminal: solo hechos que ya están en la home. */
+export const TERMINAL_LINES = [
+  'Reel medido a las 24 h',
+  'Reel medido a los 7 días',
+  'Bot respondiendo en 3 s',
+  'Lo que funciona se vuelve regla',
+] as const;
+
+/** Franja de cifras del caso (formato mono "VALOR_CLAVE"). */
+export const CASE_STATS = [
+  { value: 49000, key: 'vistas_en_37_h' },
+  { text: '+425', key: 'seguidores_nuevos' },
+  { text: '99,6 %', key: 'no_nos_seguía' },
+] as const;
+
+/** Galería horizontal de proyectos y piezas. `media` apunta a un espacio de foto de media.ts. */
+export const PROJECT_ITEMS = [
+  { name: 'PyP Liquors', detail: 'Club de fidelización', media: 'proyecto-pyp' },
+  { name: 'Venco Oil', detail: 'Datos y asistente', media: 'proyecto-venco' },
+  { name: 'GESSEG Colombia', detail: 'Sitio web', media: 'proyecto-gesseg' },
+  { name: 'Eventos deportivos 90+1', detail: 'Automatización de reservas', media: 'proyecto-90mas1' },
+  { name: 'Reel 007', detail: '49.000 vistas en 37 horas', media: 'proyecto-reel' },
+  { name: 'Guía: 7 trampas con IA', detail: 'PDF gratis de 11 páginas', media: 'guia-7-trampas', href: '#guia' },
+] as const;
 
 export const STEPS = [
   {

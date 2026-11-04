@@ -1,41 +1,81 @@
-import { CASE_LESSONS } from './content';
+import { Fragment } from 'react';
+import { CASE_LESSONS, CASE_STATS, MANIFESTO, TERMINAL_LINES } from './content';
 import { CountUp } from './CountUp';
 import { SplitTitle } from './Words';
 
+/** "lo probamos en lo *nuestro*." → texto con la palabra entre asteriscos en color. */
+function ManifestoLine({ line }: { line: string }) {
+  const parts = line.split('*');
+  return (
+    <>
+      {parts.map((part, i) =>
+        i % 2 === 1 ? (
+          <span key={i} className="sr-accent-text">
+            {part}
+          </span>
+        ) : (
+          <Fragment key={i}>{part}</Fragment>
+        ),
+      )}
+    </>
+  );
+}
+
 export function CaseStudy() {
   return (
-    <section id="caso" className="sr-section sr-light" aria-labelledby="caso-title">
+    <section id="caso" className="sr-zone sr-zone--river sr-case" aria-labelledby="caso-title">
       <div className="sr-container">
-        <div className="sr-split-head">
-          <div data-reveal="words">
-            <p className="sr-label">El caso · Más allá de lo artificial</p>
-            <h2 id="caso-title" className="sr-h2">
-              <SplitTitle lead="No te mostramos promesas." accent="Te mostramos nuestra cuenta." />
-            </h2>
-          </div>
-          <p className="sr-lead" data-reveal>
-            Antes de hacerlo por ti, lo probamos en lo nuestro. Cada reel de @sunriversolution se mide
-            a las 24 horas y a los 7 días, y lo que funciona se vuelve regla. Así llegó un reel a
-            49.000 vistas en 37 horas. Fue un reel, no una garantía: lo que te ofrecemos es el método.
-          </p>
+        <div className="sr-section-head" data-reveal="words">
+          <p className="sr-label">El caso · Más allá de lo artificial</p>
+          <h2 id="caso-title" className="sr-h2">
+            <SplitTitle lead="No te mostramos promesas." accent="Te mostramos nuestra cuenta." accentClass="sr-serif sr-accent-text" />
+          </h2>
         </div>
 
-        <ol className="sr-case-grid">
+        <div className="sr-manifesto">
+          {MANIFESTO.map((line) => (
+            <p key={line} className="sr-manifesto-line" data-reveal>
+              <ManifestoLine line={line} />
+            </p>
+          ))}
+        </div>
+
+        <ul className="sr-terminal" aria-label="Así medimos">
+          {TERMINAL_LINES.map((line) => (
+            <li key={line} data-reveal>
+              {line}
+            </li>
+          ))}
+        </ul>
+
+        <dl className="sr-stats" data-reveal>
+          {CASE_STATS.map((s) => (
+            <div key={s.key}>
+              <dt className="sr-visually-hidden">{s.key.replace(/_/g, ' ')}</dt>
+              <dd>
+                <span className="sr-stats-value">{'value' in s ? <CountUp value={s.value} /> : s.text}</span>
+                <span className="sr-stats-key" aria-hidden="true">
+                  _{s.key}
+                </span>
+              </dd>
+            </div>
+          ))}
+        </dl>
+
+        <ol className="sr-rows" aria-label="Lo que aprendimos">
           {CASE_LESSONS.map((lesson, i) => (
-            <li key={lesson.title} data-reveal>
-              <div className="sr-case-card sr-tilt" data-tilt="5">
-                <span className="sr-num">{String(i + 1).padStart(2, '0')}</span>
-                <h3 className="sr-h3">{lesson.title}</h3>
-                <p className="sr-card-text">{lesson.text}</p>
-                <p className="sr-case-data">
-                  <span className="sr-label">{lesson.dataLabel}</span>
-                  <span className="sr-case-value">
-                    {lesson.data.prefix}
-                    <CountUp value={lesson.data.to} from={lesson.data.from} />
-                    {lesson.data.suffix}
-                  </span>
-                </p>
-              </div>
+            <li key={lesson.title} className="sr-row" data-reveal>
+              <span className="sr-num">{String(i + 1).padStart(2, '0')}</span>
+              <h3 className="sr-row-title">{lesson.title}</h3>
+              <p className="sr-row-text">{lesson.text}</p>
+              <p className="sr-row-data">
+                <span className="sr-label">{lesson.dataLabel}</span>
+                <span className="sr-row-value">
+                  {lesson.data.prefix}
+                  <CountUp value={lesson.data.to} from={lesson.data.from} />
+                  {lesson.data.suffix}
+                </span>
+              </p>
             </li>
           ))}
         </ol>

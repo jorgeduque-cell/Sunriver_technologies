@@ -6,14 +6,16 @@ import { Nav } from '../home/Nav';
 import { Hero } from '../home/Hero';
 import { CaseStudy } from '../home/CaseStudy';
 import { Services } from '../home/Services';
+import { ProjectsRail } from '../home/ProjectsRail';
 import { Guide } from '../home/Guide';
 import { Process } from '../home/Process';
-import { Contact, Footer, Testimonial, WhatsAppFloat } from '../home/Closing';
+import { Contact, Footer, Testimonial } from '../home/Closing';
 import { Faq } from '../home/Faq';
+import { DepthGauge } from '../home/DepthGauge';
 import { useReveal } from '../home/useReveal';
 import { GuidePopup } from '../home/GuidePopup';
 import { IntroScene } from '../home/IntroScene';
-import { useCursorGlow, useInteractiveMotion, useScrollSkew } from '../home/motion';
+import { useAnchorScroll, useCursorGlow, useInteractiveMotion, useScrollSkew } from '../home/motion';
 
 /**
  * Límite de hidratación: el HTML ya viene prerenderizado, y cada sección envuelta se
@@ -21,6 +23,11 @@ import { useCursorGlow, useInteractiveMotion, useScrollSkew } from '../home/moti
  * genera una sola tarea larga. No cambia nada visible ni el HTML final.
  */
 const Island = ({ children }: { children: ReactNode }) => <Suspense fallback={null}>{children}</Suspense>;
+
+/** Tramo de puro color entre dos zonas: el fondo "desciende" del sol al fondo del río. */
+const DepthBand = ({ name }: { name: 'sand-river' | 'river-deep' | 'deep-abyss' | 'abyss-ink' }) => (
+  <div className={`sr-depth-band sr-depth-band--${name}`} aria-hidden="true" />
+);
 
 // En memoria: se reinicia en cada carga o recarga de la página (la entrada se ve siempre),
 // pero no se repite al volver a la home navegando dentro del sitio.
@@ -33,6 +40,7 @@ const Home = () => {
     useInteractiveMotion();
     useCursorGlow();
     useScrollSkew();
+    useAnchorScroll();
 
     // La cortina de entrada no se repite al volver a la home dentro del sitio.
     useLayoutEffect(() => {
@@ -57,24 +65,28 @@ const Home = () => {
                     <small>Solution</small>
                 </span>
             </div>
-            <div className="sr-progress" aria-hidden="true" />
             <div className="sr-film" aria-hidden="true" />
             <a className="sr-skip" href="#contenido">
                 Saltar al contenido
             </a>
+            <DepthGauge />
             <Nav />
             <main id="contenido" tabIndex={-1}>
                 <Hero />
-                <Island><CaseStudy /></Island>
                 <Island><Services /></Island>
-                <Island><Guide /></Island>
-                <Island><Process /></Island>
+                <DepthBand name="sand-river" />
+                <Island><CaseStudy /></Island>
+                <DepthBand name="river-deep" />
+                <Island><ProjectsRail /></Island>
                 <Island><Testimonial /></Island>
+                <Island><Process /></Island>
+                <DepthBand name="deep-abyss" />
+                <Island><Guide /></Island>
                 <Island><Faq /></Island>
+                <DepthBand name="abyss-ink" />
                 <Island><Contact /></Island>
             </main>
             <Island><Footer /></Island>
-            <WhatsAppFloat />
             <GuidePopup />
         </div>
     );

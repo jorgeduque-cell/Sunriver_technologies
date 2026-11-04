@@ -1,10 +1,8 @@
-/* Efectos de impacto de la home: cortina de entrada, secciones que se abren como ventana,
-   barra de progreso, parallax del hero, brillo que sigue al cursor y marquee con inercia.
-   Todo es opt-in: con prefers-reduced-motion no se muestra nada de esto, y los efectos
-   ligados al scroll usan CSS puro (animation-timeline) solo donde el navegador lo soporta. */
+/* Efectos de impacto de la home: cortina de entrada, brillo que sigue al cursor, marquee con
+   inercia, grano de cine y entrada del hero. Todo es opt-in: con prefers-reduced-motion no se
+   muestra nada de esto. */
 
 .sr-curtain,
-.sr-progress,
 .sr-glow,
 .sr-ring {
   display: none;
@@ -31,7 +29,7 @@
     animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
     animation-fill-mode: both;
   }
-  .sr-curtain-panel--t { top: 0; animation-name: sr-curtain-up; border-bottom: 1px solid rgba(245, 166, 35, 0.5); }
+  .sr-curtain-panel--t { top: 0; animation-name: sr-curtain-up; border-bottom: 1px solid rgba(255, 122, 26, 0.55); }
   .sr-curtain-panel--b { bottom: 0; animation-name: sr-curtain-down; }
   /* Escena: río de puntos que corre hacia el sol (ver IntroScene.tsx) */
   .sr-intro {
@@ -78,19 +76,20 @@
     text-align: center;
     line-height: 1.05;
     font-family: 'Inter Tight', system-ui, sans-serif;
-    font-weight: 700;
+    font-weight: 800;
     font-size: clamp(36px, 7vw, 76px);
-    letter-spacing: -0.04em;
-    color: #f2efe8;
+    letter-spacing: -0.05em;
+    color: #f7f3ec;
     clip-path: inset(0 100% 0 0);
     animation: sr-curtain-word 0.9s cubic-bezier(0.22, 1, 0.36, 1) 1.9s forwards,
       sr-curtain-fade 0.35s ease 2.55s forwards;
   }
+  /* "River" en contorno, como en el hero */
   .sr-curtain-word em {
-    font-family: 'Instrument Serif', Georgia, serif;
-    font-style: italic;
+    font-style: normal;
     font-weight: 400;
-    color: #f5a623;
+    color: transparent;
+    -webkit-text-stroke: 1.5px #ff7a1a;
   }
   .sr-curtain-word small {
     display: block;
@@ -124,12 +123,11 @@
     .sr-glow[data-on],
     .sr-ring[data-on] { opacity: 1; }
     .sr-glow {
-      width: 560px;
-      height: 560px;
-      margin: -280px 0 0 -280px;
+      width: 520px;
+      height: 520px;
+      margin: -260px 0 0 -260px;
       border-radius: 50%;
-      background: radial-gradient(closest-side, rgba(245, 166, 35, 0.16), rgba(245, 166, 35, 0.05) 55%, transparent);
-      mix-blend-mode: screen;
+      background: radial-gradient(closest-side, rgba(255, 122, 26, 0.13), rgba(255, 122, 26, 0.04) 55%, transparent);
       transition: opacity 0.4s ease;
     }
     .sr-ring {
@@ -137,7 +135,7 @@
       height: 38px;
       margin: -19px 0 0 -19px;
       border-radius: 50%;
-      border: 1.5px solid rgba(245, 166, 35, 0.85);
+      border: 1.5px solid rgba(255, 122, 26, 0.9);
       mix-blend-mode: difference;
       transition: opacity 0.4s ease, width 0.3s ease, height 0.3s ease, margin 0.3s ease, background 0.3s ease;
     }
@@ -145,130 +143,26 @@
       width: 72px;
       height: 72px;
       margin: -36px 0 0 -36px;
-      background: rgba(245, 166, 35, 0.18);
+      background: rgba(255, 122, 26, 0.18);
     }
   }
 
   /* ---------- Marquee con inercia: se inclina según la velocidad del scroll ---------- */
   .sr-marquee-row { transform: skewX(calc(var(--skew, 0) * 1deg)); }
-}
 
-/* ---------- Efectos ligados al scroll (CSS puro, sin JS) ---------- */
-@supports (animation-timeline: view()) {
-  @media (prefers-reduced-motion: no-preference) {
-    /* Barra de progreso de lectura */
-    .sr-progress {
-      display: block;
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 3px;
-      z-index: 250;
-      background: linear-gradient(90deg, #f5a623, #ffd38a);
-      transform-origin: 0 50%;
-      pointer-events: none;
-      animation: sr-progress linear both;
-      animation-timeline: scroll(root);
-    }
-    @keyframes sr-progress { from { transform: scaleX(0); } to { transform: scaleX(1); } }
-
-    /* Las secciones claras se abren como una ventana al entrar y se cierran al salir */
-    .sr-section.sr-light {
-      animation: sr-window-in linear backwards, sr-window-out linear forwards;
-      animation-timeline: view(), view();
-      animation-range: entry 0% entry 85%, exit 15% exit 100%;
-    }
-    @keyframes sr-window-in {
-      from { clip-path: inset(9% 5% 0 round 64px 64px 0 0); }
-      to { clip-path: inset(0 0 0 round 0); }
-    }
-    @keyframes sr-window-out {
-      from { clip-path: inset(0 0 0 round 0); }
-      to { clip-path: inset(0 5% 6% round 0 0 64px 64px); }
-    }
-
-    /* Parallax del hero: el texto y las tarjetas se separan a distinta velocidad al salir */
-    .sr-hero-copy {
-      animation: sr-hero-copy linear forwards;
-      animation-timeline: view();
-      animation-range: exit 0% exit 90%;
-    }
-    .sr-hero-cards {
-      animation: sr-hero-cards linear forwards;
-      animation-timeline: view();
-      animation-range: exit 0% exit 100%;
-    }
-    @keyframes sr-hero-copy { to { translate: 0 -70px; opacity: 0.4; scale: 0.97; } }
-    @keyframes sr-hero-cards { to { translate: 0 -170px; scale: 0.94; } }
-
-    /* Tarjetas de servicio: suben y crecen escalonadas mientras entran */
-    .sr-services-grid .sr-service {
-      animation: sr-rise linear both;
-      animation-timeline: view();
-      animation-range: entry 0% entry 55%;
-    }
-    .sr-services-grid > li:nth-child(even) .sr-service { animation-range: entry 10% entry 65%; }
-    @keyframes sr-rise { from { translate: 0 70px; scale: 0.92; } to { translate: 0 0; scale: 1; } }
-
-    /* Titulares: se deslizan al entrar */
-    .sr-section-head .sr-h2 {
-      animation: sr-head linear both;
-      animation-timeline: view();
-      animation-range: entry 10% entry 60%;
-    }
-    @keyframes sr-head {
-      from { translate: -40px 0; filter: blur(10px); opacity: 0.25; }
-      to { translate: 0 0; filter: blur(0); opacity: 1; }
-    }
-
-    /* Lente: el río 3D se acerca como una cámara al salir del hero */
-    .sr-hero-3d {
-      animation: sr-lens linear forwards;
-      animation-timeline: view();
-      animation-range: exit 0% exit 100%;
-    }
-    @keyframes sr-lens { to { scale: 1.35; } }
-
-    /* Franja de proyectos: se desliza lateralmente con el scroll */
-    .sr-projects-list {
-      animation: sr-strip linear both;
-      animation-timeline: view();
-      animation-range: cover 0% cover 100%;
-    }
-    @keyframes sr-strip { from { translate: 36px 0; } to { translate: -36px 0; } }
-  }
-
-  @media (prefers-reduced-motion: no-preference) and (max-width: 767px) {
-    @keyframes sr-window-in {
-      from { clip-path: inset(4% 3% 0 round 32px 32px 0 0); }
-      to { clip-path: inset(0 0 0 round 0); }
-    }
-    @keyframes sr-window-out {
-      from { clip-path: inset(0 0 0 round 0); }
-      to { clip-path: inset(0 3% 3% round 0 0 32px 32px); }
-    }
-    @keyframes sr-hero-cards { to { translate: 0 -60px; scale: 0.97; } }
-  }
-}
-
-/* ---------- Capa de cine: grano, viñeta, título enmascarado, flotación y destello anamórfico ---------- */
-.sr-film { display: none; }
-
-@media (prefers-reduced-motion: no-preference) {
+  /* ---------- Grano de cine (muy sutil) ---------- */
   .sr-film {
     display: block;
     position: fixed;
     inset: 0;
     z-index: 4;
     pointer-events: none;
-    background: radial-gradient(ellipse 120% 100% at 50% 50%, transparent 55%, rgba(0, 0, 0, 0.32));
   }
   .sr-film::before {
     content: '';
     position: absolute;
     inset: -50%;
-    opacity: 0.07;
+    opacity: 0.05;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
     animation: sr-grain 0.9s steps(6) infinite;
   }
@@ -281,45 +175,51 @@
     100% { transform: translate(0, 0); }
   }
 
-  /* Titular del hero: cada línea sube desde una máscara, desenfocada, y asienta el tracking */
-  .sr-h1-line {
-    animation: sr-title-in 1.15s cubic-bezier(0.16, 1, 0.3, 1) both;
-    animation-delay: 3.1s;
+  /* ---------- Entrada del hero (después de la cortina) ---------- */
+  .sr-wordmark-sun,
+  .sr-wordmark-river {
+    display: inline-block;
+    animation: sr-word-rise 1.2s cubic-bezier(0.16, 1, 0.3, 1) both;
+    animation-delay: 3s;
   }
-  .sr-h1-line + .sr-h1-line { animation-delay: 3.3s; }
-  .sr[data-nocurtain] .sr-h1-line { animation-delay: 0.15s; }
-  .sr[data-nocurtain] .sr-h1-line + .sr-h1-line { animation-delay: 0.35s; }
+  .sr-wordmark-river { animation-delay: 3.15s; }
+  @keyframes sr-word-rise {
+    from { clip-path: inset(0 0 100% 0); translate: 0 0.35em; }
+    to { clip-path: inset(-10% -5% -20% -5%); translate: 0 0; }
+  }
+  .sr-h1-line { animation: sr-title-in 1.1s cubic-bezier(0.16, 1, 0.3, 1) both; animation-delay: 3.25s; }
+  .sr-h1-line + .sr-h1-line { animation-delay: 3.4s; }
   @keyframes sr-title-in {
-    from { clip-path: inset(0 0 100% 0); translate: 0 0.5em; filter: blur(14px); letter-spacing: 0.06em; }
+    from { clip-path: inset(0 0 100% 0); translate: 0 0.5em; filter: blur(10px); }
     60% { filter: blur(0); }
-    to { clip-path: inset(-20% -6% -20% -6%); translate: 0 0; filter: blur(0); letter-spacing: normal; }
+    to { clip-path: inset(-20% -6% -20% -6%); translate: 0 0; filter: blur(0); }
   }
-  .sr-hero-lead, .sr-actions, .sr-hero-note, .sr-hero .sr-label {
-    animation: sr-fade-up 0.9s cubic-bezier(0.16, 1, 0.3, 1) both;
-    animation-delay: 3.6s;
-  }
-  .sr[data-nocurtain] .sr-hero-lead, .sr[data-nocurtain] .sr-actions,
-  .sr[data-nocurtain] .sr-hero-note, .sr[data-nocurtain] .sr-hero .sr-label { animation-delay: 0.5s; }
+  .sr-hero-top,
+  .sr-hero-side { animation: sr-fade-up 0.9s cubic-bezier(0.16, 1, 0.3, 1) both; animation-delay: 3.5s; }
+  .sr-tile { animation: sr-fade-up 0.9s cubic-bezier(0.16, 1, 0.3, 1) both; animation-delay: calc(3.6s + var(--n, 0) * 0.08s); }
+  .sr-tile:nth-child(2) { --n: 1; }
+  .sr-tile:nth-child(3) { --n: 2; }
+  .sr-tile:nth-child(4) { --n: 3; }
+  .sr-tile:nth-child(5) { --n: 4; }
   @keyframes sr-fade-up { from { opacity: 0; translate: 0 24px; } to { opacity: 1; translate: 0 0; } }
 
-  /* Las tarjetas del hero flotan, cada una a su ritmo */
-  .sr-reel { animation: sr-float 7s ease-in-out infinite alternate; }
-  .sr-bot { animation: sr-float 9s ease-in-out -3s infinite alternate; }
-  @keyframes sr-float { from { translate: 0 -7px; } to { translate: 0 9px; } }
+  /* Sin cortina (volviendo a la home dentro del sitio): la entrada arranca enseguida */
+  .sr[data-nocurtain] .sr-wordmark-sun { animation-delay: 0.05s; }
+  .sr[data-nocurtain] .sr-wordmark-river { animation-delay: 0.2s; }
+  .sr[data-nocurtain] .sr-h1-line { animation-delay: 0.3s; }
+  .sr[data-nocurtain] .sr-h1-line + .sr-h1-line { animation-delay: 0.45s; }
+  .sr[data-nocurtain] .sr-hero-top,
+  .sr[data-nocurtain] .sr-hero-side { animation-delay: 0.5s; }
+  .sr[data-nocurtain] .sr-tile { animation-delay: calc(0.6s + var(--n, 0) * 0.08s); }
 
-  /* Destello anamórfico horizontal que acompaña al brillo del cursor */
-  @media (any-hover: hover) and (any-pointer: fine) {
-    .sr-glow::after {
-      content: '';
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      width: 1100px;
-      height: 2px;
-      margin: -1px 0 0 -550px;
-      background: linear-gradient(90deg, transparent, rgba(255, 190, 90, 0.55), transparent);
-      filter: blur(1px);
+  /* Parallax del nombre gigante al salir del hero (CSS puro donde se soporte) */
+  @supports (animation-timeline: view()) {
+    .sr-wordmark {
+      animation: sr-wordmark-out linear both;
+      animation-timeline: view();
+      animation-range: exit 0% exit 100%;
     }
+    @keyframes sr-wordmark-out { to { translate: 0 -12vh; opacity: 0.25; } }
   }
 }
 
@@ -372,7 +272,7 @@
   line-height: 1.08;
   letter-spacing: -0.03em;
 }
-.sr-popup-title .sr-serif { font-size: 1.08em; color: #c2410c; }
+.sr-popup-title .sr-serif { color: #c2410c; }
 .sr-popup-text { margin-top: 14px; font-size: 16px; line-height: 1.55; color: var(--fg-body); }
 .sr-popup-cta { margin-top: 24px; width: 100%; justify-content: center; }
 .sr-popup-skip {

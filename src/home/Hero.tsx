@@ -1,59 +1,25 @@
 import { useState } from 'react';
+import type { ReactNode } from 'react';
 import { CountUp } from './CountUp';
-import { HeroRiver } from './HeroRiver';
-import { ArrowRight, CheckIcon, PauseIcon, PlayIcon } from './icons';
-import { PROJECTS } from './content';
+import { FluidHero } from './FluidHero';
+import { MediaSlot } from './MediaSlot';
+import type { MediaId } from './media';
+import { ArrowRight, CheckIcon, PauseIcon, PlayIcon, SunRiverMark } from './icons';
 
-function ReelCard() {
-  return (
-    <article className="sr-card sr-card--panel sr-reel sr-tilt" data-tilt="7" aria-label="Resultado del reel 007">
-      <div className="sr-card-top">
-        <span className="sr-label">Reel 007 · Cuenta propia</span>
-        <span className="sr-label sr-label--accent">37 horas</span>
-      </div>
-      <p className="sr-reel-num">
-        <CountUp value={49000} />
-      </p>
-      <p className="sr-reel-caption">vistas en Instagram y Facebook</p>
-      <dl className="sr-reel-stats">
-        <div>
-          <dt>seguidores nuevos</dt>
-          <dd>+425</dd>
-        </div>
-        <div>
-          <dt>gente que no nos seguía</dt>
-          <dd>99,6 %</dd>
-        </div>
-      </dl>
-    </article>
-  );
-}
-
-function BotCard() {
-  // La conversación se repite sola: WCAG 2.2.2 pide poder pausarla.
+/** Mini conversación del bot de comentarios (se repite: tiene botón de pausa, WCAG 2.2.2). */
+function BotDemo() {
   const [paused, setPaused] = useState(false);
   return (
-    <article
-      className="sr-card sr-card--paper sr-bot sr-tilt"
-      data-tilt="7"
-      aria-label="Ejemplo del bot de comentarios"
-      data-paused={paused ? 'true' : 'false'}
-    >
-      <div className="sr-card-top">
-        <span className="sr-label">
-          <span className="sr-live-dot" aria-hidden="true" />
-          Bot de comentarios · En vivo
-        </span>
-        <button
-          type="button"
-          className="sr-anim-toggle"
-          aria-label="Pausar animación"
-          aria-pressed={paused}
-          onClick={() => setPaused((v) => !v)}
-        >
-          {paused ? <PlayIcon size={14} /> : <PauseIcon size={14} />}
-        </button>
-      </div>
+    <div className="sr-bot" data-paused={paused ? 'true' : 'false'}>
+      <button
+        type="button"
+        className="sr-anim-toggle"
+        aria-label="Pausar animación"
+        aria-pressed={paused}
+        onClick={() => setPaused((v) => !v)}
+      >
+        {paused ? <PlayIcon size={14} /> : <PauseIcon size={14} />}
+      </button>
       <div className="sr-chat">
         <p className="sr-bubble sr-bubble--in">
           <strong>@laura.cafe</strong> comentó: MAPA
@@ -64,40 +30,73 @@ function BotCard() {
             <span />
             <span />
           </span>
-          <p className="sr-bubble sr-bubble--out">
-            ¡Hola, Laura! Aquí va tu guía. ¿Tienes un negocio? Respóndeme SÍ y te digo qué aplica al
-            tuyo.
-          </p>
+          <p className="sr-bubble sr-bubble--out">¡Hola, Laura! Aquí va tu guía. ¿Tienes un negocio? Respóndeme SÍ.</p>
         </div>
         <p className="sr-chat-meta">
-          <CheckIcon size={14} />
+          <CheckIcon size={13} />
           Enviado en 3 segundos
         </p>
       </div>
-    </article>
+    </div>
+  );
+}
+
+function Tile({
+  num,
+  foot,
+  media,
+  value,
+  caption,
+  children,
+}: {
+  num: string;
+  foot: string;
+  media?: MediaId;
+  value?: ReactNode;
+  caption?: string;
+  children?: ReactNode;
+}) {
+  return (
+    <li className="sr-tile">
+      <figure className="sr-tile-frame sr-tilt" data-tilt="6">
+        {media ? <MediaSlot id={media} sizes="(max-width: 767px) 46vw, 20vw" /> : children}
+        {value ? (
+          <figcaption className="sr-tile-over">
+            <span className="sr-tile-value">{value}</span>
+            {caption ? <span className="sr-tile-caption">{caption}</span> : null}
+          </figcaption>
+        ) : null}
+      </figure>
+      <p className="sr-tile-foot">
+        <span className="sr-num">{num}</span>
+        {foot}
+      </p>
+    </li>
   );
 }
 
 export function Hero() {
   return (
-    <>
-      <section className="sr-hero sr-dark" aria-labelledby="hero-title">
-        <HeroRiver />
-        <div className="sr-container sr-hero-grid">
-          <div className="sr-hero-copy">
-            <p className="sr-label sr-hero-label">Contenido + automatización con IA · Bogotá</p>
-            <h1 id="hero-title" className="sr-h1">
-              <span className="sr-h1-line">Hacemos que te vean.</span>{' '}
-              <span className="sr-h1-line sr-serif sr-accent-text">
-                Y que nadie se quede{' '}
-                <span className="sr-underline">
-                  sin respuesta.
-                  <svg className="sr-swoosh" viewBox="0 0 300 20" preserveAspectRatio="none" aria-hidden="true" focusable="false">
-                    <path d="M3 14.5c46-7.5 98-10.5 150-9.5 50 1 98 4.5 144 9" pathLength="1" />
-                  </svg>
-                </span>
-              </span>
-            </h1>
+    <section className="sr-hero sr-zone sr-zone--foam" aria-labelledby="hero-title">
+      <FluidHero />
+      <div className="sr-container sr-hero-inner">
+        <div className="sr-hero-top">
+          <span className="sr-label">SunRiver Solution</span>
+          <SunRiverMark size={42} idPrefix="srm-hero" className="sr-hero-mark" />
+          <span className="sr-label sr-hero-top-right">Contenido + automatización con IA · Bogotá</span>
+        </div>
+
+        <p className="sr-wordmark" aria-hidden="true">
+          <span className="sr-wordmark-sun">Sun</span>
+          <span className="sr-wordmark-river">River</span>
+        </p>
+
+        <div className="sr-hero-body">
+          <h1 id="hero-title" className="sr-h1">
+            <span className="sr-h1-line">Hacemos que te vean.</span>{' '}
+            <span className="sr-h1-line sr-serif sr-accent-text">Y que nadie se quede sin respuesta.</span>
+          </h1>
+          <div className="sr-hero-side">
             <p className="sr-lead sr-hero-lead">
               Creamos el contenido que lleva tu marca a gente nueva y los bots que atienden a cada
               persona que llega: en Instagram, en WhatsApp y en tu web.
@@ -111,34 +110,20 @@ export function Hero() {
                 Ver el caso de las 49.000 vistas
               </a>
             </div>
-            <p className="sr-hero-note">
-              Sin costo y sin compromiso. Te decimos qué cambiaríamos primero.
-            </p>
-          </div>
-
-          <div className="sr-hero-cards">
-            <ReelCard />
-            <BotCard />
+            <p className="sr-hero-note">Sin costo y sin compromiso. Te decimos qué cambiaríamos primero.</p>
           </div>
         </div>
-      </section>
 
-      <section className="sr-projects sr-dark" aria-label="Proyectos">
-        <div className="sr-container sr-projects-inner">
-          <p className="sr-label">Proyectos</p>
-          <ul className="sr-projects-list">
-            {PROJECTS.map((p) => (
-              <li key={p.name}>
-                <strong>{p.name}</strong>
-                <span aria-hidden="true" className="sr-projects-dot">
-                  ·
-                </span>
-                <span>{p.detail}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </section>
-    </>
+        <ol className="sr-tiles" aria-label="Resultados y proyectos">
+          <Tile num="01" foot="Reel 007 · cuenta propia" media="proyecto-reel" value={<CountUp value={49000} />} caption="vistas en 37 horas" />
+          <Tile num="02" foot="El mismo reel" media="cuenta-estadisticas" value="+425" caption="seguidores nuevos" />
+          <Tile num="03" foot="Bot de comentarios · en vivo">
+            <BotDemo />
+          </Tile>
+          <Tile num="04" foot="Proyecto" media="proyecto-pyp" value="PyP Liquors" caption="club de fidelización" />
+          <Tile num="05" foot="Proyecto" media="proyecto-venco" value="Venco Oil" caption="datos y asistente" />
+        </ol>
+      </div>
+    </section>
   );
 }

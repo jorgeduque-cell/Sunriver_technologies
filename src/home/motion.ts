@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import type { RefObject } from 'react';
 
 const prefersReducedMotion = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -123,6 +123,122 @@ export function useInteractiveMotion() {
     });
 
     return () => cleanups.forEach((fn) => fn());
+  }, []);
+}
+
+/**
+ * Avance dentro de una sección "fija" (un contenedor alto con un escenario sticky):
+ * 0 cuando su borde superior llega arriba de la pantalla, 1 cuando el escenario se suelta.
+ * Llama a `onProgress` en cada cuadro de scroll mientras la sección está a la vista.
+ * Solo corre si `query` se cumple (p. ej. escritorio) y sin movimiento reducido.
+ * Devuelve por `onEnabled` si el modo fijo quedó activo (para alternar el diseño).
+ */
+export function usePinnedProgress(
+  ref: RefObject<HTMLElement | null>,
+  onProgress: (p: number) => void,
+  { query = '(min-width: 1024px)', onEnabled }: { query?: string; onEnabled?: (on: boolean) => void } = {},
+) {
+  const cb = useRef(onProgress);
+  const enabledCb = useRef(onEnabled);
+  useEffect(() => {
+    cb.current = onProgress;
+    enabledCb.current = onEnabled;
+  });
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el || prefersReducedMotion() || !('IntersectionObserver' in window)) return;
+    const mq = window.matchMedia(query);
+
+    let raf = 0;
+    let listening = false;
+    const measure = () => {
+      raf = 0;
+      const r = el.getBoundingClientRect();
+      const span = r.height - window.innerHeight;
+      const p = span > 0 ? Math.min(1, Math.max(0, -r.top / span)) : 0;
+      cb.current(p);
+    };
+    const onScroll = () => {
+      if (!raf) raf = requestAnimationFrame(measure);
+    };
+    const listen = (on: boolean) => {
+      if (on === listening) return;
+      listening = on;
+      if (on) {
+        window.addEventListener('scroll', onScroll, { passive: true });
+        window.addEventListener('resize', onScroll, { passive: true });
+        onScroll();
+      } else {
+        window.removeEventListener('scroll', onScroll);
+        window.removeEventListener('resize', onScroll);
+        onScroll(); // deja el estado final (0 o 1) al salir
+      }
+    };
+    const io = new IntersectionObserver(([entry]) => listen(entry.isIntersecting && mq.matches));
+    const apply = () => {
+      enabledCb.current?.(mq.matches);
+      io.disconnect();
+      if (mq.matches) io.observe(el);
+      else listen(false);
+    };
+    apply();
+    mq.addEventListener('change', apply);
+
+    return () => {
+      mq.removeEventListener('change', apply);
+      io.disconnect();
+      window.removeEventListener('scroll', onScroll);
+      window.removeEventListener('resize', onScroll);
+      cancelAnimationFrame(raf);
+    };
+  }, [ref, query]);
+}
+
+/**
+ * Saltos de ancla precisos (#servicios, #caso…). Las secciones de abajo se dibujan recién al
+ * acercarse (content-visibility) y las pistas fijas calculan su alto con JS, así que el salto
+ * nativo puede quedar corrido. Aquí se salta y se corrige hasta que la posición se asienta.
+ * Mantiene la URL (#id) y mueve el foco a la sección para teclado y lectores de pantalla.
+ */
+export function useAnchorScroll() {
+  useEffect(() => {
+    const settle = (target: HTMLElement) => {
+      const go = () => target.scrollIntoView({ behavior: 'instant' as ScrollBehavior, block: 'start' });
+      requestAnimationFrame(() => {
+        go();
+        requestAnimationFrame(() => {
+          go();
+          window.setTimeout(go, 140);
+        });
+      });
+    };
+
+    const onClick = (e: MouseEvent) => {
+      if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+      const link = (e.target as Element | null)?.closest?.('a[href^="#"]');
+      if (!(link instanceof HTMLAnchorElement) || !link.closest('.sr')) return;
+      const id = decodeURIComponent(link.hash.slice(1));
+      const target = id ? document.getElementById(id) : null;
+      if (!target) return;
+      e.preventDefault();
+      settle(target);
+      if (window.location.hash !== `#${id}`) window.history.pushState(null, '', `#${id}`);
+      if (!target.hasAttribute('tabindex')) target.setAttribute('tabindex', '-1');
+      target.focus({ preventScroll: true });
+    };
+
+    document.addEventListener('click', onClick);
+    // Enlace directo al cargar (p. ej. /#proceso desde otra página)
+    const initial = window.location.hash.slice(1);
+    if (initial) {
+      const target = document.getElementById(decodeURIComponent(initial));
+      if (target) {
+        if (document.readyState === 'complete') settle(target);
+        else window.addEventListener('load', () => settle(target), { once: true });
+      }
+    }
+    return () => document.removeEventListener('click', onClick);
   }, []);
 }
 

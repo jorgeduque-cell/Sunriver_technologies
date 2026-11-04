@@ -154,9 +154,13 @@ export const LogoMarkShapes = ({ idPrefix = 'srm' }: { idPrefix?: string }) => (
   </>
 );
 
-export const SunRiverMark = ({ size = 32, ...rest }: SVGProps<SVGSVGElement> & { size?: number }) => (
+export const SunRiverMark = ({
+  size = 32,
+  idPrefix = 'srm-nav',
+  ...rest
+}: SVGProps<SVGSVGElement> & { size?: number; idPrefix?: string }) => (
   <svg width={size} height={size} viewBox="0 0 400 400" aria-hidden="true" focusable="false" {...rest}>
-    <LogoMarkShapes idPrefix="srm-nav" />
+    <LogoMarkShapes idPrefix={idPrefix} />
   </svg>
 );
 

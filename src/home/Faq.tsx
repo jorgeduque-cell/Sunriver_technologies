@@ -15,7 +15,7 @@ export function Faq() {
     });
 
   return (
-    <section id="preguntas" className="sr-section sr-light" aria-labelledby="faq-title">
+    <section id="preguntas" className="sr-zone sr-zone--abyss sr-faq-section" aria-labelledby="faq-title">
       <div className="sr-container sr-faq-grid">
         <div className="sr-faq-head" data-reveal="words">
           <h2 id="faq-title" className="sr-h2">

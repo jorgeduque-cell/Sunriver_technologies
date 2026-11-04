@@ -1,18 +1,20 @@
-import { useEffect, useState } from 'react';
+import { useRef } from 'react';
 import { CONTACT } from './content';
-import { ArrowRight, MailIcon, WhatsAppIcon } from './icons';
+import { ArrowRight, WhatsAppIcon } from './icons';
+import { MediaSlot } from './MediaSlot';
+import { useScrollVar } from './motion';
 import { SplitTitle } from './Words';
 
 export function Testimonial() {
   return (
-    <section className="sr-section sr-dark sr-section--flush-top" aria-label="Testimonio">
+    <section className="sr-zone sr-zone--river-deep sr-testimonial-section" aria-label="Testimonio">
       <div className="sr-container">
         <figure className="sr-testimonial" data-reveal>
           <span className="sr-quote-mark" aria-hidden="true">
             “
           </span>
           <blockquote>
-            <p className="sr-serif">
+            <p>
               Esta automatización de reservas resolvió el 90 % del trabajo manual que tenía que
               hacer en mi empresa. Estoy muy contento.
             </p>
@@ -24,60 +26,99 @@ export function Testimonial() {
   );
 }
 
+const SEAL_TEXT = 'SunRiver Solution · Más allá de lo artificial · ';
+
+/** Cierre: "llegaste al fondo", CTA gigante, banda, datos de contacto, último reel y volver arriba. */
 export function Contact() {
+  const bandRef = useRef<HTMLDivElement>(null);
+  const sealRef = useRef<HTMLDivElement>(null);
+  useScrollVar(bandRef);
+  useScrollVar(sealRef);
+
   return (
-    <section id="contacto" className="sr-section sr-dark sr-contact" aria-labelledby="contacto-title">
-      <div className="sr-container sr-contact-grid">
-        <div data-reveal="words">
-          <h2 id="contacto-title" className="sr-h2 sr-h2--xl">
+    <section id="contacto" className="sr-zone sr-zone--ink sr-finale" aria-labelledby="contacto-title">
+      <div className="sr-container" data-reveal="words">
+        <p className="sr-label">Llegaste al fondo — hablemos</p>
+        <h2 id="contacto-title" className="sr-finale-title">
+          <a href={CONTACT.whatsappUrl} className="sr-finale-link" target="_blank" rel="noopener noreferrer">
             <SplitTitle lead="¿Hablamos" accent="15 minutos?" accentClass="sr-serif sr-accent-text" />
-          </h2>
-          <p className="sr-lead">
-            Cuéntanos qué vendes y cómo te encuentran tus clientes hoy. Te respondemos el mismo día.
+            <ArrowRight className="sr-finale-arrow" size={48} />
+          </a>
+        </h2>
+        <p className="sr-lead">
+          Cuéntanos qué vendes y cómo te encuentran tus clientes hoy. Te respondemos el mismo día.
+        </p>
+      </div>
+
+      <div ref={bandRef} className="sr-band" aria-hidden="true">
+        <div className="sr-band-row">
+          {Array.from({ length: 6 }, (_, i) => (
+            <span key={i}>Más allá de lo artificial</span>
+          ))}
+        </div>
+      </div>
+
+      <div className="sr-container sr-finale-grid">
+        <div className="sr-finale-contact" data-reveal>
+          <a href={`mailto:${CONTACT.email}`} className="sr-finale-mail">
+            {CONTACT.email}
+          </a>
+          <p className="sr-finale-line">
+            <a href={CONTACT.whatsappUrl} target="_blank" rel="noopener noreferrer">
+              <WhatsAppIcon size={18} />
+              {CONTACT.whatsappDisplay}
+            </a>
           </p>
-          <div className="sr-actions">
-            <a
-              href={CONTACT.whatsappUrl}
-              className="sr-btn sr-btn--primary"
-              data-magnetic
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <WhatsAppIcon size={20} />
-              Escribir por WhatsApp
-              <ArrowRight className="sr-arrow" size={18} />
-            </a>
-            <a href={`mailto:${CONTACT.email}`} className="sr-btn sr-btn--ghost">
-              <MailIcon size={20} />
-              Enviar un correo
-            </a>
-          </div>
+          <p className="sr-finale-line sr-finale-muted">Bogotá, Colombia</p>
+          <ul className="sr-pills" aria-label="Redes y contacto">
+            <li>
+              <a href={CONTACT.instagramUrl} target="_blank" rel="noopener noreferrer">
+                Instagram
+              </a>
+            </li>
+            <li>
+              <a href={CONTACT.whatsappUrl} target="_blank" rel="noopener noreferrer">
+                WhatsApp
+              </a>
+            </li>
+            <li>
+              <a href={`mailto:${CONTACT.email}`}>Correo</a>
+            </li>
+          </ul>
         </div>
 
-        <dl className="sr-contact-list" data-reveal>
-          <div>
-            <dt className="sr-label">WhatsApp</dt>
-            <dd>
-              <a href={CONTACT.whatsappUrl} target="_blank" rel="noopener noreferrer">
-                {CONTACT.whatsappDisplay}
-              </a>
-            </dd>
-          </div>
-          <div>
-            <dt className="sr-label">Correo</dt>
-            <dd>
-              <a href={`mailto:${CONTACT.email}`}>{CONTACT.email}</a>
-            </dd>
-          </div>
-          <div>
-            <dt className="sr-label">Instagram</dt>
-            <dd>
-              <a href={CONTACT.instagramUrl} target="_blank" rel="noopener noreferrer">
-                {CONTACT.instagramHandle}
-              </a>
-            </dd>
-          </div>
-        </dl>
+        <a
+          href={CONTACT.instagramUrl}
+          className="sr-finale-reel"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label={`Ver el último reel en Instagram (${CONTACT.instagramHandle})`}
+          data-reveal
+        >
+          <MediaSlot id="ultimo-reel" decorative sizes="(max-width: 767px) 92vw, 36vw" />
+          <span className="sr-label sr-finale-reel-tag">Último reel — {CONTACT.instagramHandle}</span>
+        </a>
+      </div>
+
+      <div className="sr-container sr-finale-bottom">
+        <a href="#top" className="sr-btn sr-btn--ghost sr-btn--sm">
+          Volver arriba
+          <ArrowRight className="sr-arrow sr-arrow--up" size={16} />
+        </a>
+        <div ref={sealRef} className="sr-seal" aria-hidden="true">
+          <svg viewBox="0 0 120 120" width="120" height="120" focusable="false">
+            <defs>
+              <path id="sr-seal-path" d="M60 60 m-46 0 a46 46 0 1 1 92 0 a46 46 0 1 1 -92 0" />
+            </defs>
+            {/* textLength = circunferencia (2π·46): el texto da la vuelta justa, sin montarse */}
+            <text textLength={289} lengthAdjust="spacingAndGlyphs">
+              <textPath href="#sr-seal-path" textLength={289} lengthAdjust="spacingAndGlyphs">
+                {SEAL_TEXT}
+              </textPath>
+            </text>
+            <circle cx="60" cy="60" r="9" />
+          </svg>
+        </div>
       </div>
     </section>
   );
@@ -85,39 +126,11 @@ export function Contact() {
 
 export function Footer() {
   return (
-    <footer className="sr-footer sr-dark">
+    <footer className="sr-footer">
       <div className="sr-container sr-footer-inner">
         <p>© 2026 SunRiver Solutions · Bogotá, Colombia</p>
         <p>Contenido de «Más allá de lo artificial»</p>
       </div>
     </footer>
-  );
-}
-
-/** Botón flotante de WhatsApp: se oculta cuando la sección de contacto está en pantalla. */
-export function WhatsAppFloat() {
-  const [hidden, setHidden] = useState(false);
-
-  useEffect(() => {
-    const contact = document.getElementById('contacto');
-    if (!contact || !('IntersectionObserver' in window)) return;
-    const io = new IntersectionObserver(([entry]) => setHidden(entry.isIntersecting), {
-      threshold: 0.15,
-    });
-    io.observe(contact);
-    return () => io.disconnect();
-  }, []);
-
-  return (
-    <a
-      href={CONTACT.whatsappUrl}
-      className="sr-wa-float"
-      data-hidden={hidden ? 'true' : 'false'}
-      aria-label="Escribir por WhatsApp"
-      target="_blank"
-      rel="noopener noreferrer"
-    >
-      <WhatsAppIcon size={26} />
-    </a>
   );
 }

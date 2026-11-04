@@ -1,62 +1,42 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import type { KeyboardEvent as ReactKeyboardEvent } from 'react';
-import { NAV_LINKS } from './content';
-import { SunRiverMark } from './icons';
+import { CONTACT, NAV_LINKS } from './content';
+import { ArrowRight, SunRiverMark, WhatsAppIcon } from './icons';
 
+/**
+ * Barra flotante abajo (WhatsApp · logo · menú) y capa de menú a pantalla completa.
+ * Accesible: aria-expanded, Esc cierra y devuelve el foco, el foco no sale del menú abierto
+ * y el scroll de la página queda bloqueado mientras está abierto.
+ */
 export function Nav() {
-  const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
   const headerRef = useRef<HTMLElement>(null);
   const toggleRef = useRef<HTMLButtonElement>(null);
   const menuRef = useRef<HTMLDivElement>(null);
-
-  // Fondo sólido al hacer scroll.
-  useEffect(() => {
-    let raf = 0;
-    const update = () => {
-      raf = 0;
-      setScrolled(window.scrollY > 8);
-    };
-    const onScroll = () => {
-      if (!raf) raf = requestAnimationFrame(update);
-    };
-    if (window.scrollY > 8) update(); // p. ej. al recargar a mitad de página
-    window.addEventListener('scroll', onScroll, { passive: true });
-    return () => {
-      window.removeEventListener('scroll', onScroll);
-      cancelAnimationFrame(raf);
-    };
-  }, []);
 
   const close = useCallback((returnFocus: boolean) => {
     setOpen(false);
     if (returnFocus) toggleRef.current?.focus();
   }, []);
 
-  // Menú abierto: bloquea el scroll, Esc cierra, al pasar a escritorio se cierra.
   useEffect(() => {
     if (!open) return;
     const root = document.documentElement;
     const prevOverflow = root.style.overflow;
     root.style.overflow = 'hidden';
     menuRef.current?.querySelector<HTMLElement>('a')?.focus();
-
     const onKey = (e: KeyboardEvent) => {
       if (e.key === 'Escape') close(true);
     };
-    const mq = window.matchMedia('(min-width: 960px)');
-    const onMq = () => mq.matches && close(false);
     document.addEventListener('keydown', onKey);
-    mq.addEventListener('change', onMq);
     return () => {
       root.style.overflow = prevOverflow;
       document.removeEventListener('keydown', onKey);
-      mq.removeEventListener('change', onMq);
     };
   }, [open, close]);
 
-  // Mantiene el foco dentro de la cabecera mientras el menú cubre la pantalla.
-  const onHeaderKeyDown = (e: ReactKeyboardEvent<HTMLElement>) => {
+  // El foco da la vuelta dentro de la barra + el menú mientras está abierto.
+  const onKeyDown = (e: ReactKeyboardEvent<HTMLElement>) => {
     if (!open || e.key !== 'Tab' || !headerRef.current) return;
     const focusables = Array.from(
       headerRef.current.querySelectorAll<HTMLElement>('a[href], button:not([disabled])'),
@@ -74,36 +54,52 @@ export function Nav() {
   };
 
   return (
-    <header
-      ref={headerRef}
-      className="sr-nav"
-      data-scrolled={scrolled || open ? 'true' : 'false'}
-      onKeyDown={onHeaderKeyDown}
-    >
-      <nav className="sr-container sr-nav-inner" aria-label="Principal">
-        <a href="#top" className="sr-logo" aria-label="SunRiver, ir al inicio">
-          <SunRiverMark size={34} className="sr-logo-mark" />
-          <span>SunRiver</span>
+    <header ref={headerRef} className="sr-pill-wrap" data-open={open ? 'true' : 'false'} onKeyDown={onKeyDown}>
+      <div id="sr-menu" ref={menuRef} className="sr-menu" hidden={!open}>
+        <div className="sr-container sr-menu-inner">
+          <p className="sr-label">Menú</p>
+          <ul className="sr-menu-links">
+            {NAV_LINKS.map((link, i) => (
+              <li key={link.href}>
+                <a href={link.href} onClick={() => close(false)}>
+                  <span className="sr-num">{String(i + 1).padStart(2, '0')}</span>
+                  {link.label}
+                </a>
+              </li>
+            ))}
+          </ul>
+          <div className="sr-menu-foot">
+            <a href="#contacto" className="sr-btn sr-btn--primary" onClick={() => close(false)}>
+              Diagnóstico gratis
+              <ArrowRight className="sr-arrow" size={18} />
+            </a>
+            <a href={`mailto:${CONTACT.email}`} className="sr-menu-mail">
+              {CONTACT.email}
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <nav className="sr-pill" aria-label="Principal">
+        <a
+          href={CONTACT.whatsappUrl}
+          className="sr-pill-btn"
+          aria-label="Escribir por WhatsApp"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <WhatsAppIcon size={21} />
         </a>
-
-        <ul className="sr-nav-links">
-          {NAV_LINKS.map((link) => (
-            <li key={link.href}>
-              <a href={link.href}>{link.label}</a>
-            </li>
-          ))}
-        </ul>
-
-        <a href="#contacto" className="sr-btn sr-btn--primary sr-btn--sm sr-nav-cta">
-          Diagnóstico gratis
+        <a href="#top" className="sr-pill-logo" aria-label="SunRiver, ir al inicio">
+          <SunRiverMark size={28} />
+          <span aria-hidden="true">SunRiver</span>
         </a>
-
         <button
           ref={toggleRef}
           type="button"
-          className="sr-menu-toggle"
+          className="sr-pill-btn sr-menu-toggle"
           aria-expanded={open}
-          aria-controls="sr-mobile-menu"
+          aria-controls="sr-menu"
           aria-label={open ? 'Cerrar menú' : 'Abrir menú'}
           onClick={() => setOpen((v) => !v)}
         >
@@ -111,30 +107,6 @@ export function Nav() {
           <span className="sr-menu-toggle-bar" aria-hidden="true" />
         </button>
       </nav>
-
-      {/* Progreso de lectura: animación ligada al scroll, 100 % CSS (donde el navegador la soporte) */}
-      <span className="sr-progress" aria-hidden="true" />
-
-      <div id="sr-mobile-menu" ref={menuRef} className="sr-mobile-menu" hidden={!open}>
-        <ul className="sr-container sr-mobile-links">
-          {NAV_LINKS.map((link) => (
-            <li key={link.href}>
-              <a href={link.href} onClick={() => close(false)}>
-                {link.label}
-              </a>
-            </li>
-          ))}
-        </ul>
-        <div className="sr-container">
-          <a
-            href="#contacto"
-            className="sr-btn sr-btn--primary sr-btn--block"
-            onClick={() => close(false)}
-          >
-            Diagnóstico gratis
-          </a>
-        </div>
-      </div>
     </header>
   );
 }

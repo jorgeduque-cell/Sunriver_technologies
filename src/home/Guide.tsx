@@ -45,7 +45,7 @@ function GuideBook() {
 
 export function Guide() {
   return (
-    <section id="guia" className="sr-section sr-light" aria-labelledby="guia-title">
+    <section id="guia" className="sr-zone sr-zone--abyss sr-guide" aria-labelledby="guia-title">
       <div className="sr-container sr-guide-grid">
         <div className="sr-cover-wrap" data-reveal>
           <GuideBook />
