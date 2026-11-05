@@ -118,6 +118,8 @@ export const MEDIA: Record<MediaId, Media> = {
     alt: '',
     width: 1000,
     height: 1000,
+    src: '/media/cubo-redes.webp',
+    srcSmall: '/media/cubo-redes-640.webp',
   },
   'cubo-automatizaciones': {
     label: 'Automatizaciones',
@@ -125,6 +127,8 @@ export const MEDIA: Record<MediaId, Media> = {
     alt: '',
     width: 1000,
     height: 1000,
+    src: '/media/cubo-automatizaciones.webp',
+    srcSmall: '/media/cubo-automatizaciones-640.webp',
   },
   'cubo-agentes': {
     label: 'Agentes de IA',
@@ -132,6 +136,8 @@ export const MEDIA: Record<MediaId, Media> = {
     alt: '',
     width: 1000,
     height: 1000,
+    src: '/media/cubo-agentes.webp',
+    srcSmall: '/media/cubo-agentes-640.webp',
   },
   'cubo-web': {
     label: 'Web',
@@ -139,6 +145,8 @@ export const MEDIA: Record<MediaId, Media> = {
     alt: '',
     width: 1000,
     height: 1000,
+    src: '/media/cubo-web.webp',
+    srcSmall: '/media/cubo-web-640.webp',
   },
   'cubo-frenos': {
     label: 'Ciberseguridad',
@@ -146,6 +154,8 @@ export const MEDIA: Record<MediaId, Media> = {
     alt: '',
     width: 1000,
     height: 1000,
+    src: '/media/cubo-frenos.webp',
+    srcSmall: '/media/cubo-frenos-640.webp',
   },
   'cubo-diagnostico': {
     label: 'Diagnóstico',
@@ -153,6 +163,8 @@ export const MEDIA: Record<MediaId, Media> = {
     alt: '',
     width: 1000,
     height: 1000,
+    src: '/media/cubo-diagnostico.webp',
+    srcSmall: '/media/cubo-diagnostico-640.webp',
   },
   'guia-7-trampas': {
     label: 'Guía 7 trampas',
@@ -166,8 +178,10 @@ export const MEDIA: Record<MediaId, Media> = {
   'ultimo-reel': {
     label: 'Último reel',
     brief: 'Portada del último reel publicado (se enlaza a Instagram). Horizontal 16:9.',
-    alt: 'Último reel de @sunriversolution',
+    alt: 'Portada del último reel de @sunriversolution: «¿Una IA rompió una regla de 25 años?»',
     width: 1600,
     height: 900,
+    src: '/media/proyecto-reel.webp',
+    contain: true,
   },
 };

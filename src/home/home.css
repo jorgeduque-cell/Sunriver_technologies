@@ -1565,6 +1565,8 @@ html:not(.js) .sr-faq-inner { visibility: visible; }
 }
 .sr-pills a:hover { border-color: var(--sun); color: var(--sun); }
 .sr-finale-reel { position: relative; display: block; overflow: hidden; border-radius: 4px; }
+/* La portada (vertical) queda por encima de la etiqueta de abajo */
+.sr-finale-reel .sr-media--contain img { padding: 5% 6% 64px; }
 .sr-finale-reel-tag { position: absolute; left: 12px; bottom: 12px; padding: 8px 12px; border-radius: 4px; background: rgba(11, 12, 15, 0.78); color: var(--foam); }
 
 .sr-finale-bottom { display: flex; align-items: center; justify-content: space-between; gap: 24px; margin-top: 56px; }
