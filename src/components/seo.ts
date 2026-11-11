@@ -1,6 +1,5 @@
-import { useEffect } from 'react';
-
-interface SEOProps {
+/** Metadatos de cada página. Los escribe en el <head> src/layouts/BaseLayout.astro. */
+export interface SEOProps {
   title: string;
   description: string;
   keywords?: string;
@@ -9,94 +8,6 @@ interface SEOProps {
   noindex?: boolean;
   schema?: object;
 }
-
-/**
- * SEO Component for dynamic meta tags
- * Usage: <SEO title="..." description="..." />
- */
-export const SEO = ({
-  title,
-  description,
-  keywords,
-  ogImage = 'https://www.sunriverstech.com/og-image.jpg',
-  canonical,
-  noindex = false,
-  schema,
-}: SEOProps) => {
-  useEffect(() => {
-    // Update document title
-    document.title = title;
-
-    // Update meta tags
-    const metaTags = {
-      description,
-      keywords,
-      robots: noindex ? 'noindex, nofollow' : 'index, follow',
-    };
-
-    Object.entries(metaTags).forEach(([name, content]) => {
-      if (!content) return;
-      let meta = document.querySelector(`meta[name="${name}"]`);
-      if (!meta) {
-        meta = document.createElement('meta');
-        meta.setAttribute('name', name);
-        document.head.appendChild(meta);
-      }
-      meta.setAttribute('content', content);
-    });
-
-    // Update Open Graph tags
-    const ogTags = {
-      'og:title': title,
-      'og:description': description,
-      'og:image': ogImage,
-    };
-
-    Object.entries(ogTags).forEach(([property, content]) => {
-      let meta = document.querySelector(`meta[property="${property}"]`);
-      if (!meta) {
-        meta = document.createElement('meta');
-        meta.setAttribute('property', property);
-        document.head.appendChild(meta);
-      }
-      meta.setAttribute('content', content);
-    });
-
-    // Update canonical link
-    if (canonical) {
-      let link = document.querySelector('link[rel="canonical"]');
-      if (!link) {
-        link = document.createElement('link');
-        link.setAttribute('rel', 'canonical');
-        document.head.appendChild(link);
-      }
-      link.setAttribute('href', canonical);
-    }
-
-    // Add JSON-LD schema
-    if (schema) {
-      const existingScript = document.querySelector('#json-ld-schema');
-      if (existingScript) {
-        existingScript.remove();
-      }
-      const script = document.createElement('script');
-      script.id = 'json-ld-schema';
-      script.type = 'application/ld+json';
-      script.textContent = JSON.stringify(schema);
-      document.head.appendChild(script);
-    }
-
-    // Cleanup on unmount
-    return () => {
-      const schemaScript = document.querySelector('#json-ld-schema');
-      if (schemaScript) {
-        schemaScript.remove();
-      }
-    };
-  }, [title, description, keywords, ogImage, canonical, noindex, schema]);
-
-  return null;
-};
 
 // Predefined schemas for common page types
 export const LocalBusinessSchema = {
@@ -207,5 +118,3 @@ export const ServiceSchema = {
     ],
   },
 };
-
-export default SEO;

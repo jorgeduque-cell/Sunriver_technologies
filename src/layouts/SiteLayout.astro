@@ -1,0 +1,32 @@
+---
+/**
+ * Layout de las páginas internas (antes MainLayout.tsx): Navbar, contenido, Footer y chatbot.
+ * Cada parte interactiva es una isla de React; el resto llega como HTML sin JavaScript.
+ */
+import BaseLayout from './BaseLayout.astro';
+import Navbar from '../sections/Navbar';
+import Footer from '../sections/Footer';
+import ChatBotLazy from '../components/ChatBotLazy';
+import { Toaster } from 'sonner';
+import type { SEOProps } from '../components/seo';
+
+// Estilos del sitio interno (Tailwind + utilidades). La home usa src/home/home.css.
+import '../index.css';
+import '../App.css';
+
+type Props = SEOProps;
+
+const pathname = Astro.url.pathname.replace(/\.html$/, '').replace(/\/$/, '') || '/';
+---
+
+<BaseLayout {...Astro.props}>
+  <div class="min-h-screen bg-white flex flex-col">
+    <Navbar client:load pathname={pathname} />
+    <main class="flex-grow">
+      <slot />
+    </main>
+    <Footer client:visible />
+    <ChatBotLazy client:idle />
+    <Toaster client:idle position="top-right" richColors theme="light" />
+  </div>
+</BaseLayout>

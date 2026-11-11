@@ -31,8 +31,9 @@ yarn-error.log*
 .vercel
 .env*.local
 
-# Build SSR temporal del prerender
-dist-ssr/
 
 # Capturas originales para la home (tienen datos privados; a la web van las procesadas)
 fotos-originales/
+
+# Tipos generados por Astro
+.astro/

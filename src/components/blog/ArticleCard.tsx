@@ -1,4 +1,3 @@
-import { Link } from 'react-router-dom';
 import { Clock, ArrowRight } from 'lucide-react';
 import type { Article } from '../../types/blog';
 import { categories } from '../../data/categories';
@@ -22,7 +21,7 @@ const ArticleCard = ({ article, featured = false }: ArticleCardProps) => {
   if (featured) {
     return (
       <article className="group relative bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100">
-        <Link to={`/blog/${article.slug}`} className="block">
+        <a href={`/blog/${article.slug}`} className="block">
           <div className="grid md:grid-cols-2 gap-0">
             {/* Imagen */}
             <div className="relative h-64 md:h-full min-h-[300px] overflow-hidden">
@@ -80,14 +79,14 @@ const ArticleCard = ({ article, featured = false }: ArticleCardProps) => {
               </div>
             </div>
           </div>
-        </Link>
+        </a>
       </article>
     );
   }
 
   return (
     <article className="group bg-white rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-all duration-300 border border-gray-100 flex flex-col h-full">
-      <Link to={`/blog/${article.slug}`} className="block flex flex-col h-full">
+      <a href={`/blog/${article.slug}`} className="block flex flex-col h-full">
         {/* Imagen */}
         <div className="relative h-48 overflow-hidden">
           <img
@@ -135,7 +134,7 @@ const ArticleCard = ({ article, featured = false }: ArticleCardProps) => {
             <span className="text-sm font-medium text-gray-700">{article.author.name}</span>
           </div>
         </div>
-      </Link>
+      </a>
     </article>
   );
 };

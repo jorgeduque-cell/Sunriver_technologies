@@ -1,0 +1,15 @@
+---
+import SiteLayout from '../layouts/SiteLayout.astro';
+import ServicesPage from '../views/Services';
+import { ServiceSchema } from '../components/seo';
+---
+
+<SiteLayout
+  title="Servicios | SunRiver Solution - Soluciones Web con Propósito"
+  description="Servicios de desarrollo web a bajo costo en Colombia. Páginas web baratas pero profesionales para PyMEs y emprendedores. Chatbots con IA incluidos."
+  keywords="servicios web económicos, páginas web baratas Colombia, diseño web a bajo costo, desarrollo web PyMEs, automatización IA negocios"
+  canonical="https://www.sunriverstech.com/servicios"
+  schema={ServiceSchema}
+>
+  <ServicesPage client:load />
+</SiteLayout>

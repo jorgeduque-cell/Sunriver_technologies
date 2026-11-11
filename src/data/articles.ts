@@ -1,5 +1,6 @@
 import type { Article } from '../types/blog';
-import jorgeAvatar from '../assets/team/jorge-duque.jpg';
+// ?url: Astro trataría el .jpg como imagen a procesar. OJO: este archivo hoy es un HTML descargado por error, no una foto.
+import jorgeAvatar from '../assets/team/jorge-duque.jpg?url';
 
 export const authors = {
   jorgeDuque: {

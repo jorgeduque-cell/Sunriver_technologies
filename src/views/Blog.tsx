@@ -1,7 +1,5 @@
 import { useState, useMemo } from 'react';
-import { Link } from 'react-router-dom';
 import { Search, BookOpen, TrendingUp, Sparkles } from 'lucide-react';
-import { SEO } from '../components/SEO';
 import { articles, getFeaturedArticles, getRecentArticles, getAllTags } from '../data/articles';
 import { categories } from '../data/categories';
 import ArticleCard from '../components/blog/ArticleCard';
@@ -31,12 +29,6 @@ const Blog = () => {
 
   return (
     <>
-      <SEO
-        title="Blog de IA y Desarrollo Web | SunRiver Solution"
-        description="Artículos semanales sobre inteligencia artificial aplicada al desarrollo web, automatización, SEO técnico y transformación digital para PyMEs."
-        keywords="blog IA, desarrollo web, automatización, chatbots, Core Web Vitals, n8n, SEO técnico"
-        canonical="https://www.sunriverstech.com/blog"
-      />
       
       {/* Hero Section */}
       <section className="relative pt-32 pb-16 bg-gradient-to-br from-sunriver-blue/5 via-white to-sunriver-orange/5">

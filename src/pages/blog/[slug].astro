@@ -1,0 +1,21 @@
+---
+/** Un HTML por artículo, generado en el build a partir de src/data/articles.ts. Sin JavaScript. */
+import type { GetStaticPaths } from 'astro';
+import SiteLayout from '../../layouts/SiteLayout.astro';
+import Article from '../../views/Article';
+import { articles } from '../../data/articles';
+
+export const getStaticPaths = (() =>
+  articles.map((article) => ({ params: { slug: article.slug }, props: { article } }))) satisfies GetStaticPaths;
+
+const { article } = Astro.props;
+---
+
+<SiteLayout
+  title={article.meta.title}
+  description={article.meta.description}
+  keywords={article.meta.keywords.join(', ')}
+  canonical={`https://www.sunriverstech.com/blog/${article.slug}`}
+>
+  <Article slug={article.slug} />
+</SiteLayout>

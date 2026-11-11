@@ -1,0 +1,15 @@
+---
+import SiteLayout from '../layouts/SiteLayout.astro';
+import ContactPage from '../views/Contact';
+import { LocalBusinessSchema } from '../components/seo';
+---
+
+<SiteLayout
+  title="Contacto | SunRiver Solution - Inicia tu Proyecto Web"
+  description="Solicita presupuesto para tu página web económica en Colombia. Desarrollo web a bajo costo con IA. WhatsApp +57 312 4183002. Respuesta en 24h."
+  keywords="cotizar página web, precio página web Colombia, contacto desarrollo web, presupuesto web económica, página web barata Cali"
+  canonical="https://www.sunriverstech.com/contacto"
+  schema={LocalBusinessSchema}
+>
+  <ContactPage client:load />
+</SiteLayout>

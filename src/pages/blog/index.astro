@@ -1,0 +1,14 @@
+---
+import SiteLayout from '../../layouts/SiteLayout.astro';
+import Blog from '../../views/Blog';
+---
+
+<SiteLayout
+  title="Blog de IA y Desarrollo Web | SunRiver Solution"
+  description="Artículos semanales sobre inteligencia artificial aplicada al desarrollo web, automatización, SEO técnico y transformación digital para PyMEs."
+  keywords="blog IA, desarrollo web, automatización, chatbots, Core Web Vitals, n8n, SEO técnico"
+  canonical="https://www.sunriverstech.com/blog"
+>
+  <!-- Isla: el buscador filtra en el navegador. -->
+  <Blog client:load />
+</SiteLayout>

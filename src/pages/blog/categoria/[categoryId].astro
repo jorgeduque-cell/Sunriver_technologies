@@ -1,0 +1,21 @@
+---
+/** Una página por categoría del blog (src/data/categories.ts). Sin JavaScript. */
+import type { GetStaticPaths } from 'astro';
+import SiteLayout from '../../../layouts/SiteLayout.astro';
+import BlogCategory from '../../../views/BlogCategory';
+import { categories } from '../../../data/categories';
+
+export const getStaticPaths = (() =>
+  categories.map((category) => ({ params: { categoryId: category.id }, props: { category } }))) satisfies GetStaticPaths;
+
+const { category } = Astro.props;
+---
+
+<SiteLayout
+  title={`${category.name} | Blog SunRiver`}
+  description={category.description}
+  keywords={`${category.name}, blog, desarrollo web, IA, SunRiver`}
+  canonical={`https://www.sunriverstech.com/blog/categoria/${category.id}`}
+>
+  <BlogCategory categoryId={category.id} />
+</SiteLayout>

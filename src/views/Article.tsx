@@ -1,25 +1,14 @@
-import { useParams, Link, useNavigate } from 'react-router-dom';
 import { ArrowLeft, Clock, Calendar, Share2, Twitter, Linkedin, Facebook } from 'lucide-react';
-import { SEO } from '../components/SEO';
 import { getArticleBySlug, getRelatedArticles } from '../data/articles';
 import { categories } from '../data/categories';
 import ArticleCard from '../components/blog/ArticleCard';
-import { useEffect } from 'react';
 
-const Article = () => {
-  const { slug } = useParams<{ slug: string }>();
-  const navigate = useNavigate();
+const Article = ({ slug }: { slug: string }) => {
   
   const article = slug ? getArticleBySlug(slug) : undefined;
   const relatedArticles = slug ? getRelatedArticles(slug) : [];
   const category = article ? categories.find(c => c.id === article.category) : undefined;
   
-  useEffect(() => {
-    if (!article) {
-      navigate('/blog', { replace: true });
-    }
-    window.scrollTo(0, 0);
-  }, [article, navigate]);
   
   if (!article) return null;
   
@@ -111,12 +100,6 @@ const Article = () => {
 
   return (
     <>
-      <SEO
-        title={article.meta.title}
-        description={article.meta.description}
-        keywords={article.meta.keywords.join(', ')}
-        canonical={`https://www.sunriverstech.com/blog/${article.slug}`}
-      />
       
       {/* Article Header */}
       <article className="pt-24">
@@ -132,13 +115,13 @@ const Article = () => {
           <div className="absolute bottom-0 left-0 right-0">
             <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pb-12">
               {/* Back Link */}
-              <Link
-                to="/blog"
+              <a
+                href="/blog"
                 className="inline-flex items-center gap-2 text-white/80 hover:text-white mb-6 transition-colors"
               >
                 <ArrowLeft className="w-4 h-4" />
                 Volver al blog
-              </Link>
+              </a>
               
               {/* Category */}
               {category && (
@@ -280,12 +263,12 @@ const Article = () => {
                 <p className="text-white/80 text-sm mb-4">
                   Te ayudamos a implementar chatbots IA, automatizaciones y optimización de performance.
                 </p>
-                <Link
-                  to="/contacto"
+                <a
+                  href="/contacto"
                   className="block w-full py-3 bg-sunriver-orange text-white text-center font-semibold rounded-full hover:bg-sunriver-orange/90 transition-colors"
                 >
                   Agendar consultoría gratis
-                </Link>
+                </a>
               </div>
               
               {/* Artículos Relacionados en Sidebar */}
@@ -294,9 +277,9 @@ const Article = () => {
                   <h3 className="font-bold text-gray-900 mb-4">Otros artículos</h3>
                   <div className="space-y-4">
                     {relatedArticles.map((relatedArticle) => (
-                      <Link
+                      <a
                         key={relatedArticle.id}
-                        to={`/blog/${relatedArticle.slug}`}
+                        href={`/blog/${relatedArticle.slug}`}
                         className="flex gap-3 group"
                       >
                         <div className="w-20 h-16 flex-shrink-0 rounded-lg overflow-hidden">
@@ -315,7 +298,7 @@ const Article = () => {
                             {relatedArticle.readTime} min de lectura
                           </span>
                         </div>
-                      </Link>
+                      </a>
                     ))}
                   </div>
                 </div>

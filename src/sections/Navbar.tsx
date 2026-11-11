@@ -1,12 +1,19 @@
 import { useState, useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
 import { Menu, X } from 'lucide-react';
 import Logo from '../components/Logo';
 
-const Navbar = () => {
+/** `pathname` llega desde la página Astro; el #hash solo existe en el navegador. */
+const Navbar = ({ pathname }: { pathname: string }) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const { pathname, hash } = useLocation();
+  const [hash, setHash] = useState('');
+
+  useEffect(() => {
+    const syncHash = () => setHash(window.location.hash);
+    syncHash();
+    window.addEventListener('hashchange', syncHash);
+    return () => window.removeEventListener('hashchange', syncHash);
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -58,41 +65,41 @@ const Navbar = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between">
           {/* Logo */}
-          <Link
-            to="/"
+          <a
+            href="/"
             onClick={() => { setIsMobileMenuOpen(false); window.scrollTo(0, 0); }}
             className="flex items-center gap-2 group transition-transform duration-300 hover:scale-105"
           >
             <Logo className="h-12 w-auto" alt="SunRiver Logo" />
-          </Link>
+          </a>
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center gap-8">
             {navItems.map((item, index) => {
               const isActive = isItemActive(item);
               return (
-                <Link
+                <a
                   key={index}
-                  to={item.hash ? `${item.path}${item.hash}` : item.path}
+                  href={item.hash ? `${item.path}${item.hash}` : item.path}
                   onClick={() => handleNavClick(item)}
                   className={`relative text-sm font-medium transition-colors duration-300 group ${isActive ? 'text-sunriver-orange' : 'text-gray-700 hover:text-sunriver-orange'}`}
                   style={{ animationDelay: `${100 + index * 80}ms` }}
                 >
                   {item.label}
                   <span className={`absolute -bottom-1 left-1/2 h-0.5 bg-sunriver-orange transition-all duration-300 group-hover:w-full group-hover:left-0 ${isActive ? 'w-full left-0' : 'w-0'}`} />
-                </Link>
+                </a>
               )
             })}
           </div>
 
           {/* CTA Button */}
           <div className="hidden md:block">
-            <Link
-              to="/contacto"
+            <a
+              href="/contacto"
               className="px-6 py-2.5 bg-gradient-to-r from-sunriver-orange to-sunriver-orange/90 text-white text-sm font-semibold rounded-full transition-all duration-300 hover:shadow-glow hover:scale-105 hover:-translate-y-0.5"
             >
               Auditoría Gratis
-            </Link>
+            </a>
           </div>
 
           {/* Mobile Menu Button */}
@@ -115,22 +122,22 @@ const Navbar = () => {
         >
           <div className="bg-white/95 backdrop-blur-lg rounded-2xl shadow-xl p-4 space-y-2">
             {navItems.map((item) => (
-              <Link
+              <a
                 key={item.label}
-                to={item.hash ? `${item.path}${item.hash}` : item.path}
+                href={item.hash ? `${item.path}${item.hash}` : item.path}
                 onClick={() => handleNavClick(item)}
                 className={`block w-full text-left px-4 py-3 hover:text-sunriver-orange hover:bg-sunriver-orange/5 rounded-lg transition-colors ${isItemActive(item) ? 'bg-sunriver-orange/10 text-sunriver-orange font-semibold' : 'text-gray-700'}`}
               >
                 {item.label}
-              </Link>
+              </a>
             ))}
-            <Link
-              to="/contacto"
+            <a
+              href="/contacto"
               onClick={() => { setIsMobileMenuOpen(false); window.scrollTo(0, 0); }}
               className="block w-full text-center px-4 py-3 bg-gradient-to-r from-sunriver-orange to-sunriver-orange/90 text-white font-semibold rounded-lg mt-2"
             >
               Auditoría Gratis
-            </Link>
+            </a>
           </div>
         </div>
       </div>

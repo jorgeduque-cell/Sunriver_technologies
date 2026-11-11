@@ -1,4 +1,3 @@
-import { Link, useLocation } from 'react-router-dom';
 import { categories } from '../../data/categories';
 import type { Category } from '../../types/blog';
 
@@ -7,12 +6,11 @@ interface CategoryFilterProps {
 }
 
 const CategoryFilter = ({ activeCategory = 'all' }: CategoryFilterProps) => {
-  const location = useLocation();
   
   return (
     <div className="flex flex-wrap gap-2 justify-center">
-      <Link
-        to="/blog"
+      <a
+        href="/blog"
         className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
           activeCategory === 'all'
             ? 'bg-sunriver-blue text-white shadow-md'
@@ -20,12 +18,12 @@ const CategoryFilter = ({ activeCategory = 'all' }: CategoryFilterProps) => {
         }`}
       >
         Todos
-      </Link>
+      </a>
       
       {categories.map((category) => (
-        <Link
+        <a
           key={category.id}
-          to={`/blog/categoria/${category.id}`}
+          href={`/blog/categoria/${category.id}`}
           className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
             activeCategory === category.id
               ? `${category.color} text-white shadow-md`
@@ -33,7 +31,7 @@ const CategoryFilter = ({ activeCategory = 'all' }: CategoryFilterProps) => {
           }`}
         >
           {category.name}
-        </Link>
+        </a>
       ))}
     </div>
   );

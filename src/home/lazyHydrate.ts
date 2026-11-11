@@ -56,7 +56,7 @@ function listen(on: boolean) {
   for (const type of INTERACTIONS) window[method](type, onInteract, { capture: true, passive: true });
   // Resguardo: si algo de más arriba cambiara con el historial (#ancla, Atrás), React no sabe si
   // una sección aún inactiva depende de ello y la vuelve a renderizar; si siguiera esperando,
-  // quedaría vacía. Hoy la home se hidrata sin router (main.tsx), pero se activan igual.
+  // quedaría vacía. Hoy la home es una isla de Astro sin router, pero se activan igual.
   window[method]('popstate', releaseAll, { capture: true });
   window[method]('scroll', schedule, { passive: true });
   window[method]('resize', schedule, { passive: true });

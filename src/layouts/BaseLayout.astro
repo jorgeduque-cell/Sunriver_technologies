@@ -1,0 +1,74 @@
+---
+/**
+ * Documento HTML común a todas las páginas (antes index.html + el componente SEO).
+ * Las etiquetas SEO se escriben aquí en el servidor: llegan en el HTML, sin esperar a React.
+ */
+import type { SEOProps } from '../components/seo';
+
+const DEFAULT_TITLE = 'SunRiver | Contenido y automatización con IA para negocios · Bogotá';
+const DEFAULT_DESCRIPTION =
+  'Creamos contenido que llega a gente nueva y bots que responden a cada cliente en Instagram, WhatsApp y tu web. Diagnóstico gratis de 15 minutos.';
+const DEFAULT_OG_IMAGE = 'https://www.sunriverstech.com/og-image.jpg';
+const OG_IMAGE_ALT = 'Hacemos que te vean. Y que nadie se quede sin respuesta. SunRiver, Bogotá.';
+
+type Props = Partial<SEOProps>;
+
+const {
+  title = DEFAULT_TITLE,
+  description = DEFAULT_DESCRIPTION,
+  keywords,
+  ogImage = DEFAULT_OG_IMAGE,
+  canonical,
+  noindex = false,
+  schema,
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="es-CO">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    {keywords && <meta name="keywords" content={keywords} />}
+    <meta name="robots" content={noindex ? 'noindex, nofollow' : 'index, follow, max-image-preview:large'} />
+    <meta name="theme-color" content="#F7F3EC" />
+    {canonical && <link rel="canonical" href={canonical} />}
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="SunRiver" />
+    <meta property="og:locale" content="es_CO" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={OG_IMAGE_ALT} />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+    <meta name="twitter:image:alt" content={OG_IMAGE_ALT} />
+
+    {schema && <script type="application/ld+json" set:html={JSON.stringify(schema)} />}
+
+    <!-- Marca que hay JS: las animaciones solo ocultan contenido cuando JS está activo -->
+    <script is:inline>document.documentElement.classList.add('js')</script>
+
+    <!-- Fuentes servidas desde el propio dominio (se declaran en src/home/home.css). Se precarga
+         Inter Tight: si llega antes del primer layout, la página se maqueta una sola vez. -->
+    <link rel="preload" href="/fonts/inter-tight-v9-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <slot name="head" />
+  </head>
+
+  <body>
+    <slot />
+  </body>
+</html>

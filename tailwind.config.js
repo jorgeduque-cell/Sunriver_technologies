@@ -1,7 +1,11 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   darkMode: ["class"],
-  content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
+  content: [
+    './src/**/*.{astro,js,ts,jsx,tsx}',
+    // Componentes shadcn sin usar con sintaxis de Tailwind 4 (--spacing()): generaban CSS inválido.
+    '!./src/components/ui/{calendar,sidebar,toggle-group}.tsx',
+  ],
   theme: {
     extend: {
       colors: {

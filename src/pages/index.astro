@@ -1,0 +1,19 @@
+---
+/**
+ * Home. Antes se prerenderizaba con scripts/prerender.mjs; ahora Astro escribe el HTML en el build
+ * y React la hidrata como una sola isla. Sus secciones siguen activándose por separado cuando se
+ * acercan a la pantalla (src/home/lazyHydrate.ts).
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Home from '../views/Home';
+import { homeHeadTags } from '../home/schema';
+---
+
+<BaseLayout>
+  <Fragment slot="head">
+    <Fragment set:html={homeHeadTags()} />
+    <!-- Antes de hidratar: activa la hidratación diferida por sección (ver views/Home.tsx). -->
+    <script is:inline>window.__srHydrating = true</script>
+  </Fragment>
+  <Home client:load />
+</BaseLayout>

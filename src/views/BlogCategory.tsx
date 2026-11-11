@@ -1,13 +1,10 @@
-import { useParams, Link } from 'react-router-dom';
 import { ArrowLeft, BookOpen } from 'lucide-react';
-import { SEO } from '../components/SEO';
 import { articles, getArticlesByCategory } from '../data/articles';
 import { categories } from '../data/categories';
 import ArticleCard from '../components/blog/ArticleCard';
 import CategoryFilter from '../components/blog/CategoryFilter';
 
-const BlogCategory = () => {
-  const { categoryId } = useParams<{ categoryId: string }>();
+const BlogCategory = ({ categoryId }: { categoryId: string }) => {
   const category = categories.find(c => c.id === categoryId);
   const categoryArticles = categoryId ? getArticlesByCategory(categoryId) : [];
   
@@ -15,32 +12,26 @@ const BlogCategory = () => {
     return (
       <div className="pt-32 pb-24 text-center">
         <h1 className="text-2xl font-bold text-gray-900 mb-4">Categoría no encontrada</h1>
-        <Link to="/blog" className="text-sunriver-orange hover:underline">
+        <a href="/blog" className="text-sunriver-orange hover:underline">
           Volver al blog
-        </Link>
+        </a>
       </div>
     );
   }
 
   return (
     <>
-      <SEO
-        title={`${category.name} | Blog SunRiver`}
-        description={category.description}
-        keywords={`${category.name}, blog, desarrollo web, IA, SunRiver`}
-        canonical={`https://www.sunriverstech.com/blog/categoria/${category.id}`}
-      />
       
       {/* Header */}
       <section className="pt-32 pb-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <Link
-            to="/blog"
+          <a
+            href="/blog"
             className="inline-flex items-center gap-2 text-gray-500 hover:text-sunriver-orange mb-6 transition-colors"
           >
             <ArrowLeft className="w-4 h-4" />
             Volver al blog
-          </Link>
+          </a>
           
           <div className={`inline-flex items-center gap-2 px-4 py-2 ${category.color} text-white rounded-full mb-6`}>
             <BookOpen className="w-5 h-5" />

@@ -35,7 +35,7 @@ const faqPage = {
 const jsonLd = (id: string, data: object) =>
   `<script type="application/ld+json" id="${id}">${JSON.stringify(data).replace(/</g, '\\u003c')}</script>`;
 
-/** Etiquetas que solo van en la home prerenderizada (no en spa.html). */
+/** Etiquetas que solo van en la home (las añade src/pages/index.astro). */
 export function homeHeadTags(): string {
   return [
     `<link rel="canonical" href="${SITE_URL}" />`,

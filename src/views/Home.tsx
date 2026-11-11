@@ -44,8 +44,8 @@ const DepthBand = ({ name }: { name: 'sand-river' | 'river-deep' | 'deep-abyss' 
 // pero no se repite al volver a la home navegando dentro del sitio.
 let curtainSeen = false;
 
-// Home de SunRiver. Se prerenderiza en build (scripts/prerender.mjs).
-// Meta, canonical y JSON-LD viven en index.html y en src/home/schema.ts.
+// Home de SunRiver. Astro la renderiza en el build (src/pages/index.astro) y la hidrata como isla.
+// Meta, canonical y JSON-LD: src/layouts/BaseLayout.astro y src/home/schema.ts (src/pages/index.astro).
 const Home = () => {
     useReveal();
     useInteractiveMotion();
